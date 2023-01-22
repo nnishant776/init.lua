@@ -1,0 +1,27 @@
+return {
+  ensure_installed = {
+    "lua",
+    "c",
+    "cpp",
+    "go",
+    "yaml",
+    "bash",
+    "dockerfile",
+    "comment",
+    "go",
+    "gomod",
+    "gowork",
+    "gitcommit",
+    "json",
+    "ninja",
+    "cmake",
+    "java",
+    "make",
+    "markdown",
+    "meson",
+    "proto",
+    "python",
+    "toml",
+    "rust"
+  },
+}
