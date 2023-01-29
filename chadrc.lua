@@ -1,5 +1,7 @@
 -- Chadrc overrides this file
 
+vim.g.config = require("custom.rtconfig")
+
 local M = {}
 
 M.options = {
