@@ -52,6 +52,7 @@ local options = {
     },
   },
   completion = {
+    autocomplete = false,
     keyword_count = 3,
   },
   snippet = {

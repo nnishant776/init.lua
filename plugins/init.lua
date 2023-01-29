@@ -37,14 +37,6 @@ local plugins = {
   },
 
   ["nvim-tree/nvim-tree.lua"] = {
-    -- ft = "alpha",
-    -- cmd = { "NvimTreeToggle", "NvimTreeFocus" },
-    -- config = function()
-    --   require "plugins.configs.nvimtree"
-    -- end,
-    -- setup = function()
-    --   require("core.utils").load_mappings "nvimtree"
-    -- end,
     override_options = require("custom.plugins.overrides.nvimtree"),
   },
 
@@ -55,6 +47,8 @@ local plugins = {
   ["williamboman/mason.nvim"] = {
     override_options = require("custom.plugins.overrides.mason"),
   },
+
+  ["lewis6991/gitsigns.nvim"] = {},
 
   -- debugging
   -- ["mfussenegger/nvim-dap"] = {

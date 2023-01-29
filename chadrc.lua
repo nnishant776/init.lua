@@ -11,19 +11,12 @@ M.options = {
 
 M.ui = {
   -- hl = highlights
-  hl_add = {},
-  hl_override = {
-    CursorLine = {
-      bg = "black2",
-    },
-    Comment = {
-      italic = true,
-    },
-  },
+  hl_add = require("custom.highlights").add,
+  hl_override = require("custom.highlights").override,
+
   changed_themes = {},
   theme_toggle = { "onedark", "one_light" },
   theme = "onedark", -- default theme
-  transparency = true,
 }
 
 M.plugins = require("custom.plugins")
