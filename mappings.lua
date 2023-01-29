@@ -47,6 +47,7 @@ M.general = {
     ["<leader>tt"] = {
       function()
         require("base46").toggle_theme()
+        require("base46").load_all_highlights()
       end,
       "toggle theme",
     },
@@ -161,8 +162,8 @@ M.lspconfig = {
     ["<leader>lsH"] = { function() vim.lsp.buf.signature_help() end, "Show signature help", },
 
     -- reference highlight
-    ["<leader>lhs"] = { "<cmd> LspSetHighlight <CR>", "Set reference highlight" },
-    ["<leader>lhc"] = { "<cmd> LspClearHighlight <CR>", "Clear reference highlight" },
+    ["<leader>lhs"] = { function() vim.lsp.buf.document_highlight() end, "Set reference highlight" },
+    ["<leader>lhc"] = { function() vim.lsp.buf.clear_references() end, "Clear reference highlight" },
 
     -- code actions
     ["<leader>lca"] = { function() vim.lsp.buf.code_action() end, "View code actions", },
@@ -321,6 +322,19 @@ M.gitsigns = {
         package.loaded.gitsigns.blame_line()
       end,
       "Blame line",
+    },
+
+    ["<leader>gshl"] = {
+      function()
+        vim.cmd("Git log --format='%h (%an) %s' -L" ..
+          vim.fn.line('.') .. ",+1:" .. vim.fn.fnamemodify(vim.fn.expand('%h'), ":~:."))
+      end,
+    },
+
+    ["<leader>gshf"] = {
+      function()
+        vim.cmd("Git log --format='%h (%an) %s' -p --follow " .. vim.fn.fnamemodify(vim.fn.expand('%h'), ":~:."))
+      end,
     },
 
     ["<leader>gtd"] = {
