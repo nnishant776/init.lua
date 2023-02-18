@@ -230,6 +230,7 @@ M.telescope = {
     ["<leader>lci"] = { "<cmd> Telescope lsp_incoming_calls <CR>", "List incoming calls" },
     ["<leader>lco"] = { "<cmd> Telescope lsp_outgoing_calls <CR>", "List outgoing calls" },
     ["<leader>lD"] = { "<cmd> Telescope diagnostics <CR>", "List project diagnostics" },
+    ["<leader>tss"] = { "<cmd> Telescope treesitter <CR>", "List tree-sitter symbols" },
   },
 }
 
@@ -329,12 +330,14 @@ M.gitsigns = {
         vim.cmd("Git log --format='%h (%an) %s' -L" ..
           vim.fn.line('.') .. ",+1:" .. vim.fn.fnamemodify(vim.fn.expand('%h'), ":~:."))
       end,
+      "Show line history",
     },
 
     ["<leader>gshf"] = {
       function()
         vim.cmd("Git log --format='%h (%an) %s' -p --follow " .. vim.fn.fnamemodify(vim.fn.expand('%h'), ":~:."))
       end,
+      "Show file history",
     },
 
     ["<leader>gtd"] = {
