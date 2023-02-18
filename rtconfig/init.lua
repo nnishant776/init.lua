@@ -36,7 +36,7 @@ local default_cfg = {
       strings = "off",
     },
     suggest = {
-      enabled = true,
+      enabled = false,
       showWords = false,
       showSnippets = true,
       showFiles = true,
@@ -116,9 +116,9 @@ local convert_vsc_cfg = function()
       local config = {}
       config[sub_key_list[#sub_key_list]] = vsc_settings_global[key]
       for i = #sub_key_list - 1, 1, -1 do
-          local sub_config = {}
-          sub_config[sub_key_list[i]] = config
-          config = sub_config
+        local sub_config = {}
+        sub_config[sub_key_list[i]] = config
+        config = sub_config
       end
       nvim_vsc_settings = vim.tbl_deep_extend("force", nvim_vsc_settings or {}, config)
     end
