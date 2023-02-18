@@ -1,5 +1,4 @@
 local lspconfig_present, lspconfig = pcall(require, "lspconfig")
-
 if not lspconfig_present then
   return
 end
@@ -30,13 +29,14 @@ M.on_attach = function(client, bufnr)
       vim.lsp.buf.clear_references()
     end, {})
   end
+
   if client.server_capabilities.documentFormattingProvider then
     vim.api.nvim_create_augroup("LspAutoFormat", { clear = true })
     vim.api.nvim_create_autocmd("BufWritePre", {
       callback = function()
-        -- if vim.g.enableautoformat then
-        vim.lsp.buf.format({})
-        -- end
+        if vim.g.config.editor.formatOnSave then
+          vim.lsp.buf.format({})
+        end
       end,
       buffer = bufnr,
       group = "LspAutoFormat",
@@ -68,78 +68,80 @@ M.capabilities.textDocument.completion.completionItem = {
   },
 }
 
-lspconfig.sumneko_lua.setup {
-  on_attach = function(client, bufnr)
-    M.on_attach(client, bufnr)
-    vim.api.nvim_buf_set_option(bufnr, "shiftwidth", 2)
-    vim.api.nvim_buf_set_option(bufnr, "tabstop", 2)
-    vim.api.nvim_buf_set_option(bufnr, "softtabstop", 2)
-    vim.api.nvim_buf_set_option(bufnr, "expandtab", true)
-  end,
+if vim.g.config.editor.suggest.enabled then
+  lspconfig.lua_ls.setup {
+    on_attach = function(client, bufnr)
+      M.on_attach(client, bufnr)
+      vim.api.nvim_buf_set_option(bufnr, "shiftwidth", 2)
+      vim.api.nvim_buf_set_option(bufnr, "tabstop", 2)
+      vim.api.nvim_buf_set_option(bufnr, "softtabstop", 2)
+      vim.api.nvim_buf_set_option(bufnr, "expandtab", true)
+    end,
 
-  capabilities = M.capabilities,
+    capabilities = M.capabilities,
 
-  settings = {
-    Lua = {
-      diagnostics = {
-        globals = { "vim" },
-      },
-      workspace = {
-        library = {
-          [vim.fn.expand "$VIMRUNTIME/lua"] = true,
-          [vim.fn.expand "$VIMRUNTIME/lua/vim/lsp"] = true,
+    settings = {
+      Lua = {
+        diagnostics = {
+          globals = { "vim" },
         },
-        maxPreload = 100000,
-        preloadFileSize = 10000,
+        workspace = {
+          library = {
+            [vim.fn.expand "$VIMRUNTIME/lua"] = true,
+            [vim.fn.expand "$VIMRUNTIME/lua/vim/lsp"] = true,
+          },
+          maxPreload = 100000,
+          preloadFileSize = 10000,
+        },
       },
     },
-  },
-}
+  }
 
--- lspconfig.gopls.setup {
---   settings = {
---     gopls = {
---       experimentalPostfixCompletions = false,
---       analyses = {
---         shadow = true,
---         fieldalignment = true,
---         unsed = true,
---         all = true,
---         ST1003 = false,
---         ST1006 = false,
---         ST1020 = false,
---         ST1021 = false,
---         ST1022 = false,
---         ST1023 = false,
---         QF1011 = false,
---       },
---       staticcheck = true,
---       linksInHover = false,
---     },
---   },
---   on_attach = function(client, bufnr)
---     M.on_attach(client, bufnr)
---     vim.api.nvim_buf_set_option(bufnr, "shiftwidth", 8)
---     vim.api.nvim_buf_set_option(bufnr, "tabstop", 8)
---     vim.api.nvim_buf_set_option(bufnr, "softtabstop", 8)
---     vim.api.nvim_buf_set_option(bufnr, "expandtab", false)
---   end,
---   capabilities = M.capabilities,
--- }
+  -- lspconfig.gopls.setup {
+  --   settings = {
+  --     gopls = {
+  --       experimentalPostfixCompletions = false,
+  --       analyses = {
+  --         shadow = true,
+  --         fieldalignment = true,
+  --         unsed = true,
+  --         all = true,
+  --         ST1003 = false,
+  --         ST1006 = false,
+  --         ST1020 = false,
+  --         ST1021 = false,
+  --         ST1022 = false,
+  --         ST1023 = false,
+  --         QF1011 = false,
+  --       },
+  --       staticcheck = true,
+  --       linksInHover = false,
+  --     },
+  --   },
+  --   on_attach = function(client, bufnr)
+  --     M.on_attach(client, bufnr)
+  --     vim.api.nvim_buf_set_option(bufnr, "shiftwidth", 8)
+  --     vim.api.nvim_buf_set_option(bufnr, "tabstop", 8)
+  --     vim.api.nvim_buf_set_option(bufnr, "softtabstop", 8)
+  --     vim.api.nvim_buf_set_option(bufnr, "expandtab", false)
+  --   end,
+  --   capabilities = M.capabilities,
+  -- }
 
--- lspconfig.clangd.setup {
---   on_attach = M.on_attach,
---   capabilities = M.capabilities,
--- }
---
--- lspconfig.pyright.setup {
---   on_attach = M.on_attach,
---   capabilities = M.capabilities,
--- }
---
--- lspconfig.rust_analyzer.setup {
---   on_attach = M.on_attach,
---   capabilities = M.capabilities,
--- }
+  -- lspconfig.clangd.setup {
+  --   on_attach = M.on_attach,
+  --   capabilities = M.capabilities,
+  -- }
+  --
+  -- lspconfig.pyright.setup {
+  --   on_attach = M.on_attach,
+  --   capabilities = M.capabilities,
+  -- }
+  --
+  -- lspconfig.rust_analyzer.setup {
+  --   on_attach = M.on_attach,
+  --   capabilities = M.capabilities,
+  -- }
+end
 
 return M

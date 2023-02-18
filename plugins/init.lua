@@ -6,7 +6,7 @@ local plugins = {
 
   ["lukas-reineke/indent-blankline.nvim"] = {
     override_options = {
-      enabled = 0,
+      enabled = vim.g.config.editor.guides.indentation,
     }
   },
 

@@ -73,12 +73,18 @@ local options = {
   mapping = {
     -- ["<C-p>"] = cmp.mapping.select_prev_item(),
     -- ["<C-n>"] = cmp.mapping.select_next_item(),
-    ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+    ["<C-d>"] = cmp.mapping.scroll_docs( -4),
     ["<C-u>"] = cmp.mapping.scroll_docs(4),
     ["<C-Space>"] = cmp.mapping.complete(),
     ["<C-e>"] = cmp.mapping.close(),
     ["<CR>"] = cmp.mapping.confirm {
-      behavior = cmp.ConfirmBehavior.Replace,
+      behavior = (function()
+        if vim.g.config.editor.suggest.insertMode == "replace" then
+          return cmp.ConfirmBehavior.Replace
+        else
+          return cmp.ConfirmBehavior.Insert
+        end
+      end)(),
       select = false,
     },
     ["<Tab>"] = cmp.mapping(function(fallback)
@@ -96,7 +102,7 @@ local options = {
     ["<S-Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
-      elseif require("luasnip").jumpable(-1) then
+      elseif require("luasnip").jumpable( -1) then
         vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
       else
         fallback()
@@ -106,14 +112,29 @@ local options = {
       "s",
     }),
   },
-  sources = {
-    { name = "nvim_lsp", keyword_count = 3 },
-    { name = "luasnip" },
-    { name = "nvim_lua" },
-    -- { name = "buffer" },
-    { name = "path" },
-  },
+  sources = (function()
+    local cmp_sources = {
+      { name = "nvim_lsp", keyword_count = 3 },
+      { name = "nvim_lua" },
+    }
+
+    if vim.g.config.editor.suggest.showSnippets then
+      table.insert(cmp_sources, { name = "luasnip" })
+    end
+
+    if vim.g.config.editor.suggest.showWords or vim.g.config.editor.wordBasedSuggestions then
+      table.insert(cmp_sources, { name = "buffer" })
+    end
+
+    if vim.g.config.editor.suggest.showFiles then
+      table.insert(cmp_sources, { name = "path" })
+    end
+
+    return cmp_sources
+  end)()
 }
+
+vim.pretty_print(options)
 
 -- check for any override
 options = require("core.utils").load_override(options, "hrsh7th/nvim-cmp")
