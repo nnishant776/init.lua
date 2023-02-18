@@ -17,5 +17,5 @@ vim.opt.autoindent = true
 vim.opt.backspace = { "indent", "eol", "start" }
 vim.opt.ttyfast = true
 vim.opt.cmdheight = 1
-vim.opt.lazyredraw = true
+vim.opt.lazyredraw = false
 vim.opt.modelines = 1
