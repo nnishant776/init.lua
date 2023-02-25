@@ -2,7 +2,8 @@
 
 vim.g.parse_external_editor_config = true
 
-vim.g.config = require("custom.rtconfig")
+vim.g.config = vim.deepcopy(require("custom.rtconfig"))
+vim.g.default_config = vim.deepcopy(vim.g.config)
 
 local M = {}
 

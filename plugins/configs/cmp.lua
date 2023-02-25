@@ -38,8 +38,14 @@ local options = {
     if vim.api.nvim_get_mode().mode == 'c' then
       return true
     else
-      return not context.in_treesitter_capture("comment")
+      local is_suggest_enabled = vim.g.config.editor.suggest.enabled
+      local is_comment_suggest_enabled = not context.in_treesitter_capture("comment")
           and not context.in_syntax_group("Comment")
+          and vim.g.config.editor.quickSuggestions.comments ~= "off"
+      if not is_suggest_enabled then
+        return false
+      end
+      return is_comment_suggest_enabled
     end
   end,
   window = {
