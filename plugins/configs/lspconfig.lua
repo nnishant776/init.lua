@@ -119,12 +119,12 @@ if vim.g.config.editor.suggest.enabled then
   --   on_attach = M.on_attach,
   --   capabilities = M.capabilities,
   -- }
-  --
-  -- lspconfig.pyright.setup {
-  --   on_attach = M.on_attach,
-  --   capabilities = M.capabilities,
-  -- }
-  --
+
+  lspconfig.pyright.setup {
+    on_attach = M.on_attach,
+    capabilities = M.capabilities,
+  }
+
   -- lspconfig.rust_analyzer.setup {
   --   on_attach = M.on_attach,
   --   capabilities = M.capabilities,
