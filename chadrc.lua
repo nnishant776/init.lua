@@ -1,5 +1,7 @@
 -- Chadrc overrides this file
 
+vim.g.parse_external_editor_config = true
+
 vim.g.config = require("custom.rtconfig")
 
 local M = {}
@@ -15,7 +17,6 @@ M.ui = {
   -- hl = highlights
   hl_add = require("custom.highlights").add,
   hl_override = require("custom.highlights").override,
-
   changed_themes = {},
   theme_toggle = { "onedark", "one_light" },
   theme = "onedark", -- default theme
