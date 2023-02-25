@@ -70,14 +70,7 @@ M.capabilities.textDocument.completion.completionItem = {
 
 if vim.g.config.editor.suggest.enabled then
   lspconfig.lua_ls.setup {
-    on_attach = function(client, bufnr)
-      M.on_attach(client, bufnr)
-      vim.api.nvim_buf_set_option(bufnr, "shiftwidth", 2)
-      vim.api.nvim_buf_set_option(bufnr, "tabstop", 2)
-      vim.api.nvim_buf_set_option(bufnr, "softtabstop", 2)
-      vim.api.nvim_buf_set_option(bufnr, "expandtab", true)
-    end,
-
+    on_attach = M.on_attach,
     capabilities = M.capabilities,
 
     settings = {
@@ -118,13 +111,7 @@ if vim.g.config.editor.suggest.enabled then
   --       linksInHover = false,
   --     },
   --   },
-  --   on_attach = function(client, bufnr)
-  --     M.on_attach(client, bufnr)
-  --     vim.api.nvim_buf_set_option(bufnr, "shiftwidth", 8)
-  --     vim.api.nvim_buf_set_option(bufnr, "tabstop", 8)
-  --     vim.api.nvim_buf_set_option(bufnr, "softtabstop", 8)
-  --     vim.api.nvim_buf_set_option(bufnr, "expandtab", false)
-  --   end,
+  --   on_attach = M.on_attach,
   --   capabilities = M.capabilities,
   -- }
 
