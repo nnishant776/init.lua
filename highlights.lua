@@ -19,6 +19,19 @@ return {
       fg = "black",
       bg = "blue"
     },
+    DiffChangeDelete = {
+      fg = "black",
+      bg = "orange"
+    }
   },
-  add = {},
+  add = {
+    DiffText = {
+      fg = "black",
+      bg = "blue"
+    },
+    DiffChangeDelete = {
+      fg = "black",
+      bg = "orange"
+    }
+  },
 }
