@@ -19,6 +19,7 @@ local default_cfg = {
     rulers = {
       9999,
     },
+    suggestOnTriggerCharacters = false,
     guides = {
       indentation = false,
       highlightActiveBracketPair = false,
