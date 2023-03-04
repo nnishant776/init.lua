@@ -41,11 +41,10 @@ local options = {
       local is_suggest_enabled = vim.g.config.editor.suggest.enabled
       local is_comment_suggest_enabled = not context.in_treesitter_capture("comment")
           and not context.in_syntax_group("Comment")
-          and vim.g.config.editor.quickSuggestions.comments ~= "off"
       if not is_suggest_enabled then
         return false
       end
-      return is_comment_suggest_enabled
+      return is_comment_suggest_enabled or vim.g.config.editor.quickSuggestions.comments ~= "off"
     end
   end,
   window = {
@@ -58,7 +57,16 @@ local options = {
     },
   },
   completion = {
-    autocomplete = false,
+    autocomplete = (function()
+      if vim.g.config.editor.suggestOnTriggerCharacters then
+        return {
+          require('cmp.types').cmp.TriggerEvent.InsertEnter,
+          require('cmp.types').cmp.TriggerEvent.TextChanged,
+        }
+      else
+        return {}
+      end
+    end)(),
     keyword_count = 3,
   },
   snippet = {
@@ -67,7 +75,9 @@ local options = {
     end,
   },
   matching = {
-    disable_fuzzy_matching = true,
+    disable_fuzzy_matching = (function()
+      return vim.g.config.editor.suggest.filterGraceful
+    end)(),
   },
   formatting = {
     format = function(_, vim_item)
@@ -95,7 +105,7 @@ local options = {
     },
     ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
-        cmp.select_next_item()
+        cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
       elseif require("luasnip").expand_or_jumpable() then
         vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
       else
@@ -107,7 +117,7 @@ local options = {
     }),
     ["<S-Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
-        cmp.select_prev_item()
+        cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
       elseif require("luasnip").jumpable( -1) then
         vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
       else
@@ -117,6 +127,9 @@ local options = {
       "i",
       "s",
     }),
+  },
+  experimental = {
+    ghost_text = vim.g.config.editor.suggest.preview
   },
   sources = (function()
     local cmp_sources = {
