@@ -15,6 +15,8 @@ local utils = require "core.utils"
 -- export on_attach & capabilities for custom lspconfigs
 
 M.on_attach = function(client, bufnr)
+  vim.diagnostic.reset()
+
   utils.load_mappings("lspconfig", { buffer = bufnr })
 
   if client.server_capabilities.signatureHelpProvider then
@@ -42,6 +44,16 @@ M.on_attach = function(client, bufnr)
       group = "LspAutoFormat",
       desc = "Document Format",
     })
+
+    vim.api.nvim_buf_create_user_command(bufnr, "LspFormat", function()
+      if vim.fn.mode() == "v" then
+        if client.server.documentRangeFormattingProvider then
+          vim.lsp.buf.format({ range = {} })
+        end
+      else
+        vim.lsp.buf.format({})
+      end
+    end, {})
   end
 end
 
