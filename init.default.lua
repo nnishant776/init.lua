@@ -1,0 +1,30 @@
+vim.opt.shiftwidth = 8
+vim.opt.tabstop = 8
+vim.opt.softtabstop = 8
+vim.opt.expandtab = false
+vim.opt.number = true
+vim.opt.relativenumber = false
+vim.opt.ruler = false
+vim.opt.shortmess:append "sI"
+vim.opt.numberwidth = 4
+vim.opt.formatoptions = "jcqrlo"
+vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
+vim.opt.list = true
+vim.opt.listchars = { trail = '·', tab = "➝ ", lead = '·' }
+vim.opt.timeoutlen = 1000
+vim.opt.updatetime = 250
+vim.opt.cursorline = false
+vim.opt.autoindent = false
+vim.opt.backspace = { "indent", "eol", "start" }
+vim.opt.ttyfast = true
+vim.opt.cmdheight = 1
+vim.opt.lazyredraw = true
+vim.opt.modelines = 1
+vim.opt.clipboard = "unnamedplus"
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.mouse = "a"
+vim.opt.signcolumn = "yes"
+vim.opt.splitbelow = true
+vim.opt.splitright = true
+vim.opt.termguicolors = false
