@@ -56,6 +56,7 @@ local options = {
       border = border "CmpDocBorder",
     },
   },
+  preselect = cmp.PreselectMode.None,
   completion = {
     autocomplete = (function()
       if vim.g.config.editor.suggestOnTriggerCharacters then
@@ -93,7 +94,7 @@ local options = {
     ["<C-u>"] = cmp.mapping.scroll_docs(4),
     ["<C-Space>"] = cmp.mapping.complete(),
     ["<C-e>"] = cmp.mapping.close(),
-    ["<CR>"] = cmp.mapping.confirm {
+    ["<CR>"] = cmp.mapping.confirm({
       behavior = (function()
         if vim.g.config.editor.suggest.insertMode == "replace" then
           return cmp.ConfirmBehavior.Replace
@@ -102,7 +103,7 @@ local options = {
         end
       end)(),
       select = false,
-    },
+    }),
     ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
