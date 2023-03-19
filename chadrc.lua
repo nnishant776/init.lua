@@ -1,6 +1,10 @@
 -- Chadrc overrides this file
 
-vim.g.parse_external_editor_config = true
+if os.getenv("extconfig") == "true" then
+  vim.g.parse_external_editor_config = true
+else
+  vim.g.parse_external_editor_config = false
+end
 
 vim.g.config = vim.deepcopy(require("custom.rtconfig"))
 vim.g.default_config = vim.deepcopy(vim.g.config)
