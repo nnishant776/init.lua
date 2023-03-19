@@ -144,8 +144,6 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
   desc = "Reload config based on file type"
 })
 
-
-
 vim.api.nvim_create_autocmd({ "BufLeave" }, {
   callback = function()
     local lang_key = "[" .. vim.bo.filetype .. "]"
