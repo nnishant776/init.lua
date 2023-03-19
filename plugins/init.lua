@@ -5,6 +5,8 @@ local plugins = {
   ["lukas-reineke/indent-blankline.nvim"] = {
     override_options = {
       enabled = vim.g.config.editor.guides.indentation,
+      show_current_context = vim.g.config.editor.guides.highlightActiveIndentation,
+      show_current_context_start = vim.g.config.editor.guides.highlightActiveIndentation,
     }
   },
   ["tpope/vim-fugitive"] = {},
