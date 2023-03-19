@@ -21,7 +21,6 @@ M.general = {
     -- exit insert mode with ctrl + n
     ["<C-n>"] = { "<Esc>", "Exit insert mode" },
   },
-
   n = {
     ["<ESC>"] = { "<cmd> noh <CR>", "Remove highlight" },
 
@@ -64,14 +63,11 @@ M.general = {
     -- new buffer
     ["<leader>bE"] = { "<cmd> enew <CR>", "New buffer" },
   },
-
   t = { ["<C-x>"] = { termcodes "<C-\\><C-N>", "escape terminal mode" } },
-
   v = {
     ["<Up>"] = { 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', opts = { expr = true } },
     ["<Down>"] = { 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', opts = { expr = true } },
   },
-
   x = {
     ["j"] = { 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', opts = { expr = true } },
     ["k"] = { 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', opts = { expr = true } },
@@ -83,7 +79,6 @@ M.general = {
 
 M.tabufline = {
   plugin = true,
-
   n = {
     -- cycle through buffers
     ["<TAB>"] = {
@@ -115,7 +110,6 @@ M.tabufline = {
 
 M.comment = {
   plugin = true,
-
   -- toggle comment in both modes
   n = {
     ["<leader>/"] = {
@@ -125,7 +119,6 @@ M.comment = {
       "Toggle comment",
     },
   },
-
   v = {
     ["<leader>/"] = {
       "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>",
@@ -136,7 +129,6 @@ M.comment = {
 
 M.lspconfig = {
   plugin = true,
-
   -- See `<cmd> :help vim.lsp.*` for documentation on any of the below functions
 
   n = {
@@ -181,7 +173,6 @@ M.lspconfig = {
 
 M.nvimtree = {
   plugin = true,
-
   n = {
     -- toggle
     ["<leader>pf"] = { "<cmd> NvimTreeToggle <CR>", "Toggle project files" },
@@ -190,7 +181,6 @@ M.nvimtree = {
 
 M.telescope = {
   plugin = true,
-
   n = {
     -- open telescope
     ["<leader>T"] = { "<cmd> Telescope <CR>", "Open Telescope" },
@@ -236,37 +226,34 @@ M.telescope = {
 
 M.nvterm = {
   plugin = true,
-
   t = {
     -- toggle in terminal mode
     ["<A-i>"] = { function() require("nvterm.terminal").toggle "float" end, "Toggle floating terminal", },
     ["<A-h>"] = { function() require("nvterm.terminal").toggle "horizontal" end, "Toggle horizontal terminal", },
     ["<A-v>"] = { function() require("nvterm.terminal").toggle "vertical" end, "Toggle vertical terminal", },
   },
-
   n = {
     -- toggle in normal mode
     ["<A-i>"] = { function() require("nvterm.terminal").toggle "float" end, "Toggle floating terminal", },
     ["<A-h>"] = { function() require("nvterm.terminal").toggle "horizontal" end, "Toggle horizontal terminal", },
     ["<A-v>"] = { function() require("nvterm.terminal").toggle "vertical" end, "Toggle vertical terminal", },
   },
-
 }
 
 M.whichkey = {
   plugin = true,
-
   n = {
     ["<leader>wK"] = { function() vim.cmd "WhichKey" end, "Which-key all keymaps", },
-    ["<leader>wk"] = { function() local input = vim.fn.input "WhichKey: " vim.cmd("WhichKey " .. input) end,
+    ["<leader>wk"] = { function()
+      local input = vim.fn.input "WhichKey: "
+      vim.cmd("WhichKey " .. input)
+    end,
       "Which-key query lookup", },
   },
-
 }
 
 M.gitsigns = {
   plugin = true,
-
   n = {
     -- Navigation through hunks
     ["]c"] = {
@@ -328,7 +315,7 @@ M.gitsigns = {
     ["<leader>gshl"] = {
       function()
         vim.cmd("Git log --format='%h (%an) %s' -L" ..
-          vim.fn.line('.') .. ",+1:" .. vim.fn.fnamemodify(vim.fn.expand('%h'), ":~:."))
+        vim.fn.line('.') .. ",+1:" .. vim.fn.fnamemodify(vim.fn.expand('%h'), ":~:."))
       end,
       "Show line history",
     },

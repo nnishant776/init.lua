@@ -1,55 +1,43 @@
 local plugins = {
-
   ["NvChad/ui"] = {
     override_options = require("custom.plugins.overrides.ui"),
   },
-
   ["lukas-reineke/indent-blankline.nvim"] = {
     override_options = {
       enabled = vim.g.config.editor.guides.indentation,
     }
   },
-
   ["tpope/vim-fugitive"] = {},
-
   ["nvim-treesitter/nvim-treesitter"] = {
     override_options = require("custom.plugins.overrides.treesitter"),
   },
-
   ["nvim-treesitter/playground"] = {
     module = "playground",
     setup = function()
       require("core.lazy_load").on_file_open("playground")
     end,
   },
-
   ["neovim/nvim-lspconfig"] = {
     config = function()
       require "custom.plugins.configs.lspconfig"
     end,
   },
-
   ["hrsh7th/nvim-cmp"] = {
     after = "friendly-snippets",
     config = function()
       require "custom.plugins.configs.cmp"
     end,
   },
-
   ["nvim-tree/nvim-tree.lua"] = {
     override_options = require("custom.plugins.overrides.nvimtree"),
   },
-
   ["nvim-telescope/telescope.nvim"] = {
     override_options = require("custom.plugins.overrides.telescope"),
   },
-
   ["williamboman/mason.nvim"] = {
     override_options = require("custom.plugins.overrides.mason"),
   },
-
   ["lewis6991/gitsigns.nvim"] = {},
-
   -- debugging
   -- ["mfussenegger/nvim-dap"] = {
   --   opt = true,
