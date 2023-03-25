@@ -1,12 +1,9 @@
 -- Chadrc overrides this file
 
-if os.getenv("extconfig") == "true" then
-  vim.g.parse_external_editor_config = true
-else
-  vim.g.parse_external_editor_config = false
-end
+local feature_config = require("custom.features")
+local _, active_feature_set = feature_config.parse_feature()
 
-vim.g.config = vim.deepcopy(require("custom.rtconfig"))
+vim.g.config = vim.deepcopy(active_feature_set.editorconfig)
 vim.g.default_config = vim.deepcopy(vim.g.config)
 
 local M = {}
@@ -27,7 +24,8 @@ M.ui = {
   theme = "onedark", -- default theme
 }
 
-M.plugins = require("custom.plugins")
+-- M.plugins = require("custom.plugins")
+M.plugins = active_feature_set.plugins
 
 -- check core.mappings for table structure
 M.mappings = require("custom.mappings")
