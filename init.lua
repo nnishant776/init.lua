@@ -1,1 +1,1 @@
-require("custom.options").load()
+require("custom.options").load(vim.g.config)
