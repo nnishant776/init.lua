@@ -3,6 +3,7 @@
 local feature_config = require("custom.features")
 local _, active_feature_set = feature_config.parse_feature()
 
+vim.g.buf_config = {}
 vim.g.config = vim.deepcopy(active_feature_set.editorconfig)
 vim.g.default_config = vim.deepcopy(vim.g.config)
 

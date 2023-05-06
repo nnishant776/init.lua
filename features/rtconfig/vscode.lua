@@ -14,8 +14,9 @@ local function read_project_config()
   local settings = {}
   local workspace_cfg_list = vim.fn.glob("*.code-workspace")
   if workspace_cfg_list ~= "" then
-    local workspace_cfg = vim.split(workspace_cfg_list, "\n", true)
-    for _, v in ipairs(workspace_cfg) do
+    local workspace_cfgs = vim.split(workspace_cfg_list, "\n", { plain = true })
+    local workspace_cfg
+    for _, v in ipairs(workspace_cfgs) do
       workspace_cfg = v
       break
     end
@@ -133,29 +134,42 @@ end
 vim.api.nvim_create_augroup("FileTypeReloadConfig", { clear = true })
 vim.api.nvim_create_autocmd({ "BufEnter" }, {
   callback = function()
-    local lang_key = "[" .. vim.bo.filetype .. "]"
-    local buf_config = vim.g.config[lang_key]
-    if buf_config then
-      vim.g.config = vim.tbl_deep_extend("force", vim.g.config, buf_config)
-      require("custom.options").load()
+    local bufnr = vim.api.nvim_get_current_buf()
+    local ft = vim.bo[bufnr].filetype
+    if not vim.g.buf_config[ft] then
+      local lang_key = "[" .. ft .. "]"
+      local workspace_cfg = vim.deepcopy(vim.g.config)
+      local lang_config = vim.g.config[lang_key]
+      if lang_config then
+        workspace_cfg = vim.tbl_deep_extend("force", workspace_cfg, lang_config)
+        local new_lang_config = {
+          [ft] = workspace_cfg
+        }
+        vim.g.buf_config = vim.tbl_deep_extend("force", vim.g.buf_config, new_lang_config)
+      end
+    end
+    if not vim.g.buf_config[ft] then
+      require("custom.options").load_buf(vim.g.config, bufnr)
+    else
+      require("custom.options").load_buf(vim.g.buf_config[ft], bufnr)
     end
   end,
   group = "FileTypeReloadConfig",
   desc = "Reload config based on file type"
 })
 
-vim.api.nvim_create_autocmd({ "BufLeave" }, {
-  callback = function()
-    local lang_key = "[" .. vim.bo.filetype .. "]"
-    local buf_config = vim.g.config[lang_key]
-    if buf_config then
-      vim.g.config = vim.deepcopy(vim.g.default_config)
-      require("custom.options").load()
-    end
-  end,
-  group = "FileTypeReloadConfig",
-  desc = "Restore config on buffer exit"
-})
+-- vim.api.nvim_create_autocmd({ "BufLeave" }, {
+--   callback = function()
+--     local lang_key = "[" .. vim.bo.filetype .. "]"
+--     local buf_config = vim.g.config[lang_key]
+--     if buf_config then
+--       vim.g.config = vim.deepcopy(vim.g.default_config)
+--       require("custom.options").load()
+--     end
+--   end,
+--   group = "FileTypeReloadConfig",
+--   desc = "Restore config on buffer exit"
+-- })
 
 M.parse_config = get_merged_config
 
