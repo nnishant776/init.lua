@@ -3,6 +3,8 @@ if not lspconfig_present then
   return
 end
 
+local lsp_config_present, lsp_config = pcall(require, "lspconfig/configs")
+
 local cmp_present, cmp = pcall(require, "cmp")
 local cmp_nvim_lsp_present, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
 
@@ -81,6 +83,19 @@ M.capabilities.textDocument.completion.completionItem = {
 }
 
 if vim.g.config.editor.suggest.enabled then
+  if not lsp_config.golangcilsp then
+    lsp_config.golangcilsp = {
+      default_config = {
+        cmd = { 'golangci-lint-langserver' },
+        root_dir = lspconfig.util.root_pattern('.git', 'go.mod'),
+        init_options = {
+          command = { "golangci-lint", "run", "--enable-all", "--disable", "lll", "--out-format", "json",
+            "--issues-exit-code=1" },
+        }
+      },
+    }
+  end
+
   lspconfig.lua_ls.setup {
     on_attach = M.on_attach,
     capabilities = M.capabilities,
@@ -110,6 +125,10 @@ if vim.g.config.editor.suggest.enabled then
   --         shadow = true,
   --         fieldalignment = true,
   --         unsed = true,
+  --         nilness = true,
+  --         unusedparams = true,
+  --         unusedwrite = true,
+  --         unusedvariable = true,
   --         all = true,
   --         ST1003 = false,
   --         ST1006 = false,
@@ -127,6 +146,10 @@ if vim.g.config.editor.suggest.enabled then
   --   capabilities = M.capabilities,
   -- }
 
+  -- lspconfig.golangci_lint_ls.setup {
+  --   filetypes = { 'go', 'gomod' }
+  -- }
+
   -- lspconfig.clangd.setup {
   --   on_attach = M.on_attach,
   --   capabilities = M.capabilities,
@@ -136,6 +159,10 @@ if vim.g.config.editor.suggest.enabled then
     on_attach = M.on_attach,
     capabilities = M.capabilities,
   }
+
+  -- lspconfig.pylsp.setup {
+  --   configurationSources = "flake8"
+  -- }
 
   -- lspconfig.rust_analyzer.setup {
   --   on_attach = M.on_attach,
