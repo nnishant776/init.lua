@@ -65,7 +65,7 @@ local function init_feature_sets(editorconfig)
         ["nvim-tree/nvim-tree.lua"] = {},
         ["nvim-telescope/telescope.nvim"] = {},
         ["folke/which-key.nvim"] = {},
-        -- ["tpope/vim-fugitive"] = {},
+        ["tpope/vim-fugitive"] = false,
       },
     },
     ide = {
@@ -231,7 +231,6 @@ local function parse_features()
       elseif feat == "ide" then
         feature_list.ide = true
         feature_list.default = false
-        -- vim.g.parse_external_editor_config = true
       end
 
       if feat == "extconfig" then
@@ -250,6 +249,10 @@ local function parse_features()
     active_feature_set.plugins = feature_sets.ide.plugins
   elseif feature_list.minimal then
     active_feature_set.plugins = feature_sets.minimal.plugins
+    active_feature_set.editorconfig.editor.lineNumbers = "off"
+    active_feature_set.editorconfig.editor.renderWhitespace = "none"
+    active_feature_set.editorconfig.editor.insertSpaces = true
+    active_feature_set.editorconfig.editor.highlightLine = false
   else
     active_feature_set.plugins = feature_sets.default.plugins
   end
