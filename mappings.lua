@@ -6,6 +6,13 @@ end
 
 local M = {}
 
+M.disabled = {
+  n = {
+    ["<leader>ph"] = "",
+    ["<leader>pt"] = "",
+  }
+}
+
 M.general = {
   i = {
     -- go to  beginning and end
@@ -32,6 +39,11 @@ M.general = {
 
     -- save
     ["<C-s>"] = { "<cmd> w <CR>", "save file" },
+
+    ["y"] = { '"*y', "Yank to internal clipboard" },
+    ["<leader>y"] = { '"+y', "Yank to system clipboard" },
+    ["p"] = { '"*p', "Paste line from internal clipboard" },
+    ["<leader>p"] = { '"+p', "Paste line from system clipboard" },
 
     -- Copy all
     -- ["<C-c>"] = { "<cmd> %y+ <CR>", "copy whole file" },
@@ -67,6 +79,10 @@ M.general = {
   v = {
     ["<Up>"] = { 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', opts = { expr = true } },
     ["<Down>"] = { 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', opts = { expr = true } },
+    ["y"] = { '"*y', "Yank to internal clipboard" },
+    ["<leader>y"] = { '"+y', "Yank to system clipboard" },
+    ["p"] = { '"*p', "Paste line from internal clipboard" },
+    ["<leader>p"] = { '"+p', "Paste line from system clipboard" },
   },
   x = {
     ["j"] = { 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', opts = { expr = true } },
@@ -175,7 +191,7 @@ M.nvimtree = {
   plugin = true,
   n = {
     -- toggle
-    ["<leader>pf"] = { "<cmd> NvimTreeToggle <CR>", "Toggle project files" },
+    -- ["<leader>pf"] = { "<cmd> NvimTreeToggle <CR>", "Toggle project files" },
   },
 }
 
@@ -204,7 +220,7 @@ M.telescope = {
     ["<leader>gsf"] = { "<cmd> Telescope git_files <CR>", "Show git files" },
 
     -- pick a hidden term
-    ["<leader>pt"] = { "<cmd> Telescope terms <CR>", "Pick hidden term" },
+    -- ["<leader>pt"] = { "<cmd> Telescope terms <CR>", "Pick hidden term" },
 
     -- theme switcher
     -- ["<leader>th"] = { "<cmd> Telescope themes <CR>", "Switch themes" },
