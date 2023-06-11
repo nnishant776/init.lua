@@ -23,6 +23,7 @@ local function load(cfg)
   vim.opt.cmdheight = 1
   vim.opt.lazyredraw = true
   vim.opt.modelines = 1
+  vim.opt.swapfile = false
   vim.opt.colorcolumn = cfg.editor.rulers
   vim.opt.colorcolumn = cfg.editor.rulers
 end
