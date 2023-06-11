@@ -160,6 +160,11 @@ if vim.g.config.editor.suggest.enabled then
     capabilities = M.capabilities,
   }
 
+  -- lspconfig.zls.setup {
+  --   on_attach = M.on_attach,
+  --   capabilities = M.capabilities,
+  -- }
+
   -- lspconfig.pylsp.setup {
   --   configurationSources = "flake8"
   -- }
