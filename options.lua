@@ -24,7 +24,7 @@ local function load(cfg)
   vim.opt.lazyredraw = true
   vim.opt.modelines = 1
   vim.opt.swapfile = false
-  vim.opt.clipboard = "unnamed"
+  vim.opt.clipboard = ""
   vim.opt.colorcolumn = cfg.editor.rulers
   vim.opt.colorcolumn = cfg.editor.rulers
 end

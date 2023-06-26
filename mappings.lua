@@ -40,11 +40,6 @@ M.general = {
     -- save
     ["<C-s>"] = { "<cmd> w <CR>", "save file" },
 
-    ["y"] = { '"*y', "Yank to internal clipboard" },
-    ["<leader>y"] = { '"+y', "Yank to system clipboard" },
-    ["p"] = { '"*p', "Paste line from internal clipboard" },
-    ["<leader>p"] = { '"+p', "Paste line from system clipboard" },
-
     -- Copy all
     -- ["<C-c>"] = { "<cmd> %y+ <CR>", "copy whole file" },
 
@@ -79,10 +74,6 @@ M.general = {
   v = {
     ["<Up>"] = { 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', opts = { expr = true } },
     ["<Down>"] = { 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', opts = { expr = true } },
-    ["y"] = { '"*y', "Yank to internal clipboard" },
-    ["<leader>y"] = { '"+y', "Yank to system clipboard" },
-    ["p"] = { '"*p', "Paste line from internal clipboard" },
-    ["<leader>p"] = { '"+p', "Paste line from system clipboard" },
   },
   x = {
     ["j"] = { 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', opts = { expr = true } },
@@ -330,7 +321,7 @@ M.gitsigns = {
 
     ["<leader>gshl"] = {
       function()
-        vim.cmd("Git log --format='%h (%an) %s' -L" ..
+        vim.cmd("Git log --format='%h (%an) %s' -s -L" ..
         vim.fn.line('.') .. ",+1:" .. vim.fn.fnamemodify(vim.fn.expand('%h'), ":~:."))
       end,
       "Show line history",
@@ -338,7 +329,7 @@ M.gitsigns = {
 
     ["<leader>gshf"] = {
       function()
-        vim.cmd("Git log --format='%h (%an) %s' -p --follow " .. vim.fn.fnamemodify(vim.fn.expand('%h'), ":~:."))
+        vim.cmd("Git log --format='%h (%an) %s' -s --follow " .. vim.fn.fnamemodify(vim.fn.expand('%h'), ":~:."))
       end,
       "Show file history",
     },
@@ -350,6 +341,15 @@ M.gitsigns = {
       "Toggle deleted changes",
     },
   },
+  v = {
+    ["<leader>gshs"] = {
+      function()
+        vim.cmd("Git log --format='%h (%an) %s' -s -L" ..
+        vim.fn.getpos("'<")[2] .. "," .. vim.fn.getpos("'>")[2] .. ":" .. vim.fn.fnamemodify(vim.fn.expand('%h'), ":~:."))
+      end,
+      "Show selection history",
+    },
+  }
 }
 
 return M
