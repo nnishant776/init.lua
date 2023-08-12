@@ -128,6 +128,33 @@ local function get_merged_config(default_cfg)
     end
   end
 
+  if nvim_config.files.trimFinalNewlines then
+    vim.api.nvim_create_augroup("GenericPreWriteTasks", { clear = true })
+    vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+      callback = function()
+        local total_lines = vim.api.nvim_buf_line_count(0)
+        for line = total_lines - 1, -1, -1
+        do
+          local lines = vim.api.nvim_buf_get_lines(0, line, line + 1, false)
+          local line_content = lines[1]
+          if line_content ~= "" then
+            vim.api.nvim_buf_set_lines(0, line + 1, total_lines, false, {})
+            break
+          end
+        end
+      end
+    })
+  end
+
+  if nvim_config.files.trimTrailingWhitespace then
+    vim.api.nvim_create_augroup("GenericPreWriteTasks", { clear = true })
+    vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+      callback = function()
+        vim.cmd [[ silent! %s/\s\+$//g ]]
+      end
+    })
+  end
+
   return nvim_config
 end
 
