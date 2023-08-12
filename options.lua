@@ -26,7 +26,6 @@ local function load(cfg)
   vim.opt.swapfile = false
   vim.opt.clipboard = ""
   vim.opt.colorcolumn = cfg.editor.rulers
-  vim.opt.colorcolumn = cfg.editor.rulers
 end
 
 local function load_buf(cfg, buf_nr)
