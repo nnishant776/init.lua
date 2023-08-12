@@ -250,6 +250,7 @@ local function parse_features()
   elseif feature_list.minimal then
     active_feature_set.plugins = feature_sets.minimal.plugins
     active_feature_set.editorconfig.editor.lineNumbers = "off"
+    active_feature_set.editorconfig.editor.showPosition = false
     active_feature_set.editorconfig.editor.renderWhitespace = "none"
     active_feature_set.editorconfig.editor.insertSpaces = true
     active_feature_set.editorconfig.editor.highlightLine = false

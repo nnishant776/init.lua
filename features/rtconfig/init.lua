@@ -16,6 +16,7 @@ local default_cfg = {
     detectIndentation = false,
     renderWhitespace = "all",
     lineNumbers = "relative",
+    showPosition = false,
     highlightLine = false,
     rulers = {
       9999,
