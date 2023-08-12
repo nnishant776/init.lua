@@ -16,7 +16,7 @@ local utils = require "core.utils"
 
 -- export on_attach & capabilities for custom lspconfigs
 
-M.on_attach = function(client, bufnr)
+M.on_attach = function(client, bufnr, ft)
   -- vim.diagnostic.reset()
 
   utils.load_mappings("lspconfig", { buffer = bufnr })
@@ -35,27 +35,29 @@ M.on_attach = function(client, bufnr)
   end
 
   if client.server_capabilities.documentFormattingProvider then
+    vim.api.nvim_buf_create_user_command(bufnr, "LspFormat", function()
+      local format_args = {}
+      if vim.fn.mode() == "v" and client.server.documentRangeFormattingProvider then
+        format_args = { range = {} }
+      end
+      local cfg = vim.g.buf_config[ft]
+      if not cfg then
+        cfg = vim.g.config
+      end
+      if cfg.editor.formatOnSave then
+        vim.lsp.buf.format(format_args)
+      end
+    end, {})
+
     vim.api.nvim_create_augroup("LspAutoFormat", { clear = true })
     vim.api.nvim_create_autocmd("BufWritePre", {
       callback = function()
-        if vim.g.config.editor.formatOnSave then
-          vim.lsp.buf.format({})
-        end
+        vim.cmd("LspFormat")
       end,
       buffer = bufnr,
       group = "LspAutoFormat",
       desc = "Document Format",
     })
-
-    vim.api.nvim_buf_create_user_command(bufnr, "LspFormat", function()
-      if vim.fn.mode() == "v" then
-        if client.server.documentRangeFormattingProvider then
-          vim.lsp.buf.format({ range = {} })
-        end
-      else
-        vim.lsp.buf.format({})
-      end
-    end, {})
   end
 end
 
@@ -97,7 +99,9 @@ if vim.g.config.editor.suggest.enabled then
   end
 
   lspconfig.lua_ls.setup {
-    on_attach = M.on_attach,
+    on_attach = function(client, bufnr)
+      M.on_attach(client, bufnr, "lua")
+    end,
     capabilities = M.capabilities,
 
     settings = {
@@ -142,7 +146,9 @@ if vim.g.config.editor.suggest.enabled then
   --       linksInHover = false,
   --     },
   --   },
-  --   on_attach = M.on_attach,
+  --   on_attach = function(client, bufnr)
+  --     M.on_attach(client, bufnr, "go")
+  --   end,
   --   capabilities = M.capabilities,
   -- }
 
@@ -151,17 +157,23 @@ if vim.g.config.editor.suggest.enabled then
   -- }
 
   -- lspconfig.clangd.setup {
-  --   on_attach = M.on_attach,
+  --   on_attach = function(client, bufnr)
+  --     M.on_attach(client, bufnr, "cpp")
+  --   end,
   --   capabilities = M.capabilities,
   -- }
 
   lspconfig.pyright.setup {
-    on_attach = M.on_attach,
+    on_attach = function(client, bufnr)
+      M.on_attach(client, bufnr, "python")
+    end,
     capabilities = M.capabilities,
   }
 
   -- lspconfig.zls.setup {
-  --   on_attach = M.on_attach,
+  --   on_attach = function(client, bufnr)
+  --     M.on_attach(client, bufnr, "zig")
+  --   end,
   --   capabilities = M.capabilities,
   -- }
 
@@ -170,7 +182,9 @@ if vim.g.config.editor.suggest.enabled then
   -- }
 
   -- lspconfig.rust_analyzer.setup {
-  --   on_attach = M.on_attach,
+  --   on_attach = function(client, bufnr)
+  --     M.on_attach(client, bufnr, "rust")
+  --   end,
   --   capabilities = M.capabilities,
   -- }
 end
