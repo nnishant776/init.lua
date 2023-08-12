@@ -19,7 +19,7 @@ return {
 
           if vim.g.config.editor.showPosition then
             local r, c = unpack(vim.api.nvim_win_get_cursor(0))
-            local total_line = vim.fn.line("$")
+            local total_line = vim.api.nvim_buf_line_count(0)
             text = string.format("%3d", math.modf((r / total_line) * 100)) .. tostring("%%") .. " "
             cursor_pos = " " .. string.format("%10s", string.format("%d,%d", r, c)) .. " "
           end
