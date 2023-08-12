@@ -13,7 +13,7 @@ case $1 in
         env features=minimal nvim
         mv "$ROOT/../../plugin/packer_compiled.lua" "$ROOT/profiles/packer_compiled_minimal.lua"
         ;;
-    
+
     "default" )
         rm -rf "$ROOT/../../plugin" "$HOME/.local/share/nvim"
         env features=default nvim
