@@ -7,7 +7,9 @@ local function init_feature_sets(editorconfig)
         ["wbthomason/packer.nvim"] = {},
         ["NvChad/extensions"] = false,
         ["NvChad/base46"] = {},
-        ["NvChad/ui"] = {},
+        ["NvChad/ui"] = {
+          override_options = require("custom.plugins.overrides.ui"),
+        },
         ["NvChad/nvterm"] = false,
         ["nvim-tree/nvim-web-devicons"] = {},
         ["lukas-reineke/indent-blankline.nvim"] = false,
@@ -41,7 +43,9 @@ local function init_feature_sets(editorconfig)
         ["wbthomason/packer.nvim"] = {},
         ["NvChad/extensions"] = {},
         ["NvChad/base46"] = {},
-        ["NvChad/ui"] = {},
+        ["NvChad/ui"] = {
+          override_options = require("custom.plugins.overrides.ui"),
+        },
         ["NvChad/nvterm"] = {},
         ["nvim-tree/nvim-web-devicons"] = {},
         ["lukas-reineke/indent-blankline.nvim"] = {},
