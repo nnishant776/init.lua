@@ -35,13 +35,26 @@ M.on_attach = function(client, bufnr, ft)
   end
 
   if client.server_capabilities.documentFormattingProvider then
-    vim.api.nvim_buf_create_user_command(bufnr, "LspFormat", function()
-      local format_args = {}
-      if vim.fn.mode() == "n" and client.server_capabilities.documentRangeFormattingProvider then
-        format_args = { range = { ["start"] = { vim.fn.line("'<"), 0 }, ["end"] = { vim.fn.line("'>"), 0 } } }
+    vim.api.nvim_buf_create_user_command(bufnr, "LspFormat", function(args)
+      local format_args = { async = true }
+      local mode = ""
+      if #args.fargs == 0 then
+        mode = "full"
+      else
+        for _, v in pairs(args.fargs)
+        do
+          local arg = vim.trim(v)
+          if arg == "full" or arg == "range" then
+            mode = arg
+            break
+          end
+        end
+      end
+      if client.server_capabilities.documentRangeFormattingProvider and mode == "range" then
+        format_args.range = { ["start"] = { vim.fn.line("'<"), 0 }, ["end"] = { vim.fn.line("'>"), 0 } }
       end
       vim.lsp.buf.format(format_args)
-    end, { range = true })
+    end, { range = true, nargs = '*' })
 
     vim.api.nvim_create_augroup("LspAutoFormat", { clear = true })
     vim.api.nvim_create_autocmd("BufWritePre", {
