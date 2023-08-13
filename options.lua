@@ -11,12 +11,10 @@ local function load(cfg)
   vim.opt.formatoptions = "jcqrlo"
   vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
   vim.opt.list = cfg.editor.renderWhitespace ~= "none"
-  vim.opt.list = cfg.editor.renderWhitespace ~= "none"
   vim.opt.listchars = { trail = '·', tab = "➝ ", lead = '·' }
   vim.opt.timeoutlen = 1000
   vim.opt.updatetime = 250
   vim.opt.cursorline = cfg.editor.highlightLine
-  vim.opt.autoindent = cfg.editor.detectIndentation
   vim.opt.autoindent = cfg.editor.detectIndentation
   vim.opt.backspace = { "indent", "eol", "start" }
   vim.opt.ttyfast = true
@@ -26,6 +24,7 @@ local function load(cfg)
   vim.opt.swapfile = false
   vim.opt.clipboard = ""
   vim.opt.colorcolumn = cfg.editor.rulers
+  vim.opt.incsearch = false
 end
 
 local function load_buf(cfg, buf_nr)
