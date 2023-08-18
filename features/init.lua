@@ -159,6 +159,9 @@ local function init_feature_sets(editorconfig)
         ["nvim-treesitter/nvim-treesitter"] = {
           override_options = require("custom.plugins.overrides.treesitter"),
         },
+        ["nvim-treesitter/nvim-treesitter-context"] = {
+          override_options = require("custom.plugins.overrides.treesitter-context"),
+        },
         ["lewis6991/gitsigns.nvim"] = {},
         ["williamboman/mason.nvim"] = {
           override_options = require("custom.plugins.overrides.mason"),
