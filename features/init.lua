@@ -133,7 +133,11 @@ local function init_feature_sets(editorconfig)
           override_options = require("custom.plugins.overrides.telescope"),
         },
         ["folke/which-key.nvim"] = {},
-        ["tpope/vim-fugitive"] = {},
+        ["tpope/vim-fugitive"] = {
+          override_options = {
+            opt = true,
+          },
+        },
       },
     },
     all = {
@@ -200,7 +204,11 @@ local function init_feature_sets(editorconfig)
           override_options = require("custom.plugins.overrides.telescope"),
         },
         ["folke/which-key.nvim"] = {},
-        ["tpope/vim-fugitive"] = {},
+        ["tpope/vim-fugitive"] = {
+          override_options = {
+            opt = true,
+          },
+        },
       },
     },
   }
