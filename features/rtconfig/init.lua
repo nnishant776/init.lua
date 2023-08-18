@@ -27,6 +27,7 @@ local default_cfg = {
     suggestOnTriggerCharacters = false,
     guides = {
       indentation = false,
+      context = false,
       highlightActiveBracketPair = false,
       highlightActiveIndentation = false,
       bracketPairs = false,
