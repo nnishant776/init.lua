@@ -3,8 +3,26 @@ return {
     separator_style = "block",
     overriden_modules = function()
       return {
+        fileInfo = function()
+          local icon = " 󰈚 "
+          local filename = (vim.fn.expand("%") == "" and "Empty ") or vim.fn.expand("%:t")
+
+          if filename ~= "Empty " then
+            local devicons_present, devicons = pcall(require, "nvim-web-devicons")
+
+            if devicons_present then
+              local ft_icon = devicons.get_icon(filename)
+              icon = (ft_icon ~= nil and " " .. ft_icon) or ""
+            end
+
+            filename = " " .. vim.fn.fnamemodify(vim.fn.expand('%:h'), ':p:~:.') .. filename .. " "
+          end
+
+          return "%#StText# " .. icon .. filename
+        end,
         cwd = function()
           return ""
+          -- return "%#St_Mode# " .. vim.fn.fnamemodify(vim.fn.getcwd(), ":t") .. " "
         end,
         cursor_position = function()
           local sep_style = vim.g.statusline_sep_style
