@@ -169,10 +169,10 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
       local lang_config = vim.g.config[lang_key]
       if lang_config then
         workspace_cfg = vim.tbl_deep_extend("force", workspace_cfg, lang_config)
-        local new_lang_config = {
+        local new_buf_config = {
           [ft] = workspace_cfg
         }
-        vim.g.buf_config = vim.tbl_deep_extend("force", vim.g.buf_config, new_lang_config)
+        vim.g.buf_config = vim.tbl_deep_extend("force", vim.g.buf_config, new_buf_config)
       end
     end
     if not vim.g.buf_config[ft] then
