@@ -8,6 +8,9 @@ local default_cfg = {
     trimFinalNewlines = false,
     trimTrailingWhitespace = false,
   },
+  window = {
+    filename = "base", -- possible values: base, rootrel
+  },
   editor = {
     formatOnPaste = false,
     formatOnSave = false,

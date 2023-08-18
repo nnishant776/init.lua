@@ -15,7 +15,11 @@ return {
               icon = (ft_icon ~= nil and " " .. ft_icon) or ""
             end
 
-            filename = " " .. vim.fn.fnamemodify(vim.fn.expand('%:h'), ':p:~:.') .. filename .. " "
+            if vim.g.config.window.filename == "rootrel" then
+              filename = " " .. vim.fn.fnamemodify(vim.fn.expand('%:h'), ':p:~:.') .. filename .. " "
+            else
+              filename = " " .. filename .. " "
+            end
           end
 
           return "%#StText# " .. icon .. filename
