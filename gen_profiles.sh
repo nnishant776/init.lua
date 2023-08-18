@@ -22,7 +22,7 @@ case $1 in
 
     "ide" )
         rm -rf "$ROOT/../../plugin" "$HOME/.local/share/nvim"
-        env env features=ide,extconfig nvim
+        env features=ide,extconfig nvim
         mv "$ROOT/../../plugin/packer_compiled.lua" "$ROOT/profiles/packer_compiled_ide.lua"
         ;;
 
