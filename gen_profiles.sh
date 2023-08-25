@@ -32,3 +32,5 @@ case $1 in
         mv "$ROOT/../../plugin/packer_compiled.lua" "$ROOT/profiles/packer_compiled_all.lua"
         ;;
 esac
+
+mkdir -p "$HOME/.local/share/nvim/site/pack/packer/opt/extensions"
