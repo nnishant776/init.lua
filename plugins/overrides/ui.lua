@@ -4,7 +4,7 @@ return {
     overriden_modules = function()
       return {
         fileInfo = function()
-          local icon = " 󰈚 "
+          local icon = ""
           local filename = (vim.fn.expand("%") == "" and "Empty ") or vim.fn.expand("%:t")
 
           if filename ~= "Empty " then
