@@ -10,6 +10,7 @@ M.disabled = {
   n = {
     ["<leader>ph"] = "",
     ["<leader>pt"] = "",
+    ["<leader>tt"] = "",
   }
 }
 
@@ -50,13 +51,13 @@ M.general = {
     -- update nvchad
     -- ["<leader>uu"] = { "<cmd> :NvChadUpdate <CR>", "Update nvchad" },
 
-    ["<leader>tt"] = {
-      function()
-        require("base46").toggle_theme()
-        require("base46").load_all_highlights()
-      end,
-      "toggle theme",
-    },
+    -- ["<leader>tt"] = {
+    --   function()
+    --     require("base46").toggle_theme()
+    --     require("base46").load_all_highlights()
+    --   end,
+    --   "toggle theme",
+    -- },
 
     -- Allow moving the cursor through wrapped lines with j, k, <Up> and <Down>
     -- http://www.reddit.com/r/vim/comments/2k4cbr/problem_with_gj_and_gk/
@@ -322,7 +323,7 @@ M.gitsigns = {
     ["<leader>gshl"] = {
       function()
         vim.cmd("Git log --format='%h (%an) %s' -s -L" ..
-        vim.fn.line('.') .. ",+1:" .. vim.fn.fnamemodify(vim.fn.expand('%h'), ":~:."))
+          vim.fn.line('.') .. ",+1:" .. vim.fn.fnamemodify(vim.fn.expand('%h'), ":~:."))
       end,
       "Show line history",
     },
@@ -345,7 +346,8 @@ M.gitsigns = {
     ["<leader>gshs"] = {
       function()
         vim.cmd("Git log --format='%h (%an) %s' -s -L" ..
-        vim.fn.getpos("'<")[2] .. "," .. vim.fn.getpos("'>")[2] .. ":" .. vim.fn.fnamemodify(vim.fn.expand('%h'), ":~:."))
+          vim.fn.getpos("'<")[2] ..
+          "," .. vim.fn.getpos("'>")[2] .. ":" .. vim.fn.fnamemodify(vim.fn.expand('%h'), ":~:."))
       end,
       "Show selection history",
     },
