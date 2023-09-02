@@ -64,11 +64,11 @@ local function init_feature_sets(editorconfig)
         ["hrsh7th/cmp-path"] = {},
         ["nvim-treesitter/playground"] = {},
         ["windwp/nvim-autopairs"] = {},
-        ["goolord/alpha-nvim"] = {},
+        ["goolord/alpha-nvim"] = false,
         ["numToStr/Comment.nvim"] = {},
         ["nvim-tree/nvim-tree.lua"] = {},
         ["nvim-telescope/telescope.nvim"] = {},
-        ["folke/which-key.nvim"] = {},
+        ["folke/which-key.nvim"] = false,
         ["tpope/vim-fugitive"] = false,
       },
     },
@@ -124,7 +124,7 @@ local function init_feature_sets(editorconfig)
           end,
         },
         ["windwp/nvim-autopairs"] = {},
-        ["goolord/alpha-nvim"] = {},
+        ["goolord/alpha-nvim"] = false,
         ["numToStr/Comment.nvim"] = {},
         ["nvim-tree/nvim-tree.lua"] = {
           override_options = require("custom.plugins.overrides.nvimtree"),
@@ -132,7 +132,7 @@ local function init_feature_sets(editorconfig)
         ["nvim-telescope/telescope.nvim"] = {
           override_options = require("custom.plugins.overrides.telescope"),
         },
-        ["folke/which-key.nvim"] = {},
+        ["folke/which-key.nvim"] = false,
         ["tpope/vim-fugitive"] = {
           override_options = {
             opt = true,
@@ -195,7 +195,7 @@ local function init_feature_sets(editorconfig)
           end,
         },
         ["windwp/nvim-autopairs"] = {},
-        ["goolord/alpha-nvim"] = {},
+        ["goolord/alpha-nvim"] = false,
         ["numToStr/Comment.nvim"] = {},
         ["nvim-tree/nvim-tree.lua"] = {
           override_options = require("custom.plugins.overrides.nvimtree"),
@@ -203,7 +203,7 @@ local function init_feature_sets(editorconfig)
         ["nvim-telescope/telescope.nvim"] = {
           override_options = require("custom.plugins.overrides.telescope"),
         },
-        ["folke/which-key.nvim"] = {},
+        ["folke/which-key.nvim"] = false,
         ["tpope/vim-fugitive"] = {
           override_options = {
             opt = true,
