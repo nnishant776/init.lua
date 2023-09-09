@@ -36,9 +36,27 @@ vim.api.nvim_create_user_command("ReloadConfig", function(_)
   local app_name = vim.env.NVIM_APPNAME and vim.env.NVIM_APPNAME or "nvim"
   local module = string.gsub(fp, "^.*/" .. app_name .. "/lua/", ""):gsub("/", ".")
 
+  -- Reset the editor configuration
+  vim.g.config = {}
+  vim.g.buf_config = {}
+  vim.g.default_config = {}
+
+  -- Reload plugins and their configuration
   require("plenary.reload").reload_module("base46")
   require("plenary.reload").reload_module(module)
+  require("plenary.reload").reload_module("custom.features")
   require("plenary.reload").reload_module("custom.chadrc")
+
+  -- Reload the buffer configuration
+  vim.schedule(function()
+    local bufnr = vim.api.nvim_get_current_buf()
+    local ft = vim.bo[bufnr].filetype
+    if not vim.g.buf_config[ft] then
+      require("custom.options").load_buf(vim.g.config, bufnr)
+    else
+      require("custom.options").load_buf(vim.g.buf_config[ft], bufnr)
+    end
+  end)
 
   local config = require("core.utils").load_config()
 
