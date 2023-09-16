@@ -95,6 +95,20 @@ local function init_feature_sets(editorconfig)
         ["nvim-treesitter/nvim-treesitter"] = {
           override_options = require("custom.plugins.overrides.treesitter"),
         },
+        ["nvim-treesitter/nvim-treesitter-context"] = {
+          override_options = {
+            enable = editorconfig.editor.guides.context,
+            max_lines = 0,
+            min_window_height = 0,
+            line_numbers = true,
+            multiline_threshold = 20,
+            trim_scope = 'outer',
+            mode = 'cursor',
+            separator = nil,
+            zindex = 20,
+            on_attach = nil,
+          }
+        },
         ["lewis6991/gitsigns.nvim"] = {},
         ["williamboman/mason.nvim"] = {
           override_options = require("custom.plugins.overrides.mason"),
@@ -164,7 +178,18 @@ local function init_feature_sets(editorconfig)
           override_options = require("custom.plugins.overrides.treesitter"),
         },
         ["nvim-treesitter/nvim-treesitter-context"] = {
-          override_options = require("custom.plugins.overrides.treesitter-context"),
+          override_options = {
+            enable = editorconfig.editor.guides.context,
+            max_lines = 0,
+            min_window_height = 0,
+            line_numbers = true,
+            multiline_threshold = 20,
+            trim_scope = 'outer',
+            mode = 'cursor',
+            separator = nil,
+            zindex = 20,
+            on_attach = nil,
+          }
         },
         ["lewis6991/gitsigns.nvim"] = {},
         ["williamboman/mason.nvim"] = {
