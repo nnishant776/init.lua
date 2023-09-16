@@ -100,20 +100,16 @@ M.capabilities.textDocument.completion.completionItem = {
   },
 }
 
-if vim.g.config.editor.suggest.enabled then
-  if not lsp_config.golangcilsp then
-    lsp_config.golangcilsp = {
-      default_config = {
-        cmd = { 'golangci-lint-langserver' },
-        root_dir = lspconfig.util.root_pattern('.git', 'go.mod'),
-        init_options = {
-          command = { "golangci-lint", "run", "--enable-all", "--disable", "lll", "--out-format", "json",
-            "--issues-exit-code=1" },
-        }
-      },
-    }
-  end
+local function setup_clangd_ls()
+  lspconfig.clangd.setup {
+    on_attach = function(client, bufnr)
+      M.on_attach(client, bufnr)
+    end,
+    capabilities = M.capabilities,
+  }
+end
 
+local function setup_lua_ls()
   lspconfig.lua_ls.setup {
     on_attach = function(client, bufnr)
       M.on_attach(client, bufnr)
@@ -136,49 +132,9 @@ if vim.g.config.editor.suggest.enabled then
       },
     },
   }
+end
 
-  -- lspconfig.gopls.setup {
-  --   settings = {
-  --     gopls = {
-  --       experimentalPostfixCompletions = false,
-  --       analyses = {
-  --         shadow = true,
-  --         fieldalignment = true,
-  --         unsed = true,
-  --         nilness = true,
-  --         unusedparams = true,
-  --         unusedwrite = true,
-  --         unusedvariable = true,
-  --         all = true,
-  --         ST1003 = false,
-  --         ST1006 = false,
-  --         ST1020 = false,
-  --         ST1021 = false,
-  --         ST1022 = false,
-  --         ST1023 = false,
-  --         QF1011 = false,
-  --       },
-  --       staticcheck = true,
-  --       linksInHover = false,
-  --     },
-  --   },
-  --   on_attach = function(client, bufnr)
-  --     M.on_attach(client, bufnr)
-  --   end,
-  --   capabilities = M.capabilities,
-  -- }
-
-  -- lspconfig.golangci_lint_ls.setup {
-  --   filetypes = { 'go', 'gomod' }
-  -- }
-
-  -- lspconfig.clangd.setup {
-  --   on_attach = function(client, bufnr)
-  --     M.on_attach(client, bufnr)
-  --   end,
-  --   capabilities = M.capabilities,
-  -- }
-
+local function setup_python_ls()
   lspconfig.pyright.setup {
     on_attach = function(client, bufnr)
       M.on_attach(client, bufnr)
@@ -186,23 +142,96 @@ if vim.g.config.editor.suggest.enabled then
     capabilities = M.capabilities,
   }
 
-  -- lspconfig.zls.setup {
-  --   on_attach = function(client, bufnr)
-  --     M.on_attach(client, bufnr)
-  --   end,
-  --   capabilities = M.capabilities,
-  -- }
-
   -- lspconfig.pylsp.setup {
   --   configurationSources = "flake8"
   -- }
+end
 
-  -- lspconfig.rust_analyzer.setup {
-  --   on_attach = function(client, bufnr)
-  --     M.on_attach(client, bufnr)
-  --   end,
-  --   capabilities = M.capabilities,
-  -- }
+local function setup_go_ls()
+  lspconfig.gopls.setup {
+    settings = {
+      gopls = {
+        experimentalPostfixCompletions = false,
+        analyses = {
+          shadow = true,
+          fieldalignment = true,
+          unsed = true,
+          nilness = true,
+          unusedparams = true,
+          unusedwrite = true,
+          unusedvariable = true,
+          all = true,
+          ST1003 = false,
+          ST1006 = false,
+          ST1020 = false,
+          ST1021 = false,
+          ST1022 = false,
+          ST1023 = false,
+          QF1011 = false,
+        },
+        staticcheck = true,
+        linksInHover = false,
+      },
+    },
+    on_attach = function(client, bufnr)
+      M.on_attach(client, bufnr)
+    end,
+    capabilities = M.capabilities,
+  }
+
+  if not lsp_config.golangcilsp then
+    lsp_config.golangcilsp = {
+      default_config = {
+        cmd = { 'golangci-lint-langserver' },
+        root_dir = lspconfig.util.root_pattern('.git', 'go.mod'),
+        init_options = {
+          command = { "golangci-lint", "run", "--enable-all", "--disable", "lll", "--out-format", "json",
+            "--issues-exit-code=1" },
+        }
+      },
+    }
+  end
+
+  lspconfig.golangci_lint_ls.setup {
+    filetypes = { 'go', 'gomod' }
+  }
+end
+
+local function setup_zig_ls()
+  lspconfig.zls.setup {
+    on_attach = function(client, bufnr)
+      M.on_attach(client, bufnr)
+    end,
+    capabilities = M.capabilities,
+  }
+end
+
+local function setup_rust_ls()
+  lspconfig.rust_analyzer.setup {
+    on_attach = function(client, bufnr)
+      M.on_attach(client, bufnr)
+    end,
+    capabilities = M.capabilities,
+  }
+end
+
+local lsp_setup_dict = {
+  ["c"] = setup_clangd_ls,
+  ["cpp"] = setup_clangd_ls,
+  ["python"] = setup_python_ls,
+  ["go"] = setup_go_ls,
+  ["zig"] = setup_zig_ls,
+  ["rust"] = setup_rust_ls,
+  ["lua"] = setup_lua_ls,
+}
+
+if vim.g.config.editor.suggest.enabled then
+  for ft, setup_func in pairs(lsp_setup_dict)
+  do
+    if not vim.g.buf_config[ft] or vim.g.buf_config[ft].editor.suggest.enabled then
+      setup_func()
+    end
+  end
 end
 
 return M
