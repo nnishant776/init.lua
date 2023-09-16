@@ -54,9 +54,8 @@ local default_cfg = {
   }
 }
 
-local vsc_cfg_parser = require("custom.features.rtconfig.vscode")
-
 if vim.g.parse_external_editor_config then
+  local vsc_cfg_parser = require("custom.features.rtconfig.vscode")
   return vsc_cfg_parser.parse_config(default_cfg)
 else
   return default_cfg
