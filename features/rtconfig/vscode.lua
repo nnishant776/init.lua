@@ -158,6 +158,7 @@ local function get_merged_config(default_cfg)
   return nvim_config
 end
 
+-- Add triggers for changing editor options dynamically based on the file type
 vim.api.nvim_create_augroup("FileTypeReloadConfig", { clear = true })
 vim.api.nvim_create_autocmd({ "BufEnter" }, {
   callback = function()
@@ -183,6 +184,16 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
   end,
   group = "FileTypeReloadConfig",
   desc = "Reload config based on file type"
+})
+
+-- Add additional mappings for file types based on extensions and filenames
+vim.filetype.add({
+  extension = {
+    ["code-workspace"] = "json",
+  },
+  filename = {
+    ["go.mod"] = "gomod",
+  },
 })
 
 -- vim.api.nvim_create_autocmd({ "BufLeave" }, {
