@@ -16,8 +16,11 @@ local utils = require "core.utils"
 
 -- export on_attach & capabilities for custom lspconfigs
 
-M.on_attach = function(client, bufnr, ft)
+vim.api.nvim_create_augroup("LspAutoFormat", { clear = true })
+
+M.on_attach = function(client, bufnr)
   -- vim.diagnostic.reset()
+  vim.api.nvim_clear_autocmds({ buffer = bufnr, group = "LspAutoFormat" })
 
   utils.load_mappings("lspconfig", { buffer = bufnr })
 
@@ -56,9 +59,9 @@ M.on_attach = function(client, bufnr, ft)
       vim.lsp.buf.format(format_args)
     end, { range = true, nargs = '*' })
 
-    vim.api.nvim_create_augroup("LspAutoFormat", { clear = true })
     vim.api.nvim_create_autocmd("BufWritePre", {
       callback = function()
+        local ft = vim.bo[bufnr].filetype
         local cfg = vim.g.buf_config[ft]
         if not cfg then
           cfg = vim.g.config
@@ -113,7 +116,7 @@ if vim.g.config.editor.suggest.enabled then
 
   lspconfig.lua_ls.setup {
     on_attach = function(client, bufnr)
-      M.on_attach(client, bufnr, "lua")
+      M.on_attach(client, bufnr)
     end,
     capabilities = M.capabilities,
 
@@ -160,7 +163,7 @@ if vim.g.config.editor.suggest.enabled then
   --     },
   --   },
   --   on_attach = function(client, bufnr)
-  --     M.on_attach(client, bufnr, "go")
+  --     M.on_attach(client, bufnr)
   --   end,
   --   capabilities = M.capabilities,
   -- }
@@ -171,21 +174,21 @@ if vim.g.config.editor.suggest.enabled then
 
   -- lspconfig.clangd.setup {
   --   on_attach = function(client, bufnr)
-  --     M.on_attach(client, bufnr, "cpp")
+  --     M.on_attach(client, bufnr)
   --   end,
   --   capabilities = M.capabilities,
   -- }
 
   lspconfig.pyright.setup {
     on_attach = function(client, bufnr)
-      M.on_attach(client, bufnr, "python")
+      M.on_attach(client, bufnr)
     end,
     capabilities = M.capabilities,
   }
 
   -- lspconfig.zls.setup {
   --   on_attach = function(client, bufnr)
-  --     M.on_attach(client, bufnr, "zig")
+  --     M.on_attach(client, bufnr)
   --   end,
   --   capabilities = M.capabilities,
   -- }
@@ -196,7 +199,7 @@ if vim.g.config.editor.suggest.enabled then
 
   -- lspconfig.rust_analyzer.setup {
   --   on_attach = function(client, bufnr)
-  --     M.on_attach(client, bufnr, "rust")
+  --     M.on_attach(client, bufnr)
   --   end,
   --   capabilities = M.capabilities,
   -- }
