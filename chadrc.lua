@@ -31,6 +31,21 @@ M.plugins = active_feature_set.plugins
 -- check core.mappings for table structure
 M.mappings = require("custom.mappings")
 
+vim.api.nvim_create_user_command("ToggleDarkMode", function(_)
+  if vim.g.nvchad_theme == M.ui.theme_toggle[1] then
+    vim.g.nvchad_theme = M.ui.theme_toggle[2]
+  else
+    vim.g.nvchad_theme = M.ui.theme_toggle[1]
+  end
+
+  local fp = vim.fn.fnamemodify(vim.fn.expand('%h'), ":r") --[[@as string]]
+  local app_name = vim.env.NVIM_APPNAME and vim.env.NVIM_APPNAME or "nvim"
+  local module = string.gsub(fp, "^.*/" .. app_name .. "/lua/", ""):gsub("/", ".")
+  require("plenary.reload").reload_module("base46")
+  require("plenary.reload").reload_module(module)
+  require("base46").load_all_highlights()
+end, {})
+
 vim.api.nvim_create_user_command("ReloadConfig", function(_)
   local fp = vim.fn.fnamemodify(vim.fn.expand('%h'), ":r") --[[@as string]]
   local app_name = vim.env.NVIM_APPNAME and vim.env.NVIM_APPNAME or "nvim"
