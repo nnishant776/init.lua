@@ -39,7 +39,7 @@ M.on_attach = function(client, bufnr)
 
   if client.server_capabilities.documentFormattingProvider then
     vim.api.nvim_buf_create_user_command(bufnr, "LspFormat", function(args)
-      local format_args = { async = true }
+      local format_args = { async = false }
       local mode = ""
       if #args.fargs == 0 then
         mode = "full"
