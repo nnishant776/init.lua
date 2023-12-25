@@ -13,6 +13,9 @@ local function init_highlights(opts)
       Search = { fg = "Black", bg = "Yellow" },
       NeotreeNormal = { bg = colors.crust },
       NeotreeNormalNC = { bg = colors.crust },
+      LspReferenceText = { bg = colors.text, fg = colors.base },
+      LspReferenceRead = { bg = colors.text, fg = colors.base },
+      LspReferenceWrite = { bg = colors.text, fg = colors.base },
     }
     return highlights
   end
