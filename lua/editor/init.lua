@@ -62,25 +62,21 @@ local default_cfg = {
 function M.config(profile)
   local parsed_config = vim.g.config
   if not parsed_config or vim.tbl_isempty(parsed_config) then
-    parsed_config = default_cfg
+    parsed_config = require('editor.vscode').parse_config(default_cfg) or default_cfg
+    vim.filetype.add {
+      extension = {
+        ['code-workspace'] = 'json',
+      },
+      filename = {
+        ['go.mod'] = 'gomod',
+      },
+    }
     if profile.minimal then
       parsed_config.editor.lineNumbers = 'off'
       parsed_config.editor.showPosition = false
       parsed_config.editor.renderWhitespace = 'none'
       parsed_config.editor.insertSpaces = true
       parsed_config.editor.highlightLine = false
-    else
-      if profile.ide == true then
-        parsed_config = require('editor.vscode').parse_config(default_cfg) or default_cfg
-        vim.filetype.add {
-          extension = {
-            ['code-workspace'] = 'json',
-          },
-          filename = {
-            ['go.mod'] = 'gomod',
-          },
-        }
-      end
     end
   end
   return parsed_config
