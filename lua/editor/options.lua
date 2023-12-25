@@ -83,7 +83,7 @@ local function load(cfg)
     vim.opt.signcolumn = 'no'
   end
   if vim.fn.has 'nvim-0.10' == 1 then
-    vim.opt.smoothscroll = cfg.editor.cursorSmoothCaretAnimation
+    vim.opt.smoothscroll = cfg.editor.cursorSmoothCaretAnimation == "on"
   end
 end
 
