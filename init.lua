@@ -27,4 +27,6 @@ editor.init(editorconfig)
 vim.g.config = vim.deepcopy(editorconfig)
 vim.g.default_config = vim.deepcopy(vim.g.config)
 
-require('lazy').setup(plugins)
+if not profile.minimal then
+  require('lazy').setup(plugins)
+end
