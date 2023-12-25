@@ -78,6 +78,7 @@ function M.config(profile)
       parsed_config.editor.renderWhitespace = 'none'
       parsed_config.editor.insertSpaces = true
       parsed_config.editor.highlightLine = false
+      parsed_config.editor.showSignColumn = false
     end
   end
   return parsed_config
