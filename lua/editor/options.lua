@@ -38,7 +38,6 @@ local function load(cfg)
   vim.opt.shortmess:append { W = true, I = true, c = true, C = true }
   vim.opt.showmode = false
   vim.opt.sidescrolloff = 8
-  vim.opt.signcolumn = 'yes'
   vim.opt.ignorecase = true
   vim.opt.smartcase = true
   vim.opt.smartindent = true
@@ -78,6 +77,11 @@ local function load(cfg)
   vim.opt.wrap = cfg.editor.wordWrap ~= ''
   vim.opt.wrapmargin = cfg.editor.wordWrapColumn
   vim.opt.textwidth = cfg.editor.wordWrapColumn
+  if cfg.editor.showSignColumn then
+    vim.opt.signcolumn = 'yes'
+  else
+    vim.opt.signcolumn = 'no'
+  end
   if vim.fn.has 'nvim-0.10' == 1 then
     vim.opt.smoothscroll = cfg.editor.cursorSmoothCaretAnimation
   end

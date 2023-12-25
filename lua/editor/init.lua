@@ -22,6 +22,7 @@ local default_cfg = {
     renderWhitespace = 'all',
     lineNumbers = 'relative',
     showPosition = false,
+    showSignColumn = true,
     highlightLine = false,
     wordWrap = 'bounded',
     wordWrapColumn = 120,
