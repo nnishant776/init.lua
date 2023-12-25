@@ -10,7 +10,7 @@ local function init_highlights(opts)
       CmpBorderBG = { bg = colors.none },
       NormalFloat = { link = "Pmenu" },
       Visual = { bg = colors.crust },
-      Search = { bg = "Yellow" },
+      Search = { fg = "Black", bg = "Yellow" },
       NeotreeNormal = { bg = colors.crust },
       NeotreeNormalNC = { bg = colors.crust },
     }
