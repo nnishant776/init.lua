@@ -23,6 +23,10 @@ function M.parse_feature()
         feature_list.ide = true
         feature_list.default = false
         feature_list.minimal = false
+      elseif feat == 'default' then
+        feature_list.ide = false
+        feature_list.minimal = false
+        feature_list.default = true
       end
     end
   end
