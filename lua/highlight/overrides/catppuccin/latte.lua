@@ -4,6 +4,7 @@ local function init_highlights(opts)
   return function(colors)
     local highlights = {
       Pmenu = { fg = colors.text, bg = require('catppuccin.palettes.latte').base },
+      PmenuSel = { fg = "#ffffff", bg = colors.crust },
       CmpPmenu = { link = "Pmenu" },
       CmpNormalFloat = { link = "CmpPmenu" },
       CmpFloatBorder = { bg = colors.none },
