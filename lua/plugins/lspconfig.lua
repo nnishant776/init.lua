@@ -103,7 +103,7 @@ function LSP:on_attach(buf_id)
   -- Disable semantic tokens
   self.client.server_capabilities.semanticTokensProvider = nil
   vim.api.nvim_clear_autocmds { buffer = buf_id, group = 'LspAutoFormat' }
-  vim.api.nvim_buf_set_option(buf_id, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+  vim.api.nvim_set_option_value('omnifunc', 'v:lua.vim.lsp.omnifunc', { buf = buf_id })
   self:setup_highlight(buf_id)
   self:setup_formatting(buf_id)
   self:setup_keymaps(buf_id)
@@ -141,7 +141,7 @@ function LSP:setup_formatting(buf_id)
     if not fsutils.is_file_size_big(buf_id, max_buffer_size) then
       vim.api.nvim_create_autocmd('BufWritePre', {
         callback = function()
-          local ft = vim.api.nvim_buf_get_option(buf_id, 'filetype')
+          local ft = vim.api.nvim_get_option_value('filetype', { buf = buf_id })
           local cfg = editor.ftconfig(ft, true)
           if cfg and cfg.editor.formatOnSave then
             vim.lsp.buf.format { async = false }
