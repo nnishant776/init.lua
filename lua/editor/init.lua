@@ -170,8 +170,8 @@ function M.init(editorconfig, buf_id)
   if editorconfig.files.trimFinalNewlines then
     vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
       group = 'GenericPreWriteTasks',
-      callback = function()
-        editorops.trim_final_newlines()
+      callback = function(args)
+        editorops.trim_final_newlines(args.buf)
       end,
       desc = 'Remove trailing new lines at the end of the document',
     })
@@ -179,8 +179,8 @@ function M.init(editorconfig, buf_id)
   if editorconfig.files.trimTrailingWhitespace then
     vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
       group = 'GenericPreWriteTasks',
-      callback = function()
-        editorops.trim_trailing_whitespace()
+      callback = function(args)
+        editorops.trim_trailing_whitespace(args.buf)
       end,
       desc = 'Remove trailing whitespaces',
     })
@@ -189,9 +189,9 @@ function M.init(editorconfig, buf_id)
   -- Add triggers for changing editor options dynamically based on the file type
   vim.api.nvim_create_augroup('FileTypeReloadConfig', { clear = true })
   vim.api.nvim_create_autocmd({ 'BufEnter' }, {
-    callback = function()
-      local bufnr = vim.api.nvim_get_current_buf()
-      local ft = vim.api.nvim_buf_get_option(bufnr, 'filetype')
+    callback = function(args)
+      local bufnr = args.buf
+      local ft = vim.api.nvim_get_option_value('filetype', { buf = bufnr })
       local cfg = M.ftconfig(ft, true)
       editoropt.load_buf(cfg, bufnr)
       vim.schedule(function()
