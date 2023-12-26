@@ -128,7 +128,7 @@ function M.setup(profile, editorconfig)
       mappings = {
         ['<space><space>'] = {
           'toggle_node',
-          nowait = vim.api.nvim_buf_get_option(0, 'filetype') == 'neo-tree', -- disable `nowait` if you have existing combos starting with this char that you want to use
+          nowait = vim.api.nvim_get_option_value('filetype', { buf = 0 }) == 'neo-tree', -- disable `nowait` if you have existing combos starting with this char that you want to use
         },
         ['<2-LeftMouse>'] = 'open',
         ['<cr>'] = 'open',
