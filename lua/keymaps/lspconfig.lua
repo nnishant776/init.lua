@@ -250,7 +250,7 @@ function M.setup(opts)
         if is_telescope_present then
           telescope.lsp_document_symbols()
         else
-          vim.lsp.buf.document_symbol(nil, {})
+          vim.lsp.buf.document_symbol()
         end
       end,
       opts = { desc = "List document symbols" },
@@ -284,7 +284,7 @@ function M.setup(opts)
         if is_telescope_present then
           telescope.lsp_definitions()
         else
-          vim.lsp.buf.definition(nil, {})
+          vim.lsp.buf.definition()
         end
       end,
       opts = { desc = "List symbol definitions" },
@@ -301,7 +301,7 @@ function M.setup(opts)
         if is_telescope_present then
           telescope.lsp_type_definitions()
         else
-          vim.lsp.buf.type_definition(nil, {})
+          vim.lsp.buf.type_definition()
         end
       end,
       opts = { desc = "List symbol type definitions" },
@@ -318,7 +318,7 @@ function M.setup(opts)
         if is_telescope_present then
           telescope.lsp_implementations()
         else
-          vim.lsp.buf.implementation(nil, {})
+          vim.lsp.buf.implementation()
         end
       end,
       opts = { desc = "List symbol implementations" },
@@ -347,7 +347,7 @@ function M.setup(opts)
         if is_telescope_present then
           telescope.lsp_incoming_calls()
         else
-          vim.lsp.buf.incoming_calls(nil, {})
+          vim.lsp.buf.incoming_calls()
         end
       end,
       opts = { desc = "List incoming calls" },
@@ -364,7 +364,7 @@ function M.setup(opts)
         if is_telescope_present then
           telescope.lsp_outgoing_calls()
         else
-          vim.lsp.buf.outgoing_calls(nil, {})
+          vim.lsp.buf.outgoing_calls()
         end
       end,
       opts = { desc = "List outgoing calls" },
