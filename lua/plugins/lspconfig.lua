@@ -128,7 +128,7 @@ function LSP:setup_formatting(buf_id)
 
   if self.client.server_capabilities.documentFormattingProvider then
     vim.api.nvim_buf_create_user_command(buf_id, 'LspFormat', function(args)
-      local format_args = { async = false }
+      local format_args = { bufnr = buf_id, async = false }
       if self.client.server_capabilities.documentRangeFormattingProvider then
         if args.range ~= 0 then
           format_args.range = { ['start'] = { args.line1, 0 }, ['end'] = { args.line2, 0 } }
