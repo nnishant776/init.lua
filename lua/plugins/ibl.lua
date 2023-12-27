@@ -12,20 +12,8 @@ local spec = {
 
 local M = {}
 
-function M.is_enabled(profile, _)
-  if profile.minimal or profile.default then
-    return false
-  else
-    return true
-  end
-end
-
-function M.setup(profile, editorconfig)
-  spec.cond = M.is_enabled(profile, editorconfig)
-  if not spec.cond then
-    return
-  end
-  spec.opts = {
+local function ibl_config(editorconfig)
+  local cfg = {
     -- indent = {
     --   char = '▏'
     -- },
@@ -63,6 +51,32 @@ function M.setup(profile, editorconfig)
       },
     },
   }
+
+  return cfg
+end
+
+function M.is_enabled(profile, _)
+  if profile.minimal or profile.default then
+    return false
+  else
+    return true
+  end
+end
+
+function M.setup(profile, editorconfig)
+  spec.cond = M.is_enabled(profile, editorconfig)
+  if not spec.cond then
+    return
+  end
+  spec.opts = ibl_config(editorconfig)
+end
+
+function M.setup_buffer(buf_id, editorconfig)
+  if not spec.cond then
+    return
+  end
+  local opts = ibl_config(editorconfig)
+  require('ibl').setup_buffer(buf_id, opts)
 end
 
 function M.spec()
