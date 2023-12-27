@@ -60,6 +60,31 @@ local default_cfg = {
   },
 }
 
+local exclude = {
+  filetypes = {
+    ['lspinfo'] = true,
+    ['packer'] = true,
+    ['checkhealth'] = true,
+    ['help'] = true,
+    ['man'] = true,
+    ['TelescopePrompt'] = true,
+    ['TelescopeResults'] = true,
+    ['fugitive'] = true,
+  },
+  buftypes = {
+    ['nofile'] = true,
+    ['nowrite'] = true,
+    ['help'] = true,
+    ['terminal'] = true,
+    ['quickfix'] = true,
+    ['prompt'] = true,
+    ['fugitive'] = true,
+    ['directory'] = true,
+    ['unlisted'] = true,
+    ['TelescopePrompt'] = true,
+    ['TelescopeResults'] = true,
+  },
+}
 function M.config(profile)
   local parsed_config = vim.g.config
   if not parsed_config or vim.tbl_isempty(parsed_config) then
