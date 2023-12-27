@@ -85,6 +85,20 @@ local exclude = {
     ['TelescopeResults'] = true,
   },
 }
+
+local function is_buf_valid(buf_id)
+  if not buf_id or buf_id == -1 then
+    return true
+  end
+  local ft = vim.api.nvim_get_option_value('filetype', { buf = buf_id })
+  local bt = vim.api.nvim_get_option_value('buftype', { buf = buf_id })
+  local is_hidden = vim.api.nvim_get_option_value('bufhidden', { buf = buf_id })
+  if (ft == '' and bt == '') or (is_hidden and is_hidden ~= '') or exclude.buftypes[bt] or exclude.filetypes[ft] then
+    return false
+  end
+  return true
+end
+
 function M.config(profile)
   local parsed_config = vim.g.config
   if not parsed_config or vim.tbl_isempty(parsed_config) then
