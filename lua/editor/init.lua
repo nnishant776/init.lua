@@ -198,11 +198,14 @@ function M.init(editorconfig, buf_id)
   local editoropt = require("editor.options")
   local editorops = require('editor.operations')
 
+  local buf_opts = {}
   if buf_id and buf_id ~= -1 then
-    editoropt.load_buf(editorconfig, buf_id)
-  else
-    editoropt.load(editorconfig)
+    buf_opts.buf_id = buf_id
+    if not is_buf_valid(buf_id) then
+      return
+    end
   end
+  editoropt.load(editorconfig, buf_opts)
 
   -- Set up document clean up commands based on the project configuration
   vim.api.nvim_create_augroup('GenericPreWriteTasks', { clear = true })
@@ -210,7 +213,11 @@ function M.init(editorconfig, buf_id)
     vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
       group = 'GenericPreWriteTasks',
       callback = function(args)
-        editorops.trim_final_newlines(args.buf)
+        local bufnr = args.buf
+        if not is_buf_valid(bufnr) then
+          return
+        end
+        editorops.trim_final_newlines(bufnr)
       end,
       desc = 'Remove trailing new lines at the end of the document',
     })
@@ -219,7 +226,11 @@ function M.init(editorconfig, buf_id)
     vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
       group = 'GenericPreWriteTasks',
       callback = function(args)
-        editorops.trim_trailing_whitespace(args.buf)
+        local bufnr = args.buf
+        if not is_buf_valid(bufnr) then
+          return
+        end
+        editorops.trim_trailing_whitespace(bufnr)
       end,
       desc = 'Remove trailing whitespaces',
     })
@@ -231,8 +242,11 @@ function M.init(editorconfig, buf_id)
     callback = function(args)
       local bufnr = args.buf
       local ft = vim.api.nvim_get_option_value('filetype', { buf = bufnr })
+      if not is_buf_valid(bufnr) then
+        return
+      end
       local cfg = M.ftconfig(ft, true)
-      editoropt.load_buf(cfg, bufnr)
+      editoropt.load(cfg, { buf_id = bufnr })
       vim.schedule(function()
         require('plugins.lspconfig').setup_lsp(ft, cfg)
       end)
