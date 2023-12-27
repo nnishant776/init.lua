@@ -8,8 +8,8 @@ function M.load(cfg, opts)
   end
 
   opts = opts or {}
-  local bufnr = opts.buf_id
-  if opts.buf_id and opts.buf_id ~= -1 then
+  local buf_id = opts.buf_id
+  if buf_id and buf_id ~= -1 then
     opts = { scope = "local" }
   else
     opts = {}
