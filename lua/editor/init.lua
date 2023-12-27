@@ -250,6 +250,9 @@ function M.init(editorconfig, buf_id)
       vim.schedule(function()
         require('plugins.lspconfig').setup_lsp(ft, cfg)
       end)
+      vim.schedule(function()
+        require('plugins.ibl').setup_buffer(bufnr, cfg)
+      end)
     end,
     group = 'FileTypeReloadConfig',
     desc = 'Reload config based on file type',
