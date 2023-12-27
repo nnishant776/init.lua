@@ -87,7 +87,7 @@ local exclude = {
 }
 
 local function is_buf_valid(buf_id)
-  if not buf_id or buf_id == -1 then
+  if buf_id == nil or buf_id == -1 then
     return true
   end
   local ft = vim.api.nvim_get_option_value('filetype', { buf = buf_id })
