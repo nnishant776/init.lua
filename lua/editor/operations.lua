@@ -20,7 +20,16 @@ function M.trim_trailing_whitespace(buf_id)
     local lines = vim.api.nvim_buf_get_lines(buf_id, line, line + 1, true)
     local line_content = lines[1]
     if line_content ~= nil and line_content ~= '' then
-      line_content, _ = string.gsub(line_content, '\\s$', '')
+      local last_char_idx = #line_content
+      for i = #line_content, -1, -1 do
+        last_char_idx = i
+        if string.sub(line_content, i, i) ~= ' ' then
+          break
+        end
+      end
+      if last_char_idx ~= #line_content then
+        line_content = string.sub(line_content, 1, last_char_idx)
+      end
       vim.api.nvim_buf_set_lines(buf_id, line, line + 1, true, { line_content })
     end
   end
