@@ -191,7 +191,23 @@ local filetype_lsp_map = {
 }
 
 local lang_server_map = {
-  ['clangd'] = LSP.new('clangd', {}, {}),
+  ['clangd'] = LSP.new('clangd', {}, {}, {
+    cmd = {
+      "clangd",
+      "--all-scopes-completion",
+      "-j=4",
+      "--completion-style=detailed",
+      "--cross-file-rename",
+      "--header-insertion=iwyu",
+      "--enable-config",
+      "--malloc-trim",
+      "--pretty",
+      "--background-index",
+      "--suggest-missing-includes",
+      "--clang-tidy",
+      "--inlay-hints=true"
+    }
+  }),
   ['gopls'] = LSP.new('gopls', {
     gopls = {
       experimentalPostfixCompletions = false,
@@ -214,6 +230,15 @@ local lang_server_map = {
       },
       staticcheck = true,
       linksInHover = false,
+      hints = {
+        assignVariableTypes = true,
+        compositeLiteralFields = true,
+        compositeLiteralTypes = true,
+        constantValues = true,
+        functionTypeParameters = true,
+        parameterNames = true,
+        rangeVariableTypes = true,
+      },
     },
   }, {}),
   ['pyright'] = LSP.new('pyright', {}, {}),
@@ -233,6 +258,9 @@ local lang_server_map = {
         },
         maxPreload = 100000,
         preloadFileSize = 10000,
+      },
+      hint = {
+        enable = true,
       },
     },
   }, {}),
