@@ -206,11 +206,15 @@ local lang_server_map = {
   ['pyright'] = LSP.new('pyright', {}, {}),
   ['lua_ls'] = LSP.new('lua_ls', {
     Lua = {
+      runtime = {
+        version = 'LuaJIT',
+      },
       diagnostics = {
         globals = { 'vim' },
       },
       workspace = {
         library = {
+          [string.format("%s", vim.env.VIMRUNTIME)] = true,
           [vim.fn.expand '$VIMRUNTIME/lua'] = true,
           [vim.fn.expand '$VIMRUNTIME/lua/vim/lsp'] = true,
         },
