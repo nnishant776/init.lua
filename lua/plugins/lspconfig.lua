@@ -107,6 +107,7 @@ function LSP:on_attach(buf_id)
   self:setup_highlight(buf_id)
   self:setup_formatting(buf_id)
   self:setup_keymaps(buf_id)
+  self:setup_inlay_hints(buf_id)
 end
 
 function LSP:setup_highlight(buf_id)
@@ -151,6 +152,18 @@ function LSP:setup_formatting(buf_id)
         group = 'LspAutoFormat',
         desc = 'Document Format',
       })
+    end
+  end
+end
+
+function LSP:setup_inlay_hints(buf_id)
+  if self.client.server_capabilities.inlayHintProvider then
+    if not vim.lsp.inlay_hint.is_enabled(buf_id) then
+      local ft = vim.api.nvim_get_option_value('filetype', { buf = buf_id })
+      local cfg = editor.ftconfig(ft, true)
+      if cfg.editor.inlayHints.enabled ~= 'off' then
+        vim.lsp.inlay_hint.enable(buf_id, true)
+      end
     end
   end
 end
