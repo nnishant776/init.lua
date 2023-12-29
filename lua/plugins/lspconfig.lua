@@ -11,6 +11,7 @@ local spec = {
 }
 
 local editor = require('editor')
+local fsutils = require("utils.fs")
 
 vim.api.nvim_create_augroup('LspAutoFormat', { clear = true })
 
@@ -124,7 +125,6 @@ end
 
 function LSP:setup_formatting(buf_id)
   buf_id = buf_id or 0
-  local fsutils = require("utils.fs")
   local max_buffer_size = 100 * 1024 -- 100KiB
 
   if self.client.server_capabilities.documentFormattingProvider then
@@ -159,9 +159,12 @@ end
 function LSP:setup_inlay_hints(buf_id)
   if self.client.server_capabilities.inlayHintProvider then
     if not vim.lsp.inlay_hint.is_enabled(buf_id) then
+      local max_buffer_size = 100 * 1024 -- 100KiB
       local ft = vim.api.nvim_get_option_value('filetype', { buf = buf_id })
       local cfg = editor.ftconfig(ft, true)
-      if cfg.editor.inlayHints.enabled ~= 'off' then
+      local is_file_size_big = fsutils.is_file_size_big(buf_id, max_buffer_size)
+      local is_inlay_hints_enabled = cfg.editor.inlayHints.enabled ~= nil and cfg.editor.inlayHints.enabled ~= 'off'
+      if not is_file_size_big and is_inlay_hints_enabled then
         vim.lsp.inlay_hint.enable(buf_id, true)
       end
     end
