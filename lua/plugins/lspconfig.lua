@@ -194,81 +194,122 @@ local filetype_lsp_map = {
 }
 
 local lang_server_map = {
-  ['clangd'] = LSP.new('clangd', {}, {}, {
-    cmd = {
-      "clangd",
-      "--all-scopes-completion",
-      "-j=4",
-      "--completion-style=detailed",
-      "--cross-file-rename",
-      "--header-insertion=iwyu",
-      "--enable-config",
-      "--malloc-trim",
-      "--pretty",
-      "--background-index",
-      "--suggest-missing-includes",
-      "--clang-tidy",
-      "--inlay-hints=true"
+  ['clangd'] = LSP.new(
+    'clangd',
+    {},
+    {},
+    {
+      cmd = {
+        "clangd",
+        "--all-scopes-completion",
+        "-j=4",
+        "--completion-style=detailed",
+        "--cross-file-rename",
+        "--header-insertion=iwyu",
+        "--enable-config",
+        "--malloc-trim",
+        "--pretty",
+        "--background-index",
+        "--suggest-missing-includes",
+        "--clang-tidy",
+        "--inlay-hints=true"
+      },
+      detached = false,
     }
-  }),
-  ['gopls'] = LSP.new('gopls', {
-    gopls = {
-      experimentalPostfixCompletions = false,
-      analyses = {
-        shadow = true,
-        fieldalignment = true,
-        unsed = true,
-        nilness = true,
-        unusedparams = true,
-        unusedwrite = true,
-        unusedvariable = true,
-        all = true,
-        ST1003 = false,
-        ST1006 = false,
-        ST1020 = false,
-        ST1021 = false,
-        ST1022 = false,
-        ST1023 = false,
-        QF1011 = false,
-      },
-      staticcheck = true,
-      linksInHover = false,
-      hints = {
-        assignVariableTypes = true,
-        compositeLiteralFields = true,
-        compositeLiteralTypes = true,
-        constantValues = true,
-        functionTypeParameters = true,
-        parameterNames = true,
-        rangeVariableTypes = true,
-      },
-    },
-  }, {}),
-  ['pyright'] = LSP.new('pyright', {}, {}),
-  ['lua_ls'] = LSP.new('lua_ls', {
-    Lua = {
-      runtime = {
-        version = 'LuaJIT',
-      },
-      diagnostics = {
-        globals = { 'vim' },
-      },
-      workspace = {
-        library = {
-          [string.format("%s", vim.env.VIMRUNTIME)] = true,
-          [vim.fn.expand '$VIMRUNTIME/lua'] = true,
-          [vim.fn.expand '$VIMRUNTIME/lua/vim/lsp'] = true,
+  ),
+  ['gopls'] = LSP.new(
+    'gopls',
+    {
+      gopls = {
+        experimentalPostfixCompletions = false,
+        analyses = {
+          shadow = true,
+          fieldalignment = true,
+          unsed = true,
+          nilness = true,
+          unusedparams = true,
+          unusedwrite = true,
+          unusedvariable = true,
+          all = true,
+          ST1003 = false,
+          ST1006 = false,
+          ST1020 = false,
+          ST1021 = false,
+          ST1022 = false,
+          ST1023 = false,
+          QF1011 = false,
         },
-        maxPreload = 100000,
-        preloadFileSize = 10000,
-      },
-      hint = {
-        enable = true,
+        staticcheck = true,
+        linksInHover = false,
+        hints = {
+          assignVariableTypes = true,
+          compositeLiteralFields = true,
+          compositeLiteralTypes = true,
+          constantValues = true,
+          functionTypeParameters = true,
+          parameterNames = true,
+          rangeVariableTypes = true,
+        },
       },
     },
-  }, {}),
-  ['zls'] = LSP.new('zls', {}, {}),
-  ['rust_analyzer'] = LSP.new('rust_analyzer', {}, {}),
+    {},
+    {
+      detached = false,
+    }
+  ),
+  ['pyright'] = LSP.new(
+    'pyright',
+    {},
+    {},
+    {
+      detached = false,
+    }
+  ),
+  ['lua_ls'] = LSP.new(
+    'lua_ls',
+    {
+      Lua = {
+        runtime = {
+          version = 'LuaJIT',
+        },
+        diagnostics = {
+          globals = { 'vim' },
+        },
+        workspace = {
+          library = {
+            [string.format("%s", vim.env.VIMRUNTIME)] = true,
+            [vim.fn.expand '$VIMRUNTIME/lua'] = true,
+            [vim.fn.expand '$VIMRUNTIME/lua/vim/lsp'] = true,
+          },
+          maxPreload = 100000,
+          preloadFileSize = 10000,
+        },
+        hint = {
+          enable = true,
+        },
+      },
+    },
+    {},
+    {
+      detached = false,
+    }
+  ),
+  ['zls'] = LSP.new(
+    'zls',
+    {},
+    {},
+    {
+      detached = false,
+    }
+  ),
+  ['rust_analyzer'] = LSP.new(
+    'rust_analyzer',
+    {},
+    {},
+    {
+      detached = false,
+    }
+  ),
 }
 
 local M = {}
