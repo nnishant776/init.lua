@@ -60,45 +60,6 @@ local default_cfg = {
   },
 }
 
-local exclude = {
-  filetypes = {
-    ['lspinfo'] = true,
-    ['packer'] = true,
-    ['checkhealth'] = true,
-    ['help'] = true,
-    ['man'] = true,
-    ['TelescopePrompt'] = true,
-    ['TelescopeResults'] = true,
-    ['fugitive'] = true,
-  },
-  buftypes = {
-    ['nofile'] = true,
-    ['nowrite'] = true,
-    ['help'] = true,
-    ['terminal'] = true,
-    ['quickfix'] = true,
-    ['prompt'] = true,
-    ['fugitive'] = true,
-    ['directory'] = true,
-    ['unlisted'] = true,
-    ['TelescopePrompt'] = true,
-    ['TelescopeResults'] = true,
-  },
-}
-
-local function is_buf_valid(buf_id)
-  if buf_id == nil or buf_id == -1 then
-    return true
-  end
-  local ft = vim.api.nvim_get_option_value('filetype', { buf = buf_id })
-  local bt = vim.api.nvim_get_option_value('buftype', { buf = buf_id })
-  local is_hidden = vim.api.nvim_get_option_value('bufhidden', { buf = buf_id })
-  if (ft == '' and bt == '') or (is_hidden and is_hidden ~= '') or exclude.buftypes[bt] or exclude.filetypes[ft] then
-    return false
-  end
-  return true
-end
-
 function M.config(profile)
   local parsed_config = vim.g.config
   if not parsed_config or vim.tbl_isempty(parsed_config) then
@@ -144,7 +105,64 @@ function M.ftconfig(ft, use_default)
   return config
 end
 
-function M.init(editorconfig, buf_id)
+function M._setup_event_listeners(editorconfig)
+  local editoropt = require("editor.options")
+  local editorops = require('editor.operations')
+  local editorutil = require('editor.utils')
+
+  -- Set up document clean up commands based on the project configuration
+  vim.api.nvim_create_augroup('GenericPreWriteTasks', { clear = true })
+  if editorconfig.files.trimFinalNewlines then
+    vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+      group = 'GenericPreWriteTasks',
+      callback = function(args)
+        local bufnr = args.buf
+        if not editorutil.is_buf_valid(bufnr) then
+          return
+        end
+        editorops.trim_final_newlines(bufnr)
+      end,
+      desc = 'Remove trailing new lines at the end of the document',
+    })
+  end
+  if editorconfig.files.trimTrailingWhitespace then
+    vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+      group = 'GenericPreWriteTasks',
+      callback = function(args)
+        local bufnr = args.buf
+        if not editorutil.is_buf_valid(bufnr) then
+          return
+        end
+        editorops.trim_trailing_whitespace(bufnr)
+      end,
+      desc = 'Remove trailing whitespaces',
+    })
+  end
+
+  -- Add triggers for changing editor options dynamically based on the file type
+  vim.api.nvim_create_augroup('FileTypeReloadConfig', { clear = true })
+  vim.api.nvim_create_autocmd({ 'BufEnter' }, {
+    callback = function(args)
+      local bufnr = args.buf
+      local ft = vim.api.nvim_get_option_value('filetype', { buf = bufnr })
+      if not editorutil.is_buf_valid(bufnr) then
+        return
+      end
+      local cfg = M.ftconfig(ft, true)
+      editoropt.load(cfg, { buf_id = bufnr })
+      vim.schedule(function()
+        require('plugins.lspconfig').setup_lsp(ft, cfg)
+      end)
+      vim.schedule(function()
+        require('plugins.ibl').setup_buffer(bufnr, cfg)
+      end)
+    end,
+    group = 'FileTypeReloadConfig',
+    desc = 'Reload config based on file type',
+  })
+end
+
+function M.init(profile, editorconfig, buf_id)
   if not editorconfig then
     return
   end
@@ -156,10 +174,6 @@ function M.init(editorconfig, buf_id)
     "getscriptPlugin",
     "gzip",
     "logipat",
-    -- "netrw",
-    -- "netrwPlugin",
-    -- "netrwSettings",
-    -- "netrwFileHandlers",
     "matchit",
     "tar",
     "tarPlugin",
@@ -177,6 +191,10 @@ function M.init(editorconfig, buf_id)
     "compiler",
     "bugreport",
     "ftplugin",
+    -- "netrw",
+    -- "netrwPlugin",
+    -- "netrwSettings",
+    -- "netrwFileHandlers",
   }
 
   for _, plugin in pairs(default_plugins) do
@@ -196,67 +214,22 @@ function M.init(editorconfig, buf_id)
   end
 
   local editoropt = require("editor.options")
-  local editorops = require('editor.operations')
+  local editorutil = require('editor.utils')
 
   local buf_opts = {}
+
   if buf_id and buf_id ~= -1 then
     buf_opts.buf_id = buf_id
-    if not is_buf_valid(buf_id) then
+    if not editorutil.is_buf_valid(buf_id) then
       return
     end
   end
+
+  if profile and not profile.minimal then
+    M._setup_event_listeners(editorconfig)
+  end
+
   editoropt.load(editorconfig, buf_opts)
-
-  -- Set up document clean up commands based on the project configuration
-  vim.api.nvim_create_augroup('GenericPreWriteTasks', { clear = true })
-  if editorconfig.files.trimFinalNewlines then
-    vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
-      group = 'GenericPreWriteTasks',
-      callback = function(args)
-        local bufnr = args.buf
-        if not is_buf_valid(bufnr) then
-          return
-        end
-        editorops.trim_final_newlines(bufnr)
-      end,
-      desc = 'Remove trailing new lines at the end of the document',
-    })
-  end
-  if editorconfig.files.trimTrailingWhitespace then
-    vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
-      group = 'GenericPreWriteTasks',
-      callback = function(args)
-        local bufnr = args.buf
-        if not is_buf_valid(bufnr) then
-          return
-        end
-        editorops.trim_trailing_whitespace(bufnr)
-      end,
-      desc = 'Remove trailing whitespaces',
-    })
-  end
-
-  -- Add triggers for changing editor options dynamically based on the file type
-  vim.api.nvim_create_augroup('FileTypeReloadConfig', { clear = true })
-  vim.api.nvim_create_autocmd({ 'BufEnter' }, {
-    callback = function(args)
-      local bufnr = args.buf
-      local ft = vim.api.nvim_get_option_value('filetype', { buf = bufnr })
-      if not is_buf_valid(bufnr) then
-        return
-      end
-      local cfg = M.ftconfig(ft, true)
-      editoropt.load(cfg, { buf_id = bufnr })
-      vim.schedule(function()
-        require('plugins.lspconfig').setup_lsp(ft, cfg)
-      end)
-      vim.schedule(function()
-        require('plugins.ibl').setup_buffer(bufnr, cfg)
-      end)
-    end,
-    group = 'FileTypeReloadConfig',
-    desc = 'Reload config based on file type',
-  })
 
   -- Load global keymaps
   require('keymaps.global').setup({ buffer = false })
