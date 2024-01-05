@@ -22,7 +22,7 @@ local editor = require('editor')
 local editorconfig = editor.config(profile)
 local plugins = require('plugins').load(profile, editorconfig)
 
-editor.init(editorconfig)
+editor.init(profile, editorconfig)
 
 vim.g.config = vim.deepcopy(editorconfig)
 vim.g.default_config = vim.deepcopy(vim.g.config)
