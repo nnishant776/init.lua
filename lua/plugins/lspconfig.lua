@@ -103,7 +103,7 @@ function LSP:on_attach(buf_id)
   buf_id = buf_id or 0
   -- Disable semantic tokens
   self.client.server_capabilities.semanticTokensProvider = nil
-  vim.api.nvim_clear_autocmds { buffer = buf_id, group = 'LspAutoFormat' }
+  vim.api.nvim_clear_autocmds({ buffer = buf_id, group = 'LspAutoFormat' })
   vim.api.nvim_set_option_value('omnifunc', 'v:lua.vim.lsp.omnifunc', { buf = buf_id })
   self:setup_highlight(buf_id)
   self:setup_formatting(buf_id)
@@ -128,6 +128,7 @@ function LSP:setup_formatting(buf_id)
   local max_buffer_size = 100 * 1024 -- 100KiB
 
   if self.client.server_capabilities.documentFormattingProvider then
+    vim.api.nvim_clear_autocmds({ buffer = buf_id, group = 'GenericPreWriteTasks' })
     vim.api.nvim_buf_create_user_command(buf_id, 'LspFormat', function(args)
       local format_args = { bufnr = buf_id, async = false }
       if self.client.server_capabilities.documentRangeFormattingProvider then
