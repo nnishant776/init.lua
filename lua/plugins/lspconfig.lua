@@ -222,7 +222,8 @@ local lang_server_map = {
     'gopls',
     {
       gopls = {
-        experimentalPostfixCompletions = false,
+        experimentalPostfixCompletions = true,
+        usePlaceholders = true,
         analyses = {
           shadow = true,
           fieldalignment = true,
