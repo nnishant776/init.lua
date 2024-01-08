@@ -2,7 +2,9 @@ local spec = {
   enabled = true,
   cond = true,
   opts = {},
-  dependencies = {},
+  dependencies = {
+    'rafamadriz/friendly-snippets',
+  },
 }
 
 local M = {}
@@ -17,6 +19,12 @@ end
 
 function M.setup(profile, editorconfig)
   spec.cond = M.is_enabled(profile, editorconfig)
+  if spec.cond then
+    spec.config = function(_, opts)
+      require('luasnip').setup(opts)
+      require('luasnip.loaders.from_vscode').lazy_load()
+    end
+  end
 end
 
 function M.spec()
