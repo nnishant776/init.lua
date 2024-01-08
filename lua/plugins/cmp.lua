@@ -131,7 +131,7 @@ function M.setup(profile, editorconfig)
           if cmp.visible() then
             cmp.select_next_item { behavior = cmp.SelectBehavior.Select }
           elseif is_luasnip_present and luasnip.expand_or_jumpable() then
-            vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
+            luasnip.expand_or_jump()
           else
             fallback()
           end
@@ -144,7 +144,7 @@ function M.setup(profile, editorconfig)
           if cmp.visible() then
             cmp.select_prev_item { behavior = cmp.SelectBehavior.Select }
           elseif is_luasnip_present and luasnip.jumpable(-1) then
-            vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
+            luasnip.jump(-1)
           else
             fallback()
           end
