@@ -93,7 +93,7 @@ function M.reload(profile)
   local buf_opts = {}
 
   if profile and not profile.minimal then
-    M._setup_event_listeners(editorconfig)
+    M._setup_event_listeners()
   end
 
   editoropt.load(editorconfig, buf_opts)
@@ -120,57 +120,64 @@ function M.ftconfig(ft, use_default)
   return config
 end
 
-function M._setup_event_listeners(editorconfig)
-  local editoropt = require("editor.options")
-  local editorops = require('editor.operations')
-  local editorutil = require('editor.utils')
-
-  -- Set up document clean up commands based on the project configuration
-  vim.api.nvim_create_augroup('GenericPreWriteTasks', { clear = true })
-  if editorconfig.files.trimFinalNewlines then
-    vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
-      group = 'GenericPreWriteTasks',
-      callback = function(args)
-        local bufnr = args.buf
-        if not editorutil.is_buf_valid(bufnr) then
-          return
-        end
-        editorops.trim_final_newlines(bufnr)
-      end,
-      desc = 'Remove trailing new lines at the end of the document',
-    })
+function M._is_formatting_enabled(buf_id)
+  local autoformatcmd = vim.api.nvim_get_autocmds({ buffer = buf_id, group = 'LspAutoFormat' })
+  local prewritecmd = vim.api.nvim_get_autocmds({ buffer = buf_id, group = 'GenericPreWriteTasks' })
+  if (autoformatcmd and #autoformatcmd <= 0) and (prewritecmd and #prewritecmd <= 0) then
+    return false
   end
-  if editorconfig.files.trimTrailingWhitespace then
-    vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
-      group = 'GenericPreWriteTasks',
-      callback = function(args)
-        local bufnr = args.buf
-        if not editorutil.is_buf_valid(bufnr) then
-          return
-        end
-        editorops.trim_trailing_whitespace(bufnr)
-      end,
-      desc = 'Remove trailing whitespaces',
-    })
-  end
+  return true
+end
 
-  -- Add triggers for changing editor options dynamically based on the file type
+function M._setup_event_listeners()
   vim.api.nvim_create_augroup('FileTypeReloadConfig', { clear = true })
+  vim.api.nvim_create_augroup('GenericPreWriteTasks', { clear = true })
+
+  -- Add triggers for dynamic configuration based on the buffer
   vim.api.nvim_create_autocmd({ 'BufEnter' }, {
     callback = function(args)
       local bufnr = args.buf
       local ft = vim.api.nvim_get_option_value('filetype', { buf = bufnr })
-      if not editorutil.is_buf_valid(bufnr) then
+      if not require('editor.utils').is_buf_valid(bufnr) then
         return
       end
       local cfg = M.ftconfig(ft, true)
-      editoropt.load(cfg, { buf_id = bufnr })
+      require("editor.options").load(cfg, { buf_id = bufnr })
       vim.schedule(function()
         require('plugins.lspconfig').setup_lsp(ft, cfg)
       end)
       vim.schedule(function()
         require('plugins.ibl').setup_buffer(bufnr, cfg)
       end)
+      if not M._is_formatting_enabled(bufnr) then
+        -- Set up document clean up commands based on the project configuration
+        if cfg.files.trimFinalNewlines then
+          vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+            group = 'GenericPreWriteTasks',
+            callback = function()
+              if not require('editor.utils').is_buf_valid(bufnr) then
+                return
+              end
+              require('editor.operations').trim_final_newlines(bufnr)
+            end,
+            buffer = bufnr,
+            desc = 'Remove trailing new lines at the end of the document',
+          })
+        end
+        if cfg.files.trimTrailingWhitespace then
+          vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+            group = 'GenericPreWriteTasks',
+            callback = function()
+              if not require('editor.utils').is_buf_valid(bufnr) then
+                return
+              end
+              require('editor.operations').trim_trailing_whitespace(bufnr)
+            end,
+            buffer = bufnr,
+            desc = 'Remove trailing whitespaces',
+          })
+        end
+      end
     end,
     group = 'FileTypeReloadConfig',
     desc = 'Reload config based on file type',
@@ -241,7 +248,7 @@ function M.init(profile, editorconfig, buf_id)
   end
 
   if profile and not profile.minimal then
-    M._setup_event_listeners(editorconfig)
+    M._setup_event_listeners()
   end
 
   editoropt.load(editorconfig, buf_opts)
