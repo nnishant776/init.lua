@@ -122,6 +122,18 @@ function LSP:setup_highlight(buf_id)
     vim.api.nvim_buf_create_user_command(buf_id, 'LspClearHighlight', function()
       vim.lsp.buf.clear_references()
     end, {})
+    local cfg = editor.bufconfig(buf_id)
+    if cfg.editor.occurrencesHighlight ~= 'off' then
+      vim.api.nvim_create_autocmd({ 'CursorHold' }, {
+        group = 'LspOperations',
+        callback = function(args)
+          vim.cmd("LspClearHighlight")
+          vim.cmd("LspSetHighlight")
+        end,
+        buffer = buf_id,
+        desc = 'Highlight references on cursor hold'
+      })
+    end
   end
   if self.client.server_capabilities.semanticTokensProvider then
     local cfg = editor.bufconfig(buf_id, true)
