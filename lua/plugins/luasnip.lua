@@ -13,7 +13,7 @@ function M.is_enabled(profile, editorconfig)
   if profile.minimal or profile.default then
     return false
   else
-    return editorconfig.editor.suggest.showSnippets
+    return editorconfig.editor.suggest.enabled
   end
 end
 
