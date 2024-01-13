@@ -102,8 +102,6 @@ end
 
 function LSP:on_attach(buf_id)
   buf_id = buf_id or 0
-  -- Disable semantic tokens
-  self.client.server_capabilities.semanticTokensProvider = nil
   vim.api.nvim_clear_autocmds({ buffer = buf_id, group = 'LspAutoFormat' })
   vim.api.nvim_clear_autocmds({ buffer = buf_id, group = 'LspOperations' })
   vim.api.nvim_set_option_value('omnifunc', 'v:lua.vim.lsp.omnifunc', { buf = buf_id })
@@ -123,6 +121,13 @@ function LSP:setup_highlight(buf_id)
     vim.api.nvim_buf_create_user_command(buf_id, 'LspClearHighlight', function()
       vim.lsp.buf.clear_references()
     end, {})
+  end
+  if self.client.server_capabilities.semanticTokensProvider then
+    local cfg = editor.bufconfig(buf_id, true)
+    if not cfg.editor.semanticHighlighting.enabled then
+      -- Disable semantic tokens if disabled in config
+      self.client.server_capabilities.semanticTokensProvider = nil
+    end
   end
 end
 
