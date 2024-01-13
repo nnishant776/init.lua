@@ -151,6 +151,7 @@ function M._setup_event_listeners(editorconfig)
   vim.api.nvim_create_augroup('FileTypeReloadConfig', { clear = true })
   vim.api.nvim_create_augroup('GenericPreWriteTasks', { clear = true })
   vim.api.nvim_create_augroup('DynamicEditorOptions', { clear = true })
+  vim.api.nvim_create_augroup('DynamicEditorHighlights', { clear = true })
 
   -- Add triggers for dynamic configuration based on the buffer
   vim.api.nvim_create_autocmd({ 'BufEnter' }, {
@@ -215,6 +216,20 @@ function M._setup_event_listeners(editorconfig)
     end,
     desc = 'Update editor options dynamically'
   })
+
+  -- Setup dynamic highlights
+  if editorconfig.editor.selectionHighlight then
+    vim.api.nvim_create_autocmd({ 'CursorHold' }, {
+      group = 'DynamicEditorHighlights',
+      callback = function(args)
+        local sel_match_id = vim.b[args.buf].sel_match_id
+        if sel_match_id and sel_match_id ~= -1 then
+          vim.fn.matchdelete(sel_match_id)
+        end
+        vim.b[args.buf].sel_match_id = vim.fn.matchadd('Search', vim.fn.expand('<cword>'))
+      end
+    })
+  end
 end
 
 function M.init(profile, editorconfig, buf_id)
