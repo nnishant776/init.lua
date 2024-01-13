@@ -105,7 +105,7 @@ function M.reload(profile)
   local buf_opts = {}
 
   if profile and not profile.minimal then
-    M._setup_event_listeners()
+    M._setup_event_listeners(editorconfig)
   end
 
   editoropt.load(editorconfig, buf_opts)
@@ -147,7 +147,7 @@ function M._is_formatting_enabled(buf_id)
   return true
 end
 
-function M._setup_event_listeners()
+function M._setup_event_listeners(editorconfig)
   vim.api.nvim_create_augroup('FileTypeReloadConfig', { clear = true })
   vim.api.nvim_create_augroup('GenericPreWriteTasks', { clear = true })
   vim.api.nvim_create_augroup('DynamicEditorOptions', { clear = true })
@@ -281,7 +281,7 @@ function M.init(profile, editorconfig, buf_id)
   end
 
   if profile and not profile.minimal then
-    M._setup_event_listeners()
+    M._setup_event_listeners(editorconfig)
   end
 
   editoropt.load(editorconfig, buf_opts)
