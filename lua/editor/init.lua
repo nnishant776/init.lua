@@ -131,6 +131,11 @@ function M.ftconfig(ft, use_default)
   return config
 end
 
+function M.bufconfig(buf_id, use_default)
+  local ft = vim.api.nvim_get_option_value('filetype', { buf = buf_id })
+  return M.ftconfig(ft, use_default)
+end
+
 function M._is_formatting_enabled(buf_id)
   local autoformatcmd = vim.api.nvim_get_autocmds({ buffer = buf_id, group = 'LspAutoFormat' })
   local prewritecmd = vim.api.nvim_get_autocmds({ buffer = buf_id, group = 'GenericPreWriteTasks' })
