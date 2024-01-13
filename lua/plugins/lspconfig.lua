@@ -14,6 +14,7 @@ local editor = require('editor')
 local fsutils = require("utils.fs")
 
 vim.api.nvim_create_augroup('LspAutoFormat', { clear = true })
+vim.api.nvim_create_augroup('LspOperations', { clear = true })
 
 local LSP = {}
 
@@ -104,11 +105,13 @@ function LSP:on_attach(buf_id)
   -- Disable semantic tokens
   self.client.server_capabilities.semanticTokensProvider = nil
   vim.api.nvim_clear_autocmds({ buffer = buf_id, group = 'LspAutoFormat' })
+  vim.api.nvim_clear_autocmds({ buffer = buf_id, group = 'LspOperations' })
   vim.api.nvim_set_option_value('omnifunc', 'v:lua.vim.lsp.omnifunc', { buf = buf_id })
   self:setup_highlight(buf_id)
   self:setup_formatting(buf_id)
   self:setup_keymaps(buf_id)
   self:setup_inlay_hints(buf_id)
+  self:setup_signature_help(buf_id)
 end
 
 function LSP:setup_highlight(buf_id)
@@ -168,6 +171,69 @@ function LSP:setup_inlay_hints(buf_id)
       if not is_file_size_big and is_inlay_hints_enabled then
         vim.lsp.inlay_hint.enable(buf_id, true)
       end
+    end
+  end
+end
+
+function LSP:setup_signature_help(buf_id)
+  local is_treesitter_present, _ = pcall(require, 'nvim-treesitter')
+  if not is_treesitter_present then
+    return
+  end
+
+  local parsers = require('nvim-treesitter.parsers')
+  if not parsers.has_parser(parsers.get_buf_lang(buf_id)) then
+    return
+  end
+
+  if self.client.server_capabilities.signatureHelpProvider then
+    if not self.client.server_capabilities.signatureHelpProvider.triggerCharacters then
+      self.client.server_capabilities.signatureHelpProvider.triggerCharacters = { '(', ',' }
+    end
+    local cfg = editor.bufconfig(buf_id, true)
+    if cfg.editor.suggest.signatureHelp then
+      vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
+        function(err, result, context, config)
+          if not result then
+            return
+          end
+          if not result.signatures then
+            return
+          end
+
+          -- Remove documentation from signature help
+          for _, sigs in ipairs(result.signatures) do
+            sigs.documentation = nil
+          end
+
+          vim.lsp.handlers.signature_help(err, result, context, config)
+        end,
+        {
+          focusable = false,
+          focus = false,
+        }
+      )
+      vim.api.nvim_create_autocmd({ 'CursorHoldI' }, {
+        group = 'LspOperations',
+        callback = function(args)
+          local node = vim.treesitter.get_node({})
+          if node == nil then
+            return
+          end
+          if string.find(node:type(), 'argument') ~= nil then
+            vim.lsp.buf.signature_help()
+            return
+          end
+          local node_parent = node:parent()
+          if node_parent ~= nil then
+            if string.find(node_parent:type(), 'argument') ~= nil then
+              vim.lsp.buf.signature_help()
+            end
+          end
+        end,
+        buffer = buf_id,
+        desc = 'Trigger LSP signature help on cursor hold',
+      })
     end
   end
 end
