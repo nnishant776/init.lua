@@ -65,6 +65,15 @@ function M.setup(profile, editorconfig)
           return is_comment_suggest_enabled or editorconfig.editor.quickSuggestions.comments ~= "off"
         end
       end,
+      performance = {
+        debounce = (function()
+          return vim.o.updatetime / 2
+        end)(),
+        throttle = (function()
+          return vim.o.updatetime / 2
+        end)(),
+        max_view_entries = 25,
+      },
       window = {
         completion = {
           winhighlight =
