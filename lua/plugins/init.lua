@@ -126,6 +126,7 @@ local name_mapper = {
   ['williamboman/mason.nvim'] = 'mason',
   ['williamboman/mason-lspconfig.nvim'] = 'mason-lspconfig',
   ['windwp/nvim-autopairs'] = 'nvim-autopairs',
+  ['j-hui/fidget.nvim'] = 'fidget',
 }
 
 function M.list_all()
