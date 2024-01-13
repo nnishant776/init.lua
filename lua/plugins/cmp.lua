@@ -36,7 +36,7 @@ function M.setup(profile, editorconfig)
 
     local lsputil = require('ui.lsp')
 
-    local cmp_window = require "cmp.utils.window"
+    local cmp_window = require("cmp.utils.window")
     cmp_window.info_ = cmp_window.info
     cmp_window.info = function(self)
       local info = self:info_()
@@ -46,6 +46,10 @@ function M.setup(profile, editorconfig)
 
     opts = vim.tbl_deep_extend("force", opts, {
       enabled = function()
+        -- disable for invalid buffers
+        if not require('editor.utils').is_buf_valid(0) then
+          return false
+        end
         -- disable completion in comments
         local context = require("cmp.config.context")
         -- keep command mode completion enabled when cursor is in a comment
@@ -76,15 +80,18 @@ function M.setup(profile, editorconfig)
       completion = {
         autocomplete = (function()
           if editorconfig.editor.suggestOnTriggerCharacters then
+            -- if vim.fn.mode() == 'o' then
+            --   return false
+            -- end
             return {
               require("cmp.types").cmp.TriggerEvent.InsertEnter,
               require("cmp.types").cmp.TriggerEvent.TextChanged,
             }
           else
-            return {}
+            return false
           end
         end)(),
-        keyword_count = 3,
+        keyword_length = 3,
       },
       snippet = {
         expand = function(args)
@@ -95,8 +102,8 @@ function M.setup(profile, editorconfig)
         end,
       },
       matching = {
-        disable_fuzzy_matching = (function()
-          return editorconfig.editor.suggest.filterGraceful
+        disallow_fuzzy_matching = (function()
+          return not editorconfig.editor.suggest.filterGraceful
         end)(),
       },
       formatting = {
@@ -116,7 +123,7 @@ function M.setup(profile, editorconfig)
         ["<C-u>"] = cmp.mapping.scroll_docs(-4),
         ["<C-Space>"] = cmp.mapping.complete(),
         ["<C-e>"] = cmp.mapping.close(),
-        ["<CR>"] = cmp.mapping.confirm {
+        ["<CR>"] = cmp.mapping.confirm({
           behavior = (function()
             if editorconfig.editor.suggest.insertMode == "replace" then
               return cmp.ConfirmBehavior.Replace
@@ -124,12 +131,12 @@ function M.setup(profile, editorconfig)
               return cmp.ConfirmBehavior.Insert
             end
           end)(),
-          select = false,
-        },
+          select = true,
+        }),
         ["<Tab>"] = cmp.mapping(function(fallback)
           local is_luasnip_present, luasnip = pcall(require, "luasnip")
           if cmp.visible() then
-            cmp.select_next_item { behavior = cmp.SelectBehavior.Select }
+            cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
           elseif is_luasnip_present and luasnip.expand_or_jumpable() then
             luasnip.expand_or_jump()
           else
@@ -142,7 +149,7 @@ function M.setup(profile, editorconfig)
         ["<S-Tab>"] = cmp.mapping(function(fallback)
           local is_luasnip_present, luasnip = pcall(require, "luasnip")
           if cmp.visible() then
-            cmp.select_prev_item { behavior = cmp.SelectBehavior.Select }
+            cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
           elseif is_luasnip_present and luasnip.jumpable(-1) then
             luasnip.jump(-1)
           else
@@ -157,18 +164,36 @@ function M.setup(profile, editorconfig)
         ghost_text = editorconfig.editor.suggest.preview,
       },
       sources = (function()
-        local cmp_sources = {
-          { name = "nvim_lsp", keyword_count = 3 },
-          { name = "nvim_lua" },
-        }
-        if editorconfig.editor.suggest.showSnippets then
-          table.insert(cmp_sources, { name = "luasnip" })
+        local cmp_sources = {}
+        if editorconfig.editor.suggest.enabled then
+          table.insert(
+            cmp_sources,
+            {
+              name = "nvim_lsp",
+              keyword_length = 3,
+              group_index = 1,
+              entry_filter = function(entry, _)
+                local kind = cmp.lsp.CompletionItemKind[entry:get_kind()]
+                if kind == 'Text' then
+                  kind = 'Word'
+                end
+                local visible = editorconfig.editor.suggest['show' .. kind .. 's']
+                if visible ~= nil and visible == false then
+                  return false
+                end
+                return true
+              end
+            }
+          )
+          table.insert(cmp_sources, { name = "nvim_lua", group_index = 2 })
         end
-        if editorconfig.editor.suggest.showWords or editorconfig.editor.wordBasedSuggestions then
-          table.insert(cmp_sources, { name = "buffer" })
+        table.insert(cmp_sources, { name = "luasnip", group_index = 2 })
+        local text_suggestions = editorconfig.editor.wordBasedSuggestions
+        if text_suggestions and text_suggestions ~= 'off' then
+          table.insert(cmp_sources, { name = "buffer", group_index = 3 })
         end
         if editorconfig.editor.suggest.showFiles then
-          table.insert(cmp_sources, { name = "path" })
+          table.insert(cmp_sources, { name = "path", group_index = 4 })
         end
         return cmp_sources
       end)(),
