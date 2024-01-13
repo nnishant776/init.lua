@@ -420,6 +420,7 @@ function M.setup(profile, editorconfig)
   spec.config = function(_, _)
     local gcfg = editor.config(profile)
     if gcfg.editor.suggest.enabled then
+      vim.lsp.set_log_level(vim.lsp.log_levels.OFF)
       for ft in pairs(filetype_lsp_map) do
         local cfg = editor.ftconfig(ft, false)
         if cfg and cfg.editor.suggest.enabled then
