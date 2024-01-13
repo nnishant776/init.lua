@@ -17,6 +17,7 @@ local function init_highlights(opts)
       LspReferenceRead = { bg = colors.text, fg = colors.base },
       LspReferenceWrite = { bg = colors.text, fg = colors.base },
       LineNr = { bg = colors.none, fg = "Grey" },
+      CursorLineNr = { bg = colors.none, fg = "LightGrey" },
     }
     return highlights
   end
