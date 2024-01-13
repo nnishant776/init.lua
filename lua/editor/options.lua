@@ -15,6 +15,14 @@ function M.load(cfg, opts)
     opts = {}
   end
 
+  -- Sanitize config
+  if cfg.editor.quickSuggestionsDelay < 250 then
+    cfg.editor.quickSuggestionsDelay = 250
+  end
+  if cfg.editor.hover.delay < 250 then
+    cfg.editor.hover.delay = 250
+  end
+
   -- Global settings
   if opts.scope == nil or opts.scope == "global" then
     vim.api.nvim_set_option_value('ruler', false, {})
