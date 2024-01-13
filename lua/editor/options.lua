@@ -69,7 +69,7 @@ function M.load(cfg, opts)
     else
       vim.api.nvim_set_option_value('signcolumn', 'no', {})
     end
-    if vim.fn.has 'nvim-0.10' == 1 then
+    if vim.fn.has('nvim-0.10') == 1 then
       vim.api.nvim_set_option_value('smoothscroll', cfg.editor.cursorSmoothCaretAnimation == "on", {})
     end
     vim.api.nvim_set_option_value('listchars', 'trail:·,tab:➝ ,lead:·', {})
