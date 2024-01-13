@@ -110,6 +110,7 @@ function LSP:on_attach(buf_id)
   self:setup_keymaps(buf_id)
   self:setup_inlay_hints(buf_id)
   self:setup_signature_help(buf_id)
+  self:setup_hover(buf_id)
 end
 
 function LSP:setup_highlight(buf_id)
@@ -238,6 +239,22 @@ function LSP:setup_signature_help(buf_id)
         end,
         buffer = buf_id,
         desc = 'Trigger LSP signature help on cursor hold',
+      })
+    end
+  end
+end
+
+function LSP:setup_hover(buf_id)
+  if self.client.server_capabilities.hoverProvider then
+    local cfg = editor.bufconfig(buf_id)
+    if cfg.editor.hover.enabled then
+      vim.api.nvim_create_autocmd({ 'CursorHold' }, {
+        group = 'LspOperations',
+        callback = function(args)
+          vim.lsp.buf.hover()
+        end,
+        buffer = buf_id,
+        desc = "Trigger hover on cursor hold",
       })
     end
   end
