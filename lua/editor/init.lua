@@ -23,7 +23,7 @@ local default_cfg = {
     lineNumbers = 'relative',
     showPosition = false,
     showSignColumn = true,
-    highlightLine = false,
+    renderLineHighlight = 'none',
     wordWrap = 'bounded',
     wordWrapColumn = 120,
     autoIndent = 'none',
@@ -77,7 +77,7 @@ function M.config(profile)
       parsed_config.editor.showPosition = false
       parsed_config.editor.renderWhitespace = 'none'
       parsed_config.editor.insertSpaces = true
-      parsed_config.editor.highlightLine = false
+      parsed_config.editor.renderLineHighlight = 'none'
       parsed_config.editor.showSignColumn = false
     end
   end
