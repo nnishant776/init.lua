@@ -41,6 +41,7 @@ local function ibl_config(editorconfig)
         'quickfix',
         'prompt',
         'fugitive',
+        'git',
       },
       buftypes = {
         'terminal',
