@@ -29,4 +29,10 @@ function M.get_relative_file_path(opts)
   return vim.fn.fnamemodify(filename, ":~:.")
 end
 
+function M.get_cursor_position(win_id)
+  win_id = win_id or 0
+  local pos = vim.fn.getcursorcharpos(win_id)
+  return { pos[2], pos[3] }
+end
+
 return M
