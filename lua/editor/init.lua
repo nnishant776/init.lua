@@ -27,10 +27,11 @@ local default_cfg = {
     wordWrap = 'bounded',
     wordWrapColumn = 120,
     autoIndent = 'none',
+    wordBasedSuggestions = false,
+    suggestOnTriggerCharacters = false,
     rulers = {
       9999,
     },
-    suggestOnTriggerCharacters = false,
     guides = {
       indentation = false,
       context = false,
@@ -42,7 +43,6 @@ local default_cfg = {
     inlayHints = {
       enabled = 'off',
     },
-    wordBasedSuggestions = false,
     quickSuggestions = {
       other = 'off',
       comments = 'off',
@@ -135,6 +135,7 @@ function M._setup_event_listeners()
 
   -- Add triggers for dynamic configuration based on the buffer
   vim.api.nvim_create_autocmd({ 'BufEnter' }, {
+    group = 'FileTypeReloadConfig',
     callback = function(args)
       local bufnr = args.buf
       local ft = vim.api.nvim_get_option_value('filetype', { buf = bufnr })
@@ -179,7 +180,6 @@ function M._setup_event_listeners()
         end
       end
     end,
-    group = 'FileTypeReloadConfig',
     desc = 'Reload config based on file type',
   })
 end
