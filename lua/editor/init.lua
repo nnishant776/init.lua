@@ -24,10 +24,13 @@ local default_cfg = {
     showPosition = false,
     showSignColumn = true,
     renderLineHighlight = 'none',
+    occurrencesHighlight = 'off',
+    selectionHighlight = false,
     wordWrap = 'bounded',
     wordWrapColumn = 120,
     autoIndent = 'none',
     wordBasedSuggestions = false,
+    quickSuggestionsDelay = 500,
     suggestOnTriggerCharacters = false,
     rulers = {
       9999,
@@ -43,6 +46,13 @@ local default_cfg = {
     inlayHints = {
       enabled = 'off',
     },
+    hover = {
+      enabled = false,
+      delay = 500
+    },
+    semanticHighlighting = {
+      enabled = false
+    },
     quickSuggestions = {
       other = 'off',
       comments = 'off',
@@ -56,6 +66,7 @@ local default_cfg = {
       preview = true,
       insertMode = 'replace',
       filterGraceful = false,
+      signatureHelp = false,
     },
   },
 }
