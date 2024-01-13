@@ -105,21 +105,29 @@ function M.setup(profile, editorconfig)
           filepath = vim.fn.expand(filepath)
           local Job = require('plenary.job')
           local previewers = require("telescope.previewers")
-          Job:new({
-            command = "file",
-            args = { "--mime-type", "-b", filepath },
-            on_exit = function(j)
-              local mime_type = vim.split(j:result()[1], "/")[1]
-              if mime_type == "text" then
-                previewers.buffer_previewer_maker(filepath, buf_id, preview_opts)
-              else
-                -- maybe we want to write something to the buffer here
-                vim.schedule(function()
-                  vim.api.nvim_buf_set_lines(buf_id, 0, -1, false, { "BINARY" })
-                end)
+          if vim.fn.executable('file') == 0 then
+            -- maybe we want to write something to the buffer here
+            vim.schedule(function()
+              vim.api.nvim_buf_set_lines(buf_id, 0, -1, false,
+                { "Could not determin the mime type. Command 'file' not found" })
+            end)
+          else
+            Job:new({
+              command = "file",
+              args = { "--mime-type", "-b", filepath },
+              on_exit = function(j)
+                local mime_type = vim.split(j:result()[1], "/")[1]
+                if mime_type == "text" then
+                  previewers.buffer_previewer_maker(filepath, buf_id, preview_opts)
+                else
+                  -- maybe we want to write something to the buffer here
+                  vim.schedule(function()
+                    vim.api.nvim_buf_set_lines(buf_id, 0, -1, false, { "BINARY" })
+                  end)
+                end
               end
-            end
-          }):sync()
+            }):sync()
+          end
         end,
         file_previewer = require("telescope.previewers").vim_buffer_cat.new,
         grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
