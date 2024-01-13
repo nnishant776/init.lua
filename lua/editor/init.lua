@@ -148,6 +148,7 @@ end
 function M._setup_event_listeners()
   vim.api.nvim_create_augroup('FileTypeReloadConfig', { clear = true })
   vim.api.nvim_create_augroup('GenericPreWriteTasks', { clear = true })
+  vim.api.nvim_create_augroup('DynamicEditorOptions', { clear = true })
 
   -- Add triggers for dynamic configuration based on the buffer
   vim.api.nvim_create_autocmd({ 'BufEnter' }, {
@@ -197,6 +198,20 @@ function M._setup_event_listeners()
       end
     end,
     desc = 'Reload config based on file type',
+  })
+
+  -- Modify options based on editor mode
+  vim.api.nvim_create_autocmd({ 'InsertEnter', 'InsertLeave' }, {
+    group = 'DynamicEditorOptions',
+    callback = function(args)
+      local update_time = vim.api.nvim_get_option_value('updatetime', {})
+      if args.event == 'InsertEnter' then
+        vim.api.nvim_set_option_value('updatetime', update_time / 2, {})
+      elseif args.event == 'InsertLeave' then
+        vim.api.nvim_set_option_value('updatetime', update_time * 2, {})
+      end
+    end,
+    desc = 'Update editor options dynamically'
   })
 end
 
