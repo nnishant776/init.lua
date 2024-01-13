@@ -11,6 +11,31 @@ local spec = {
 
 local M = {}
 
+local function get_grep_cmd()
+  if vim.fn.executable('rg') == 1 then
+    return {
+      "rg",
+      "-L",
+      "--color=never",
+      "--no-heading",
+      "--with-filename",
+      "--line-number",
+      "--column",
+      "--smart-case",
+    }
+  else
+    return {
+      "grep",
+      "-s",
+      "-b",
+      "-R",
+      "--color=never",
+      "--with-filename",
+      "--line-number",
+    }
+  end
+end
+
 function M.is_enabled(profile, _)
   if profile.minimal or profile.default then
     return false
@@ -26,16 +51,7 @@ function M.setup(profile, editorconfig)
   end
   spec.opts = {
     defaults = {
-      vimgrep_arguments = {
-        "rg",
-        "-L",
-        "--color=never",
-        "--no-heading",
-        "--with-filename",
-        "--line-number",
-        "--column",
-        "--smart-case",
-      },
+      vimgrep_arguments = get_grep_cmd(),
       prompt_prefix = "   ",
       selection_caret = "  ",
       entry_prefix = "  ",
