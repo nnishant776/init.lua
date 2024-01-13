@@ -164,7 +164,7 @@ function LSP:setup_inlay_hints(buf_id)
       local ft = vim.api.nvim_get_option_value('filetype', { buf = buf_id })
       local cfg = editor.ftconfig(ft, true)
       local is_file_size_big = fsutils.is_file_size_big(buf_id, max_buffer_size)
-      local is_inlay_hints_enabled = cfg.editor.inlayHints.enabled ~= nil and cfg.editor.inlayHints.enabled ~= 'off'
+      local is_inlay_hints_enabled = cfg.editor.inlayHints.enabled ~= 'off'
       if not is_file_size_big and is_inlay_hints_enabled then
         vim.lsp.inlay_hint.enable(buf_id, true)
       end
