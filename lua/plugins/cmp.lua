@@ -201,7 +201,7 @@ function M.setup(profile, editorconfig)
         if text_suggestions and text_suggestions ~= 'off' then
           table.insert(cmp_sources, { name = "buffer", group_index = 3 })
         end
-        if editorconfig.editor.suggest.showFiles then
+        if editorconfig.editor.suggest.showFiles == true then
           table.insert(cmp_sources, { name = "path", group_index = 4 })
         end
         return cmp_sources
