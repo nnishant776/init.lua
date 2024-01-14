@@ -60,9 +60,6 @@ local default_cfg = {
     },
     suggest = {
       enabled = false,
-      showWords = false,
-      showSnippets = true,
-      showFiles = true,
       preview = true,
       insertMode = 'replace',
       filterGraceful = false,
