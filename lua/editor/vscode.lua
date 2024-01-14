@@ -12,7 +12,7 @@ end
 local function read_project_config()
   local config = {}
   local settings = {}
-  local workspace_cfg_list = vim.fn.glob '*.code-workspace'
+  local workspace_cfg_list = vim.fn.glob('*.code-workspace')
   if workspace_cfg_list ~= '' then
     local workspace_cfgs = vim.split(workspace_cfg_list, '\n', { plain = true })
     local workspace_cfg
