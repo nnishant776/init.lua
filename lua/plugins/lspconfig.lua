@@ -259,7 +259,7 @@ end
 
 function LSP:setup_hover(buf_id)
   if self.client.server_capabilities.hoverProvider then
-    local cfg = editor.bufconfig(buf_id)
+    local cfg = editor.bufconfig(buf_id, true)
     if cfg.editor.hover.enabled then
       vim.api.nvim_create_autocmd({ 'CursorHold' }, {
         group = 'LspOperations',
