@@ -101,10 +101,24 @@ function M.setup(profile, editorconfig)
         { 'filetype',   draw_empty = false, padding = 1 },
       },
       lualine_y = {
-        { 'progress', draw_empty = false, padding = 1 },
+        {
+          'progress',
+          draw_empty = false,
+          padding = 1,
+          cond = function()
+            return editorconfig.editor.showPosition
+          end,
+        },
       },
       lualine_z = {
-        { 'location', draw_empty = false, padding = 1 },
+        {
+          'location',
+          draw_empty = false,
+          padding = 1,
+          cond = function()
+            return editorconfig.editor.showPosition
+          end,
+        },
       },
     },
     inactive_sections = {
