@@ -40,7 +40,7 @@ end
 
 local function read_global_config()
   local settings = {}
-  local vsc_cfg_path = vim.fn.expand '~/.config/Code/User/settings.json'
+  local vsc_cfg_path = vim.fn.expand '~/.config/nvim/settings.json'
   local json_str = read_file(vsc_cfg_path)
   if json_str ~= '' then
     settings = vim.fn.json_decode(json_str)

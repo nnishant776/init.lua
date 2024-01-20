@@ -1,0 +1,65 @@
+{
+    "files.eol": "\n",
+    "files.encoding": "utf8",
+    "files.exclude": {
+        "**/.cache/**": true
+    },
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": false,
+    "files.trimTrailingWhitespace": false,
+    "files.watcherExclude": {
+        "**/.cache/**": true,
+        "**/.git/objects/**": false,
+        "**/.git/subtree-cache/**": false,
+        "**/build/**": true,
+        "**/CMakeCache.txt": true,
+        "**/CMakeFiles/**": true,
+        "**/node_modules/**": true
+    },
+    "editor.autoIndent": "none",
+    "editor.cursorSmoothCaretAnimation": "on",
+    "editor.detectIndentation": false,
+    "editor.formatOnPaste": false,
+    "editor.formatOnSave": false,
+    "editor.insertSpaces": true,
+    "editor.lineNumbers": "relative",
+    "editor.occurrencesHighlight": "off",
+    "editor.quickSuggestions": {
+        "other": "off",
+        "comments": "off",
+        "strings": "off"
+    },
+    "editor.quickSuggestionsDelay": 500,
+    "editor.renderWhitespace": "none",
+    "editor.renderLineHighlight": "none",
+    "editor.rulers": [
+        9999
+    ],
+    "editor.selectionHighlight": false,
+    "editor.showPosition": false,
+    "editor.showSigncolumn": true,
+    "editor.suggestOnTriggerCharacters": false,
+    "editor.tabSize": 4,
+    "editor.wordBasedSuggestions": "off",
+    "editor.wordWrap": "bounded",
+    "editor.wordWrapColumn": 120,
+    "editor.guides.bracketPairs": false,
+    "editor.guides.context": false,
+    "editor.guides.highlightActiveBracketPair": false,
+    "editor.guides.highlightActiveIndentation": false,
+    "editor.guides.indentation": false,
+    "editor.inlayHints.enabled": "off",
+    "editor.hover.enabled": false,
+    "editor.hover.delay": 500,
+    "editor.semanticHighlighting.enabled": false,
+    "editor.suggest.filterGraceful": false,
+    "editor.suggest.insertMode": "replace",
+    "editor.suggest.localityBonus": false,
+    "editor.suggest.preview": true,
+    "editor.suggest.showWords": false,
+    "editor.suggest.signatureHelp": false,
+    "window.filename": "base",
+    "[yaml]": {
+        "editor.tabSize": 2
+    }
+}
