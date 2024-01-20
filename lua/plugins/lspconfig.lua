@@ -40,7 +40,7 @@ function LSP:default_lsp_capabilities()
 
   capabilities.textDocument.completion.completionItem = {
     documentationFormat = { 'markdown', 'plaintext' },
-    snippetSupport = false,
+    snippetSupport = true,
     preselectSupport = false,
     insertReplaceSupport = true,
     labelDetailsSupport = true,
