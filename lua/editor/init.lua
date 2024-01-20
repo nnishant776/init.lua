@@ -3,45 +3,50 @@ local M = {}
 
 local default_cfg = {
   files = {
+    eol = '\n',
+    encoding = 'utf8',
     exclude = {
       ['**/.cache/**'] = true,
     },
+    insertFinalNewline = true,
     trimFinalNewlines = false,
     trimTrailingWhitespace = false,
   },
-  window = {
-    filename = 'base', -- possible values: base, rootrel, absolute
-  },
   editor = {
+    autoIndent = 'none',
+    cursorSmoothCaretAnimation = "on",
+    detectIndentation = false,
     formatOnPaste = false,
     formatOnSave = false,
-    insertSpaces = false,
-    tabSize = 8,
-    detectIndentation = false,
-    cursorSmoothCaretAnimation = "on",
-    renderWhitespace = 'all',
+    insertSpaces = true,
     lineNumbers = 'relative',
-    showPosition = false,
-    showSignColumn = true,
-    renderLineHighlight = 'none',
     occurrencesHighlight = 'off',
-    selectionHighlight = false,
-    wordWrap = 'bounded',
-    wordWrapColumn = 120,
-    autoIndent = 'none',
-    wordBasedSuggestions = false,
+    quickSuggestions = {
+      other = 'off',
+      comments = 'off',
+      strings = 'off',
+    },
     quickSuggestionsDelay = 500,
-    suggestOnTriggerCharacters = false,
+    renderLineHighlight = 'none',
+    renderWhitespace = 'none',
     rulers = {
       9999,
     },
+    selectionHighlight = false,
+    showPosition = false,
+    showSignColumn = true,
+    suggestOnTriggerCharacters = false,
+    tabSize = 4,
+    wordBasedSuggestions = 'off',
+    wordWrap = 'bounded',
+    wordWrapColumn = 120,
     guides = {
-      indentation = false,
+      bracketPairs = false,
+      bracketPairsHorizontal = false,
       context = false,
       highlightActiveBracketPair = false,
       highlightActiveIndentation = false,
-      bracketPairs = false,
-      bracketPairsHorizontal = false,
+      indentation = false,
     },
     inlayHints = {
       enabled = 'off',
@@ -53,18 +58,18 @@ local default_cfg = {
     semanticHighlighting = {
       enabled = false
     },
-    quickSuggestions = {
-      other = 'off',
-      comments = 'off',
-      strings = 'off',
-    },
     suggest = {
       enabled = false,
-      preview = true,
-      insertMode = 'replace',
       filterGraceful = false,
+      insertMode = 'replace',
+      localityBonus = false,
+      preview = true,
+      showWords = false,
       signatureHelp = false,
     },
+  },
+  window = {
+    filename = 'base', -- possible values: base, rootrel, absolute
   },
 }
 
