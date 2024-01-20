@@ -211,27 +211,6 @@ function LSP:setup_signature_help(buf_id)
     end
     local cfg = editor.bufconfig(buf_id, true)
     if cfg.editor.suggest.signatureHelp then
-      vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
-        function(err, result, context, config)
-          if not result then
-            return
-          end
-          if not result.signatures then
-            return
-          end
-
-          -- Remove documentation from signature help
-          for _, sigs in ipairs(result.signatures) do
-            sigs.documentation = nil
-          end
-
-          vim.lsp.handlers.signature_help(err, result, context, config)
-        end,
-        {
-          focusable = false,
-          focus = false,
-        }
-      )
       vim.api.nvim_create_autocmd({ 'CursorHoldI' }, {
         group = 'LspOperations',
         callback = function(_)
@@ -432,6 +411,27 @@ function M.setup(profile, editorconfig)
   end
   spec.config = function(_, _)
     local gcfg = editor.config(profile)
+    vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
+      function(err, result, context, config)
+        if not result then
+          return
+        end
+        if not result.signatures then
+          return
+        end
+
+        -- Remove documentation from signature help
+        for _, sigs in ipairs(result.signatures) do
+          sigs.documentation = nil
+        end
+
+        vim.lsp.handlers.signature_help(err, result, context, config)
+      end,
+      {
+        focusable = false,
+        focus = false,
+      }
+    )
     if gcfg.editor.suggest.enabled then
       vim.lsp.set_log_level(vim.lsp.log_levels.OFF)
       for ft in pairs(filetype_lsp_map) do
