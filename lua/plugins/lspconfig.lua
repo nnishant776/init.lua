@@ -115,6 +115,9 @@ end
 
 function LSP:setup_highlight(buf_id)
   buf_id = buf_id or 0
+
+  local cfg = editor.bufconfig(buf_id, true)
+
   if self.client.server_capabilities.documentHighlightProvider then
     vim.api.nvim_buf_create_user_command(buf_id, 'LspSetHighlight', function()
       vim.lsp.buf.document_highlight()
@@ -122,11 +125,10 @@ function LSP:setup_highlight(buf_id)
     vim.api.nvim_buf_create_user_command(buf_id, 'LspClearHighlight', function()
       vim.lsp.buf.clear_references()
     end, {})
-    local cfg = editor.bufconfig(buf_id)
     if cfg.editor.occurrencesHighlight ~= 'off' then
       vim.api.nvim_create_autocmd({ 'CursorHold' }, {
         group = 'LspOperations',
-        callback = function(args)
+        callback = function(_)
           vim.cmd("LspClearHighlight")
           vim.cmd("LspSetHighlight")
         end,
@@ -136,7 +138,6 @@ function LSP:setup_highlight(buf_id)
     end
   end
   if self.client.server_capabilities.semanticTokensProvider then
-    local cfg = editor.bufconfig(buf_id, true)
     if not cfg.editor.semanticHighlighting.enabled then
       -- Disable semantic tokens if disabled in config
       self.client.server_capabilities.semanticTokensProvider = nil
@@ -233,7 +234,7 @@ function LSP:setup_signature_help(buf_id)
       )
       vim.api.nvim_create_autocmd({ 'CursorHoldI' }, {
         group = 'LspOperations',
-        callback = function(args)
+        callback = function(_)
           local node = vim.treesitter.get_node({})
           if node == nil then
             return
@@ -262,7 +263,7 @@ function LSP:setup_hover(buf_id)
     if cfg.editor.hover.enabled then
       vim.api.nvim_create_autocmd({ 'CursorHold' }, {
         group = 'LspOperations',
-        callback = function(args)
+        callback = function(_)
           vim.lsp.buf.hover()
         end,
         buffer = buf_id,
