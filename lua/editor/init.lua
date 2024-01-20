@@ -273,6 +273,10 @@ function M.init(profile, editorconfig, buf_id)
     vim.g["loaded_" .. plugin] = 1
   end
 
+  if (profile and profile.minimal) or not editorconfig.editor.guides.bracketPairs then
+    vim.g["loaded_matchparen"] = 1
+  end
+
   -- Disable some builtin providers
   local default_providers = {
     "node",
