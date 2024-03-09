@@ -102,9 +102,8 @@ function M.load(cfg, opts)
     vim.api.nvim_set_option_value('cursorline', cfg.editor.renderLineHighlight ~= 'none', opts)
     vim.api.nvim_set_option_value('autoindent', cfg.editor.autoIndent ~= 'none', opts)
     vim.api.nvim_set_option_value('colorcolumn', table.concat(cfg.editor.rulers or { 9999 }, ','), opts)
-    vim.api.nvim_set_option_value('wrap', cfg.editor.wordWrap ~= '', opts)
-    vim.api.nvim_set_option_value('wrapmargin', cfg.editor.wordWrapColumn, opts)
-    vim.api.nvim_set_option_value('textwidth', cfg.editor.wordWrapColumn, opts)
+    vim.api.nvim_set_option_value('wrapmargin', cfg.editor.wordWrapColumn or 0, opts)
+    vim.api.nvim_set_option_value('textwidth', cfg.editor.wordWrapColumn or 0, opts)
   end
 end
 
