@@ -39,4 +39,32 @@ function M.is_buf_valid(buf_id)
   return true
 end
 
+--- @param key string
+--- @param val any
+--- @param ignore_pattern_list table
+--- @return table
+-- This function takes in a key in the JSON config and the associated
+-- value and then converts it into a object hierarchy with the value
+-- attached to the leaf node
+function M.parse_config_key_val(key, val, ignore_pattern_list)
+  local config = {}
+
+  for _, pat in ipairs(ignore_pattern_list) do
+    if string.match(key, pat) then
+      return config
+    end
+  end
+
+  local sub_key_list = split(key, '.')
+
+  config[sub_key_list[#sub_key_list]] = val
+  for i = #sub_key_list - 1, 1, -1 do
+    local sub_config = {}
+    sub_config[sub_key_list[i]] = config
+    config = sub_config
+  end
+
+  return config
+end
+
 return M
