@@ -315,6 +315,61 @@ function M.init(profile, editorconfig, buf_id)
   for hl_name, hl_cfg in pairs(highlights) do
     vim.api.nvim_set_hl(0, hl_name, hl_cfg)
   end
+
+  -- Setup editor global commands
+  M.setup_global_commands()
+end
+
+local function convert(v, typ)
+  if typ == 'number' then
+    return tonumber(v)
+  elseif typ == 'boolean' then
+    if v == "true" then
+      return true
+    else
+      return false
+    end
+  else
+    return v
+  end
+end
+
+function M.setup_global_commands()
+  -- Update config command
+  -- This command will accept the first argument as the filetype for which the config should be updated.
+  -- Pass an empty string to update the global config.
+  -- The second argument will be the json key in the setting.json on which the update will be applied
+  -- The third argument will be the value itself
+  vim.api.nvim_create_user_command(
+    "UpdateConfig",
+    function(args)
+      if #args.fargs < 4 then
+        print("invalid arg count", #args.fargs)
+        return
+      end
+      local ft = args.fargs[1]
+      local key = args.fargs[2]
+      local val = convert(args.fargs[3], args.fargs[4])
+      local cfg_patch = require('editor.config').parse_key_val(key, val, { '%*%*' })
+      if ft ~= "" then
+        local lang_key = '[' .. ft .. ']'
+        local lang_cfg = vim.g.config[lang_key]
+        lang_cfg = vim.tbl_deep_extend("force", lang_cfg or {}, cfg_patch)
+        local global_cfg = vim.g.config
+        global_cfg[lang_key] = lang_cfg
+        vim.g.config = global_cfg
+        local ft_config = vim.g.ft_config
+        if ft_config then
+          ft_config[ft] = {}
+          vim.g.ft_config = ft_config
+        end
+        M.ftconfig(ft, true)
+      else
+        vim.g.config = vim.tbl_deep_extend("force", vim.g.config, cfg_patch)
+      end
+    end,
+    { nargs = '*' }
+  )
 end
 
 return M
