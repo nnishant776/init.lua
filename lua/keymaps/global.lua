@@ -48,42 +48,42 @@ function M.setup(opts)
       action = "<Esc>",
       opts = { desc = "Exit insert mode" },
     },
-    {
-      mode = { 'n', 'x' },
-      input_keys = "j",
-      action = 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"',
-      opts = {
-        desc = "Move down skipping folds",
-        expr = true
-      },
-    },
-    {
-      mode = { 'n', 'x' },
-      input_keys = "k",
-      action = 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"',
-      opts = {
-        desc = "Move up skipping folds",
-        expr = true
-      },
-    },
-    {
-      mode = { 'n', 'v' },
-      input_keys = "<Down>",
-      action = 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"',
-      opts = {
-        desc = "Move down skipping folds",
-        expr = true
-      },
-    },
-    {
-      mode = { 'n', 'v' },
-      input_keys = "<Up>",
-      action = 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"',
-      opts = {
-        desc = "Move up skipping folds",
-        expr = true
-      },
-    },
+    -- {
+    --   mode = { 'n', 'x' },
+    --   input_keys = "j",
+    --   action = 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"',
+    --   opts = {
+    --     desc = "Move down skipping folds",
+    --     expr = true
+    --   },
+    -- },
+    -- {
+    --   mode = { 'n', 'x' },
+    --   input_keys = "k",
+    --   action = 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"',
+    --   opts = {
+    --     desc = "Move up skipping folds",
+    --     expr = true
+    --   },
+    -- },
+    -- {
+    --   mode = { 'n', 'v' },
+    --   input_keys = "<Down>",
+    --   action = 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"',
+    --   opts = {
+    --     desc = "Move down skipping folds",
+    --     expr = true
+    --   },
+    -- },
+    -- {
+    --   mode = { 'n', 'v' },
+    --   input_keys = "<Up>",
+    --   action = 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"',
+    --   opts = {
+    --     desc = "Move up skipping folds",
+    --     expr = true
+    --   },
+    -- },
     {
       mode = { 'n' },
       input_keys = "[{",
