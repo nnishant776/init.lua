@@ -11,4 +11,14 @@ function M.is_file_size_big(buf_id, size)
   return false
 end
 
+--- @param filename string
+function M.read_file(filename)
+  local file = io.open(filename, 'r')
+  if file ~= nil then
+    return file:read('*a')
+  else
+    return ''
+  end
+end
+
 return M
