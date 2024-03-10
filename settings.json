@@ -37,7 +37,7 @@
     ],
     "editor.selectionHighlight": false,
     "editor.showPosition": false,
-    "editor.showSigncolumn": true,
+    "editor.showSignColumn": true,
     "editor.suggestOnTriggerCharacters": false,
     "editor.tabSize": 4,
     "editor.wordBasedSuggestions": "off",
