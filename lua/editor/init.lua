@@ -330,6 +330,15 @@ local function convert(v, typ)
       return false
     end
   else
+    if v == 'empty' then
+      if typ == 'string' then
+        v = ''
+      elseif typ == 'list' or typ == 'object' then
+        v = {}
+      end
+    elseif v == 'nil' then
+      v = nil
+    end
     return v
   end
 end
