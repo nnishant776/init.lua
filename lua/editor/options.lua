@@ -72,7 +72,7 @@ function M.load(cfg, opts)
     vim.api.nvim_set_option_value('virtualedit', 'block', {})
     vim.api.nvim_set_option_value('wildmode', 'longest:full,full', {})
     vim.api.nvim_set_option_value('winminwidth', 5, {})
-    vim.api.nvim_set_option_value('wrap', cfg.editor.wordWrap ~= '', {})
+    vim.api.nvim_set_option_value('wrap', cfg.editor.wordWrap ~= '' and cfg.editor.wordWrap ~= nil, {})
     if cfg.editor.showSignColumn then
       vim.api.nvim_set_option_value('signcolumn', 'yes', {})
     else
