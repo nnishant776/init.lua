@@ -13,6 +13,9 @@ function M.trim_final_newlines(buf_id)
   end
 end
 
+-- FIXME: This API ddesn't support buffer specific operation and will always
+-- assume the current buffer. This is due to a lack of a performant algorithm.
+-- Will fix later.
 function M.trim_trailing_whitespace(buf_id)
   vim.cmd [[ silent! %s/\s\+$//g ]]
   -- buf_id = buf_id or 0

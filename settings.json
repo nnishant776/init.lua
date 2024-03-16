@@ -37,7 +37,7 @@
     ],
     "editor.selectionHighlight": false,
     "editor.showPosition": false,
-    "editor.showSigncolumn": true,
+    "editor.showSignColumn": true,
     "editor.suggestOnTriggerCharacters": false,
     "editor.tabSize": 4,
     "editor.wordBasedSuggestions": "off",
@@ -59,6 +59,7 @@
     "editor.suggest.showWords": false,
     "editor.suggest.signatureHelp": false,
     "window.filename": "base",
+    "window.cmdHeight": 1,
     "[yaml]": {
         "editor.tabSize": 2
     }

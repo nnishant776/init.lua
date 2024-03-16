@@ -70,6 +70,7 @@ local default_cfg = {
   },
   window = {
     filename = 'base', -- possible values: base, rootrel, absolute
+    cmdHeight = 1,
   },
 }
 
@@ -330,6 +331,15 @@ local function convert(v, typ)
       return false
     end
   else
+    if v == 'empty' then
+      if typ == 'string' then
+        v = ''
+      elseif typ == 'list' or typ == 'object' then
+        v = {}
+      end
+    elseif v == 'nil' then
+      v = nil
+    end
     return v
   end
 end
@@ -343,13 +353,16 @@ function M.setup_global_commands()
   vim.api.nvim_create_user_command(
     "UpdateConfig",
     function(args)
-      if #args.fargs < 4 then
+      if #args.fargs < 3 then
         print("invalid arg count", #args.fargs)
         return
       end
-      local ft = args.fargs[1]
-      local key = args.fargs[2]
-      local val = convert(args.fargs[3], args.fargs[4])
+      local ft = ""
+      if #args.fargs == 4 then
+        ft = args.fargs[4]
+      end
+      local key = args.fargs[1]
+      local val = convert(args.fargs[2], args.fargs[3])
       local cfg_patch = require('editor.config').parse_key_val(key, val, { '%*%*' })
       if ft ~= "" then
         local lang_key = '[' .. ft .. ']'
@@ -367,8 +380,16 @@ function M.setup_global_commands()
       else
         vim.g.config = vim.tbl_deep_extend("force", vim.g.config, cfg_patch)
       end
+      local profile = require('profiles').init()
+      local editorcfg = vim.g.config
+      if ft ~= "" then
+        editorcfg = M.ftconfig(ft, true)
+        M.init(profile, editorcfg, 0)
+      else
+        M.init(profile, editorcfg)
+      end
     end,
-    { nargs = '*' }
+    { nargs = '*', force = true }
   )
 end
 

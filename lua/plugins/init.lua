@@ -15,6 +15,7 @@ local all_plugin_list = {
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
   'lewis6991/gitsigns.nvim',
+  'NeogitOrg/neogit',
 
   -- Editing
   'tpope/vim-sleuth',
@@ -72,6 +73,7 @@ local primary_plugin_list = {
 
   -- VCS
   'tpope/vim-fugitive',
+  'NeogitOrg/neogit',
 
   -- Editing
   'tpope/vim-sleuth',
@@ -127,6 +129,7 @@ local name_mapper = {
   ['williamboman/mason-lspconfig.nvim'] = 'mason-lspconfig',
   ['windwp/nvim-autopairs'] = 'nvim-autopairs',
   ['j-hui/fidget.nvim'] = 'fidget',
+  ['NeogitOrg/neogit'] = 'neogit',
 }
 
 function M.list_all()
