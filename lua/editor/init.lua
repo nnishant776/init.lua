@@ -70,6 +70,7 @@ local default_cfg = {
   },
   window = {
     filename = 'base', -- possible values: base, rootrel, absolute
+    cmdHeight = 1,
   },
 }
 
