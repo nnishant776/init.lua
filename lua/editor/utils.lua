@@ -10,6 +10,7 @@ local exclude = {
     ['TelescopePrompt'] = true,
     ['TelescopeResults'] = true,
     ['fugitive'] = true,
+    ['NeogitStatus'] = true,
   },
   buftypes = {
     ['nofile'] = true,
