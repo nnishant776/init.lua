@@ -59,6 +59,7 @@
     "editor.suggest.showWords": false,
     "editor.suggest.signatureHelp": false,
     "window.filename": "base",
+    "window.cmdHeight": 1,
     "[yaml]": {
         "editor.tabSize": 2
     }
