@@ -86,6 +86,22 @@ function M.setup(opts)
     -- },
     {
       mode = { 'n' },
+      input_keys = "[q",
+      action = '<cmd>cprev<CR>',
+      opts = {
+        desc = "Move to previous item in quickfix list",
+      },
+    },
+    {
+      mode = { 'n' },
+      input_keys = "]q",
+      action = '<cmd>cnext<CR>',
+      opts = {
+        desc = "Move to next item in quickfix list",
+      },
+    },
+    {
+      mode = { 'n' },
       input_keys = "[{",
       action = function()
         local start_line, start_col, _, _ = require('utils.treesitter').context_range()
