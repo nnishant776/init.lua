@@ -62,5 +62,8 @@
     "window.cmdHeight": 1,
     "[yaml]": {
         "editor.tabSize": 2
+    },
+    "[markdown]": {
+        "editor.tabSize": 2
     }
 }
