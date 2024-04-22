@@ -13,12 +13,47 @@ local spec = {
 local editor = require('editor')
 local fsutils = require("utils.fs")
 
+local filetype_lsp_map = {
+  ['c'] = 'clangd',
+  ['cpp'] = 'clangd',
+  ['python'] = 'pyright',
+  ['go'] = 'gopls',
+  ['zig'] = 'zls',
+  ['rust'] = 'rust_analyzer',
+  ['lua'] = 'lua_ls',
+}
+
+local lsp_executable_map = {
+  ['clangd'] = { 'clangd' },
+  ['pyright'] = { 'pyright-langserver' },
+  ['gopls'] = { 'go', 'gopls' },
+  ['rust_analyzer'] = { 'rust-analyzer' },
+  ['lua_ls'] = { 'lua-language-server', 'luau-lsp' },
+  ['zls'] = { 'zls' },
+  ['pylint'] = { 'pylint' },
+}
+
 vim.api.nvim_create_augroup('LspAutoFormat', { clear = true })
 vim.api.nvim_create_augroup('LspOperations', { clear = true })
 
 local LSP = {}
 
 function LSP.new(server_name, settings, capabilities, launch_cfg)
+  local executable_list = lsp_executable_map[server_name]
+
+  if executable_list then
+    for _, executable_name in ipairs(executable_list) do
+      local executable_exists = vim.fn.executable(executable_name) == 1
+      if not executable_exists then
+        local mason_path = vim.fn.stdpath('data') .. '/mason/bin'
+        local executable_path = mason_path .. '/' .. executable_name
+        if vim.fn.exepath(executable_path) == '' then
+          return nil
+        end
+      end
+    end
+  end
+
   return setmetatable({
     done = false,
     name = server_name,
@@ -264,16 +299,6 @@ function LSP:is_setup_done()
   return self.done
 end
 
-local filetype_lsp_map = {
-  ['c'] = 'clangd',
-  ['cpp'] = 'clangd',
-  ['python'] = 'pyright',
-  ['go'] = 'gopls',
-  ['zig'] = 'zls',
-  ['rust'] = 'rust_analyzer',
-  ['lua'] = 'lua_ls',
-}
-
 local lang_server_map = {
   ['clangd'] = LSP.new(
     'clangd',
@@ -449,8 +474,12 @@ function M.setup_lsp(ft, editorconfig)
   if lang_server then
     if editorconfig.editor.suggest.enabled then
       local ls = lang_server_map[lang_server]
-      if ls and not ls:is_setup_done() then
-        ls:setup({})
+      if not ls then
+        vim.print("Setup incomplete for " .. lang_server .. ".")
+      else
+        if not ls:is_setup_done() then
+          ls:setup({})
+        end
       end
     end
   end
