@@ -60,6 +60,12 @@
     "editor.suggest.signatureHelp": false,
     "window.filename": "base",
     "window.cmdHeight": 1,
+    "[go]": {
+        "editor.tabSize": 8,
+        "editor.insertSpaces": false,
+        "editor.formatOnSave": true,
+        "editor.guides.context": false
+    },
     "[yaml]": {
         "editor.tabSize": 2
     },
