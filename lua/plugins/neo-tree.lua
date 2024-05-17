@@ -30,7 +30,7 @@ function M.setup(profile, editorconfig)
     close_if_last_window = false,
     popup_border_style = 'rounded',
     enable_git_status = true,
-    enable_diagnostics = true,
+    enable_diagnostics = false,
     enable_normal_mode_for_inputs = false,
     open_files_do_not_replace_types = { "terminal", "Trouble", "trouble", "qf", "Outline" },
     sort_case_insensitive = false,
