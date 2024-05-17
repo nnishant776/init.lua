@@ -215,15 +215,15 @@ function LSP:setup_formatting(buf_id)
 end
 
 function LSP:setup_inlay_hints(buf_id)
-  if self.client.server_capabilities.inlayHintProvider then
-    if not vim.lsp.inlay_hint.is_enabled(buf_id) then
+  if self.client.server_capabilities.inlayHintProvider and vim.fn.has('nvim-0.10') == 1 then
+    if not vim.lsp.inlay_hint.is_enabled({ bufnr = buf_id }) then
       local max_buffer_size = 100 * 1024 -- 100KiB
       local ft = vim.api.nvim_get_option_value('filetype', { buf = buf_id })
       local cfg = editor.ftconfig(ft, true)
       local is_file_size_big = fsutils.is_file_size_big(buf_id, max_buffer_size)
       local is_inlay_hints_enabled = cfg.editor.inlayHints.enabled ~= 'off'
       if not is_file_size_big and is_inlay_hints_enabled then
-        vim.lsp.inlay_hint.enable(buf_id, true)
+        vim.lsp.inlay_hint.enable(true, { bufnr = buf_id })
       end
     end
   end
