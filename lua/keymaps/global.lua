@@ -201,6 +201,16 @@ function M.setup(opts)
       opts = {
         desc = 'Toggle dark mode',
       },
+    },
+    {
+      mode = { 'n' },
+      input_keys = "<leader>bw",
+      action = function()
+        vim.cmd [[ bwipeout ]]
+      end,
+      opts = {
+        desc = 'Toggle dark mode',
+      },
     }
   }
 
