@@ -371,7 +371,7 @@ function M.setup(opts)
     },
     {
       mode = { 'n' },
-      input_keys = "<leader>lD",
+      input_keys = "<leader>lDw",
       action = function()
         local is_lsp_present, _ = pcall(require, 'lspconfig')
         if not is_lsp_present then
@@ -385,6 +385,23 @@ function M.setup(opts)
         end
       end,
       opts = { desc = "List project diagnostics" },
+    },
+    {
+      mode = { 'n' },
+      input_keys = "<leader>lDd",
+      action = function()
+        local is_lsp_present, _ = pcall(require, 'lspconfig')
+        if not is_lsp_present then
+          return
+        end
+        local is_telescope_present, telescope = pcall(require, 'telescope.builtin')
+        if is_telescope_present then
+          telescope.diagnostics({ bufnr = 0 })
+        else
+          vim.diagnostic.setqflist()
+        end
+      end,
+      opts = { desc = "List document diagnostics" },
     },
     {
       mode = { 'n' },
