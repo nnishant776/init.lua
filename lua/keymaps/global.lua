@@ -102,6 +102,22 @@ function M.setup(opts)
     },
     {
       mode = { 'n' },
+      input_keys = "[l",
+      action = '<cmd>lprevious<CR>',
+      opts = {
+        desc = "Move to previous item in location list",
+      },
+    },
+    {
+      mode = { 'n' },
+      input_keys = "]l",
+      action = '<cmd>lnext<CR>',
+      opts = {
+        desc = "Move to next item in location list",
+      },
+    },
+    {
+      mode = { 'n' },
       input_keys = "[{",
       action = function()
         local start_line, start_col, _, _ = require('utils.treesitter').context_range()
