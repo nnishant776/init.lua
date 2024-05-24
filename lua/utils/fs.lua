@@ -21,4 +21,15 @@ function M.read_file(filename)
   end
 end
 
+--- @param filename string
+--- @param content string
+function M.write_file(filename, content)
+  local file = io.open(filename, 'w')
+  if file ~= nil then
+    return file:write(content)
+  else
+    return ''
+  end
+end
+
 return M
