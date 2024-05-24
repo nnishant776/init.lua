@@ -18,7 +18,7 @@ function M.is_enabled(profile, editorconfig)
   if profile.minimal or profile.default then
     return false
   else
-    return editorconfig.editor.suggest.enabled
+    return true
   end
 end
 
@@ -56,12 +56,12 @@ function M.setup(profile, editorconfig)
         if vim.api.nvim_get_mode().mode == "c" then
           return true
         else
-          local is_suggest_enabled = editorconfig.editor.suggest.enabled
-          local is_comment_suggest_enabled = not context.in_treesitter_capture("comment")
-              and not context.in_syntax_group("Comment")
+          local is_suggest_enabled = editorconfig.editor.quickSuggestions.other ~= "off"
           if not is_suggest_enabled then
             return false
           end
+          local is_comment_suggest_enabled = not context.in_treesitter_capture("comment")
+              and not context.in_syntax_group("Comment")
           return is_comment_suggest_enabled or editorconfig.editor.quickSuggestions.comments ~= "off"
         end
       end,
@@ -174,7 +174,7 @@ function M.setup(profile, editorconfig)
       },
       sources = (function()
         local cmp_sources = {}
-        if editorconfig.editor.suggest.enabled then
+        if editorconfig.editor.quickSuggestions.other ~= "off" then
           table.insert(
             cmp_sources,
             {
