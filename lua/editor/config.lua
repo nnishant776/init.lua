@@ -36,7 +36,7 @@ local function read_global_config()
   local vsc_cfg_path = vim.fn.expand('~/.config/nvim/settings.json')
   local json_str = fsutils.read_file(vsc_cfg_path)
   if json_str ~= '' then
-    settings = vim.fn.json_decode(json_str)
+    settings = vim.json.decode(json_str)
   end
   if not settings then
     settings = {}
