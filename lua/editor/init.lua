@@ -75,7 +75,7 @@ local default_cfg = {
 }
 
 local function startswith(s, prefix)
-  substr = string.sub(s, 1, #prefix)
+  local substr = string.sub(s, 1, #prefix)
   return substr == prefix
 end
 
