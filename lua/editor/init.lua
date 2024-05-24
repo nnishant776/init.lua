@@ -333,6 +333,12 @@ function M.init(profile, editorconfig, buf_id)
     vim.api.nvim_set_hl(0, hl_name, hl_cfg)
   end
 
+  local background = "dark"
+  if editorconfig.window.background == "light" then
+    background = "light"
+  end
+  vim.opt.background = background
+
   -- Setup editor global commands
   M.setup_global_commands()
 end
