@@ -10,7 +10,14 @@ local spec = {
     mode = 'cursor',
     separator = nil,
     zindex = 20,
-    on_attach = nil,
+    on_attach = function(buf_id)
+      local editor = require('editor')
+      local ft_config = editor.bufconfig(buf_id, false)
+      if ft_config and ft_config.editor.guides.context then
+        return true
+      end
+      return false
+    end,
   },
   dependencies = {
     'nvim-treesitter/nvim-treesitter',
@@ -32,7 +39,7 @@ function M.setup(profile, editorconfig)
   if not spec.cond then
     return
   end
-  spec.opts.enable = editorconfig.editor.guides.context
+  spec.opts.enable = true
 end
 
 function M.spec()
