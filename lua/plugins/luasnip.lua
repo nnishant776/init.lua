@@ -2,6 +2,7 @@ local spec = {
   enabled = true,
   cond = true,
   opts = {},
+  build = "make install_jsregexp",
   dependencies = {
     'rafamadriz/friendly-snippets',
   },
