@@ -425,7 +425,7 @@ function M.is_enabled(profile, editorconfig)
   if profile.minimal or profile.default then
     return false
   else
-    return editorconfig.editor.suggest.enabled
+    return true
   end
 end
 
@@ -457,22 +457,17 @@ function M.setup(profile, editorconfig)
         focus = false,
       }
     )
-    if gcfg.editor.suggest.enabled then
-      vim.lsp.set_log_level(vim.lsp.log_levels.OFF)
-      for ft in pairs(filetype_lsp_map) do
-        local cfg = editor.ftconfig(ft, false)
-        if cfg and cfg.editor.suggest.enabled then
-          M.setup_lsp(ft, cfg)
-        end
-      end
+    vim.lsp.set_log_level(vim.lsp.log_levels.OFF)
+    for ft in pairs(filetype_lsp_map) do
+      M.setup_lsp(ft, editor.ftconfig(ft, false))
     end
   end
 end
 
-function M.setup_lsp(ft, editorconfig)
+function M.setup_lsp(ft, cfg)
   local lang_server = filetype_lsp_map[ft]
   if lang_server then
-    if editorconfig.editor.suggest.enabled then
+    if cfg and cfg.editor.quickSuggestions.other ~= "off" then
       local ls = lang_server_map[lang_server]
       if not ls then
         vim.print("Setup incomplete for " .. lang_server .. ".")

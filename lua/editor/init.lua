@@ -89,7 +89,6 @@ function M.config(profile)
   local parsed_config = vim.g.config
   if not parsed_config or vim.tbl_isempty(parsed_config) then
     parsed_config = require('editor.config').parse_config(default_cfg) or default_cfg
-    parsed_config.editor.suggest.enabled = parsed_config.editor.quickSuggestions.other ~= 'off'
     vim.filetype.add {
       extension = {
         ['code-workspace'] = 'json',
@@ -133,7 +132,6 @@ function M.ftconfig(ft, use_default)
     if lang_config then
       local workspace_cfg = vim.deepcopy(vim.g.config)
       config = vim.tbl_deep_extend('force', workspace_cfg, lang_config)
-      config.editor.suggest.enabled = config.editor.quickSuggestions.other ~= 'off'
       local new_buf_config = {
         [ft] = config,
       }
