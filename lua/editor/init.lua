@@ -315,6 +315,13 @@ function M.init(profile, editorconfig, buf_id)
 
   if profile and not profile.minimal then
     M._setup_event_listeners(editorconfig)
+    -- Setup file type specific configuration
+    for key in pairs(editorconfig) do
+      if startswith(key, '[') then
+        local lang_key = extract_lang(key)
+        M.ftconfig(lang_key, true)
+      end
+    end
   end
 
   editoropt.load(editorconfig, buf_opts)
