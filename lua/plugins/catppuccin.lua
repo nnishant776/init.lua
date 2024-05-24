@@ -91,7 +91,11 @@ function M.setup(profile, editorconfig)
 
     require('catppuccin').setup(opts)
 
-    vim.cmd.colorscheme 'catppuccin'
+    if editorconfig.window.background == "light" then
+      vim.cmd.colorscheme('catppuccin-' .. opts.background.light)
+    else
+      vim.cmd.colorscheme('catppuccin-' .. opts.background.dark)
+    end
   end
 end
 
