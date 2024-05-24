@@ -106,6 +106,7 @@ function M.parse_config(default_cfg)
   local nvim_config = vim.deepcopy(default_cfg)
 
   if global_config then
+    vim.g.raw_global_config = global_config
     local parsed_global_config = parse_external_config(global_config)
     if parsed_global_config then
       nvim_config = vim.tbl_deep_extend('force', nvim_config, parsed_global_config)
@@ -113,6 +114,7 @@ function M.parse_config(default_cfg)
   end
 
   if local_config then
+    vim.g.raw_project_config = local_config
     local parsed_local_config = parse_external_config(local_config)
     if parsed_local_config then
       nvim_config = vim.tbl_deep_extend('force', nvim_config, parsed_local_config)
