@@ -74,6 +74,17 @@ local default_cfg = {
   },
 }
 
+local function startswith(s, prefix)
+  substr = string.sub(s, 1, #prefix)
+  return substr == prefix
+end
+
+local function extract_lang(key)
+  local start_idx = string.find(key, '%[')
+  local end_idx = string.find(key, '%]')
+  return string.sub(key, start_idx + 1, end_idx - 1)
+end
+
 function M.config(profile)
   local parsed_config = vim.g.config
   if not parsed_config or vim.tbl_isempty(parsed_config) then
