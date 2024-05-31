@@ -8,7 +8,7 @@ local spec = {
 local M = {}
 
 function M.is_enabled(profile, _)
-  if profile.minimal then
+  if profile.minimal or profile.default then
     return false
   else
     return true
