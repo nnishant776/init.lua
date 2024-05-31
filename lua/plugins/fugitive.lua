@@ -18,6 +18,15 @@ end
 
 function M.setup(profile, editorconfig)
   spec.cond = M.is_enabled(profile, editorconfig)
+  if spec.cond then
+    vim.api.nvim_create_user_command(
+      "GLogl",
+      function(cmdargs)
+        vim.cmd("Git log --oneline " .. cmdargs.args)
+      end,
+      { nargs = '*', force = true }
+    )
+  end
 end
 
 function M.spec()
