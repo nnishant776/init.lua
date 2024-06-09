@@ -72,7 +72,13 @@ function M.load(cfg, opts)
     vim.api.nvim_set_option_value('virtualedit', 'block', {})
     vim.api.nvim_set_option_value('wildmode', 'longest:full,full', {})
     vim.api.nvim_set_option_value('winminwidth', 5, {})
-    vim.api.nvim_set_option_value('wrap', cfg.editor.wordWrap ~= '' and cfg.editor.wordWrap ~= nil, {})
+    vim.api.nvim_set_option_value(
+      'wrap',
+      cfg.editor.wordWrap ~= nil and
+      cfg.editor.wordWrap ~= '' and
+      cfg.editor.wordWrap ~= 'none',
+      {}
+    )
     vim.api.nvim_set_option_value('cmdheight', cfg.window.cmdHeight, {})
     vim.api.nvim_set_option_value('diffopt', 'internal,vertical,filler,closeoff,context:4,followwrap,algorithm:histogram',
       {})
@@ -106,8 +112,10 @@ function M.load(cfg, opts)
     vim.api.nvim_set_option_value('cursorline', cfg.editor.renderLineHighlight ~= 'none', opts)
     vim.api.nvim_set_option_value('autoindent', cfg.editor.autoIndent ~= 'none', opts)
     vim.api.nvim_set_option_value('colorcolumn', table.concat(cfg.editor.rulers or { 9999 }, ','), opts)
-    vim.api.nvim_set_option_value('wrapmargin', cfg.editor.wordWrapColumn or 0, opts)
-    vim.api.nvim_set_option_value('textwidth', cfg.editor.wordWrapColumn or 0, opts)
+    if vim.api.nvim_get_option_value('wrap', {}) then
+      vim.api.nvim_set_option_value('wrapmargin', cfg.editor.wordWrapColumn or 0, opts)
+      vim.api.nvim_set_option_value('textwidth', cfg.editor.wordWrapColumn or 0, opts)
+    end
   end
 end
 
