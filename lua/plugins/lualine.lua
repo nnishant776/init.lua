@@ -2,6 +2,7 @@ local spec = {
   enabled = true,
   cond = true,
   opts = {},
+  branch = 'dev',
   dependencies = {},
 }
 
