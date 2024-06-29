@@ -40,4 +40,16 @@ function M.is_buf_valid(buf_id)
   return true
 end
 
+function M.is_buf_empty(buf_id)
+  if buf_id == nil or buf_id == -1 then
+    return true
+  end
+  local ft = vim.api.nvim_get_option_value('filetype', { buf = buf_id })
+  local bt = vim.api.nvim_get_option_value('buftype', { buf = buf_id })
+  if (ft == '' and bt == '') then
+    return true
+  end
+  return false
+end
+
 return M
