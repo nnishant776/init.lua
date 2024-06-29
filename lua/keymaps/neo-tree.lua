@@ -14,6 +14,30 @@ function M.setup(opts)
       end,
       opts = { desc = "Toggle Neotree explorer" },
     },
+    {
+      mode = { 'n' },
+      input_keys = "<leader>nfs",
+      action = function()
+        local is_neotree_present, _ = pcall(require, 'neo-tree')
+        if not is_neotree_present then
+          return
+        end
+        vim.cmd("Neotree toggle filesystem left")
+      end,
+      opts = { desc = "Toggle Neotree explorer" },
+    },
+    {
+      mode = { 'n' },
+      input_keys = "<leader>nds",
+      action = function()
+        local is_neotree_present, _ = pcall(require, 'neo-tree')
+        if not is_neotree_present then
+          return
+        end
+        vim.cmd("Neotree toggle document_symbols right")
+      end,
+      opts = { desc = "Toggle Neotree explorer" },
+    },
   }
 
   for _, km in ipairs(keymap) do

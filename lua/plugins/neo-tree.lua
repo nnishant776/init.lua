@@ -130,12 +130,11 @@ function M.setup(profile, editorconfig)
           'toggle_node',
           nowait = vim.api.nvim_get_option_value('filetype', { buf = 0 }) == 'neo-tree', -- disable `nowait` if you have existing combos starting with this char that you want to use
         },
-        ['<2-LeftMouse>'] = 'open',
         ['<cr>'] = 'open',
         ['<esc>'] = 'cancel', -- close preview or floating neo-tree window
-        ['P'] = { 'toggle_preview', config = { use_float = true, use_image_nvim = false } },
+        ['P'] = 'noop',       --{ 'toggle_preview', config = { use_float = true, use_image_nvim = false } },
         -- Read `# Preview Mode` for more information
-        ['l'] = 'focus_preview',
+        ['l'] = 'noop',
         ['S'] = 'open_split',
         ['s'] = 'open_vsplit',
         -- ["S"] = "split_with_window_picker",
@@ -143,11 +142,12 @@ function M.setup(profile, editorconfig)
         ['t'] = 'open_tabnew',
         -- ["<cr>"] = "open_drop",
         -- ["t"] = "open_tab_drop",
-        ['w'] = 'open_with_window_picker',
+        ['w'] = 'noop',
         --["P"] = "toggle_preview", -- enter preview mode, which shows the current node without focusing
-        ['C'] = 'close_node',
-        -- ['C'] = 'close_all_subnodes',
-        ['z'] = 'close_all_nodes',
+        ['zo'] = 'open',
+        ['zc'] = 'close_node',
+        ['zC'] = 'close_all_subnodes',
+        ['C'] = 'close_all_nodes',
         --["Z"] = "expand_all_nodes",
         ['<c-x>'] = 'clear_filter',
         ['a'] = {
