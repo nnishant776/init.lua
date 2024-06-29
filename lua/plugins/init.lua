@@ -77,6 +77,7 @@ local primary_plugin_list = {
 
   -- Editing
   'tpope/vim-sleuth',
+  'numToStr/Comment.nvim',
 
   -- Highlighting and Indentation
   'lukas-reineke/indent-blankline.nvim',
@@ -136,9 +137,9 @@ function M.list_all()
 end
 
 function M.list_primary()
-  if vim.fn.has('nvim-0.10') ~= 1 then
-    table.insert(primary_plugin_list, 'numToStr/Comment.nvim')
-  end
+  -- if vim.fn.has('nvim-0.10') ~= 1 then
+  --   table.insert(primary_plugin_list, 'numToStr/Comment.nvim')
+  -- end
   return primary_plugin_list
 end
 
