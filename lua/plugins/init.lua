@@ -50,7 +50,7 @@ local all_plugin_list = {
   'folke/which-key.nvim',
 
   -- UI
-  'nvim-lualine/lualine.nvim',
+  'nnishant776/lualine.nvim',
 
   -- Command, Control and Navigation
   'nvim-telescope/telescope.nvim',
@@ -93,7 +93,7 @@ local primary_plugin_list = {
   'L3MON4D3/LuaSnip',
 
   -- UI
-  'nvim-lualine/lualine.nvim',
+  'nnishant776/lualine.nvim',
 
   -- Command, Control and Navigation
   'nvim-telescope/telescope.nvim',
@@ -121,7 +121,7 @@ local name_mapper = {
   ['hrsh7th/cmp-buffer'] = 'cmp_buffer',
   ['hrsh7th/cmp-path'] = 'cmp_path',
   ['folke/which-key.nvim'] = 'whichkey',
-  ['nvim-lualine/lualine.nvim'] = 'lualine',
+  ['nnishant776/lualine.nvim'] = 'lualine',
   ['nvim-telescope/telescope.nvim'] = 'telescope',
   ['nvim-lua/plenary.nvim'] = 'plenary',
   ['nvim-neo-tree/neo-tree.nvim'] = 'neo-tree',
