@@ -413,6 +413,36 @@ function M.setup_global_commands()
     end,
     { nargs = '*', force = true }
   )
+
+  -- CloseBuffers - Command to selectively close open buffer
+  -- This command will selectively wipe out all the listed buffers
+  vim.api.nvim_create_user_command(
+    "CloseBuffers",
+    function(args)
+      local editorutils = require('editor.utils')
+      local uiutils = require('utils.ui')
+      local buf_list = vim.api.nvim_list_bufs()
+      local active_bufs = uiutils.get_visible_bufs()
+      local delete_type = 'all'
+      if #args.fargs > 0 then
+        delete_type = args.fargs[1]
+      end
+      for _, buf in ipairs(buf_list) do
+        if editorutils.is_buf_valid(buf) or editorutils.is_buf_empty(buf) then
+          if delete_type == 'all' then
+            vim.api.nvim_buf_delete(buf, {})
+          elseif delete_type == 'inactive' then
+            if not vim.tbl_contains(active_bufs, buf) then
+              vim.api.nvim_buf_delete(buf, {})
+            end
+          elseif delete_type ~= '' and vim.api.nvim_get_option_value('filetype', { buf = buf }) == delete_type then
+            vim.api.nvim_buf_delete(buf, {})
+          end
+        end
+      end
+    end,
+    { nargs = '*' }
+  )
 end
 
 return M
