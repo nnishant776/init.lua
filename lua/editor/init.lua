@@ -174,6 +174,7 @@ function M._setup_event_listeners(editorconfig)
       if not require('editor.utils').is_buf_valid(bufnr) then
         return
       end
+      vim.b[bufnr].tabpage = vim.api.nvim_get_current_tabpage()
       local cfg = M.ftconfig(ft, true)
       require("editor.options").load(cfg, { buf_id = bufnr })
       vim.schedule(function()

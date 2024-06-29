@@ -145,6 +145,7 @@ function M.setup(profile, editorconfig)
             alternate_file = '#',
             directory = '',
           },
+          filter_by_tabpage = true,
         },
       },
       lualine_b = {},
