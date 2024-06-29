@@ -71,6 +71,7 @@ local default_cfg = {
   window = {
     filename = 'base', -- possible values: base, rootrel, absolute
     cmdHeight = 1,
+    hideInvalidBuffers = true,
   },
 }
 
@@ -172,6 +173,9 @@ function M._setup_event_listeners(editorconfig)
       local bufnr = args.buf
       local ft = vim.api.nvim_get_option_value('filetype', { buf = bufnr })
       if not require('editor.utils').is_buf_valid(bufnr) then
+        if editorconfig.window.hideInvalidBuffers then
+          vim.api.nvim_set_option_value('buflisted', false, { buf = bufnr })
+        end
         return
       end
       vim.b[bufnr].tabpage = vim.api.nvim_get_current_tabpage()
