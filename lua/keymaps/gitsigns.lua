@@ -15,7 +15,7 @@ function M.setup(opts)
           return
         end
         vim.schedule(function()
-          gitsigns.next_hunk()
+          gitsigns.nav_hunk('next')
         end)
       end,
       opts = {
@@ -31,7 +31,7 @@ function M.setup(opts)
           return
         end
         vim.schedule(function()
-          gitsigns.prev_hunk()
+          gitsigns.nav_hunk('prev')
         end)
       end,
       opts = {
