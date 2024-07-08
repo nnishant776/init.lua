@@ -29,6 +29,15 @@ function M.setup(profile, editorconfig)
       changedelete = { text = '⋍' },
       untracked    = { text = '┆' },
     },
+    signs_staged                 = {
+      add          = { text = '|' },
+      change       = { text = '┃' },
+      delete       = { text = '_' },
+      topdelete    = { text = '‾' },
+      changedelete = { text = '~' },
+      untracked    = { text = '┆' },
+    },
+    signs_staged_enable          = true,  -- Don't show signs for staged hunks
     signcolumn                   = true,  -- Toggle with `:Gitsigns toggle_signs`
     numhl                        = false, -- Toggle with `:Gitsigns toggle_numhl`
     linehl                       = false, -- Toggle with `:Gitsigns toggle_linehl`
@@ -57,9 +66,6 @@ function M.setup(profile, editorconfig)
       relative = 'cursor',
       row = 0,
       col = 1
-    },
-    yadm                         = {
-      enable = false
     },
   }
   spec.config = function(_, opts)
