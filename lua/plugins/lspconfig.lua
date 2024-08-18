@@ -21,6 +21,8 @@ local filetype_lsp_map = {
   ['zig'] = { 'zls' },
   ['rust'] = { 'rust_analyzer' },
   ['lua'] = { 'lua_ls' },
+  ['yaml'] = { 'yamlls' },
+  ['vala'] = { 'vala_ls' }
 }
 
 local lsp_executable_map = {
@@ -31,6 +33,8 @@ local lsp_executable_map = {
   ['lua_ls'] = { 'lua-language-server', 'luau-lsp' },
   ['zls'] = { 'zls' },
   ['pylint'] = { 'pylint' },
+  ['yamlls'] = { 'yaml-language-server' },
+  ['vala_ls'] = { 'vala-language-server' },
 }
 
 vim.api.nvim_create_augroup('LspAutoFormat', { clear = true })
@@ -411,6 +415,28 @@ local lang_server_map = {
   ),
   ['rust_analyzer'] = LSP.new(
     'rust_analyzer',
+    {},
+    {},
+    {
+      detached = false,
+    }
+  ),
+  ['yamlls'] = LSP.new(
+    'yamlls',
+    {
+      redhat = {
+        telemetry = {
+          enabled = false
+        }
+      }
+    },
+    {},
+    {
+      detached = false,
+    }
+  ),
+  ['vala_ls'] = LSP.new(
+    'vala_ls',
     {},
     {},
     {
