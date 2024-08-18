@@ -207,7 +207,7 @@ function LSP:setup_formatting(buf_id)
           local ft = vim.api.nvim_get_option_value('filetype', { buf = buf_id })
           local cfg = editor.ftconfig(ft, true)
           if cfg and cfg.editor.formatOnSave then
-            vim.lsp.buf.format { bufnr = buf_id, async = false }
+            vim.lsp.buf.format({ bufnr = buf_id, async = false })
           end
         end,
         buffer = buf_id,
