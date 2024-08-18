@@ -39,8 +39,9 @@ function M.load(cfg, opts)
     vim.api.nvim_set_option_value('incsearch', false, {})
     vim.api.nvim_set_option_value('conceallevel', 3, {})
     vim.api.nvim_set_option_value('confirm', true, {})
-    vim.api.nvim_set_option_value('grepformat', '%f:%l:%c:%m', {})
-    vim.api.nvim_set_option_value('grepprg', 'rg --vimgrep', {})
+    if vim.fn.executable('rg') == 0 then
+      vim.api.nvim_set_option_value('grepprg', 'grep -HIn', {})
+    end
     vim.api.nvim_set_option_value('inccommand', 'nosplit', {})
     vim.api.nvim_set_option_value('laststatus', 3, {})
     vim.api.nvim_set_option_value('mouse', 'a', {})
