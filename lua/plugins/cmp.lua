@@ -132,6 +132,8 @@ function M.setup(profile, editorconfig)
         ["<C-u>"] = cmp.mapping.scroll_docs(-4),
         ["<C-Space>"] = cmp.mapping.complete(),
         ["<C-e>"] = cmp.mapping.close(),
+        ["<C-p>"] = function() end,
+        ["<C-n>"] = function() end,
         ["<CR>"] = cmp.mapping.confirm({
           behavior = (function()
             if editorconfig.editor.suggest.insertMode == "replace" then
@@ -142,27 +144,27 @@ function M.setup(profile, editorconfig)
           end)(),
           select = true,
         }),
-        ["<C-n>"] = cmp.mapping(function(fallback)
+        ["<C-j>"] = cmp.mapping(function(fallback)
           local is_luasnip_present, luasnip = pcall(require, "luasnip")
           if cmp.visible() then
             cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
           elseif is_luasnip_present and luasnip.expand_or_jumpable() then
             luasnip.expand_or_jump()
-          -- else
-          --   fallback()
+          else
+            fallback()
           end
         end, {
           "i",
           "s",
         }),
-        ["<C-p>"] = cmp.mapping(function(fallback)
+        ["<C-k>"] = cmp.mapping(function(fallback)
           local is_luasnip_present, luasnip = pcall(require, "luasnip")
           if cmp.visible() then
             cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
           elseif is_luasnip_present and luasnip.jumpable(-1) then
             luasnip.jump(-1)
-          -- else
-          --   fallback()
+          else
+            fallback()
           end
         end, {
           "i",
