@@ -142,7 +142,7 @@ function M.setup(profile, editorconfig)
           end)(),
           select = true,
         }),
-        ["<Tab>"] = cmp.mapping(function(fallback)
+        ["<C-n>"] = cmp.mapping(function(fallback)
           local is_luasnip_present, luasnip = pcall(require, "luasnip")
           if cmp.visible() then
             cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
@@ -155,7 +155,7 @@ function M.setup(profile, editorconfig)
           "i",
           "s",
         }),
-        ["<S-Tab>"] = cmp.mapping(function(fallback)
+        ["<C-p>"] = cmp.mapping(function(fallback)
           local is_luasnip_present, luasnip = pcall(require, "luasnip")
           if cmp.visible() then
             cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
