@@ -148,8 +148,8 @@ function M.setup(profile, editorconfig)
             cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
           elseif is_luasnip_present and luasnip.expand_or_jumpable() then
             luasnip.expand_or_jump()
-          else
-            fallback()
+          -- else
+          --   fallback()
           end
         end, {
           "i",
@@ -161,8 +161,8 @@ function M.setup(profile, editorconfig)
             cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
           elseif is_luasnip_present and luasnip.jumpable(-1) then
             luasnip.jump(-1)
-          else
-            fallback()
+          -- else
+          --   fallback()
           end
         end, {
           "i",
