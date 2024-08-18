@@ -14,13 +14,13 @@ local editor = require('editor')
 local fsutils = require("utils.fs")
 
 local filetype_lsp_map = {
-  ['c'] = 'clangd',
-  ['cpp'] = 'clangd',
-  ['python'] = 'pyright',
-  ['go'] = 'gopls',
-  ['zig'] = 'zls',
-  ['rust'] = 'rust_analyzer',
-  ['lua'] = 'lua_ls',
+  ['c'] = { 'clangd' },
+  ['cpp'] = { 'clangd' },
+  ['python'] = { 'pyright' },
+  ['go'] = { 'gopls' },
+  ['zig'] = { 'zls' },
+  ['rust'] = { 'rust_analyzer' },
+  ['lua'] = { 'lua_ls' },
 }
 
 local lsp_executable_map = {
@@ -465,15 +465,17 @@ function M.setup(profile, editorconfig)
 end
 
 function M.setup_lsp(ft, cfg)
-  local lang_server = filetype_lsp_map[ft]
-  if lang_server then
-    if cfg and cfg.editor.quickSuggestions.other ~= "off" then
-      local ls = lang_server_map[lang_server]
-      if not ls then
-        vim.print("Setup incomplete for " .. lang_server .. ".")
-      else
-        if not ls:is_setup_done() then
-          ls:setup({})
+  local lang_servers = filetype_lsp_map[ft]
+  if lang_servers then
+    for _, lang_server in ipairs(lang_servers) do
+      if cfg and cfg.editor.quickSuggestions.other ~= "off" then
+        local ls = lang_server_map[lang_server]
+        if not ls then
+          vim.print("Setup incomplete for " .. lang_server .. ".")
+        else
+          if not ls:is_setup_done() then
+            ls:setup({})
+          end
         end
       end
     end
