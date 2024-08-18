@@ -231,7 +231,7 @@ function M.setup(opts)
         vim.cmd [[ bwipeout ]]
       end,
       opts = {
-        desc = 'Toggle dark mode',
+        desc = 'Delete buffer',
       },
     }
   }
