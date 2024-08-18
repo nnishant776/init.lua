@@ -42,12 +42,12 @@ function M.setup(opts)
       action = "<Up>",
       opts = { desc = "Move up" },
     },
-    {
-      mode = { 'i' },
-      input_keys = "<C-n>",
-      action = "<Esc>",
-      opts = { desc = "Exit insert mode" },
-    },
+    -- {
+    --   mode = { 'i' },
+    --   input_keys = "<C-n>",
+    --   action = "<Esc>",
+    --   opts = { desc = "Exit insert mode" },
+    -- },
     -- {
     --   mode = { 'n', 'x' },
     --   input_keys = "j",
