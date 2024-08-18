@@ -448,6 +448,20 @@ function M.setup_global_commands()
     end,
     { nargs = '*' }
   )
+
+  -- Grep
+  vim.api.nvim_create_user_command(
+    "Grep",
+    function(args)
+      local is_telescope_found, _ = pcall(require, 'telescope')
+      if not is_telescope_found then
+        vim.cmd("silent grep " .. args.args .. '| copen')
+      else
+        vim.cmd("silent grep " .. args.args .. '| Telescope quickfix')
+      end
+    end,
+    { nargs = '*' }
+  )
 end
 
 return M
