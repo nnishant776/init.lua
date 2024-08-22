@@ -105,7 +105,7 @@ function M.load(cfg, opts)
         "--color=never",
         "--with-filename",
         "--line-number",
-        "--column",
+        "--byte-offset",
         "-I",
       }
       if vim.loop.fs_stat(vim.fn.getcwd() .. "/.git") then
