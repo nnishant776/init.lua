@@ -8,12 +8,13 @@ local spec = {
 
 local M = {}
 
-function M.is_enabled(profile, _)
-  if profile.minimal then
-    return false
-  else
-    return true
-  end
+function M.is_enabled(_, _)
+  -- if profile.minimal then
+  --   return false
+  -- else
+  --   return true
+  -- end
+  return false
 end
 
 function M.setup(profile, editorconfig)
