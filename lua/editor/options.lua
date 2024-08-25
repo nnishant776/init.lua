@@ -32,7 +32,6 @@ function M.load(cfg, opts)
     vim.api.nvim_set_option_value('updatetime', 500, {})
     vim.api.nvim_set_option_value('ttyfast', true, {})
     vim.api.nvim_set_option_value('backspace', 'indent,eol,start', {})
-    vim.api.nvim_set_option_value('cmdheight', 1, {})
     vim.api.nvim_set_option_value('lazyredraw', true, {})
     vim.api.nvim_set_option_value('swapfile', false, {})
     vim.api.nvim_set_option_value('clipboard', '', {})
@@ -78,7 +77,7 @@ function M.load(cfg, opts)
       cfg.editor.wordWrap ~= 'none',
       {}
     )
-    vim.api.nvim_set_option_value('cmdheight', cfg.window.cmdHeight, {})
+    vim.api.nvim_set_option_value('cmdheight', cfg.window.cmdHeight or 1, {})
     vim.api.nvim_set_option_value('diffopt', 'internal,vertical,filler,closeoff,context:4,followwrap,algorithm:histogram',
       {})
     vim.api.nvim_set_option_value('fillchars', 'diff: ', {})
