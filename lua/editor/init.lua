@@ -349,7 +349,7 @@ function M.init(profile, editorconfig, buf_id)
 end
 
 local function convert(v, typ)
-  if typ == 'number' then
+  if typ == 'number' or typ == 'integer' or typ == 'float' then
     return tonumber(v)
   elseif typ == 'boolean' then
     if v == "true" then
