@@ -56,13 +56,14 @@ function M.setup(profile, editorconfig)
         if vim.api.nvim_get_mode().mode == "c" then
           return true
         else
-          local is_suggest_enabled = editorconfig.editor.quickSuggestions.other ~= "off"
+          local cfg = require('editor').bufconfig(vim.api.nvim_get_current_buf(), true)
+          local is_suggest_enabled = cfg.editor.quickSuggestions.other ~= "off"
           if not is_suggest_enabled then
             return false
           end
           local is_comment_suggest_enabled = not context.in_treesitter_capture("comment")
               and not context.in_syntax_group("Comment")
-          return is_comment_suggest_enabled or editorconfig.editor.quickSuggestions.comments ~= "off"
+          return is_comment_suggest_enabled or cfg.editor.quickSuggestions.comments ~= "off"
         end
       end,
       performance = {
