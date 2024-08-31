@@ -134,22 +134,33 @@ function M.setup(profile, editorconfig)
         ["<C-e>"] = cmp.mapping.close(),
         ["<C-p>"] = function() end,
         ["<C-n>"] = function() end,
-        ["<CR>"] = cmp.mapping.confirm({
-          behavior = (function()
-            if editorconfig.editor.suggest.insertMode == "replace" then
-              return cmp.ConfirmBehavior.Replace
+        ["<CR>"] = cmp.mapping(function(fallback)
+          local is_luasnip_present, luasnip = pcall(require, "luasnip")
+          if cmp.visible() then
+            if is_luasnip_present and luasnip.expandable() then
+              luasnip.expand()
             else
-              return cmp.ConfirmBehavior.Insert
+              cmp.confirm({
+                behavior = (function()
+                  if editorconfig.editor.suggest.insertMode == "replace" then
+                    return cmp.ConfirmBehavior.Replace
+                  else
+                    return cmp.ConfirmBehavior.Insert
+                  end
+                end)(),
+                select = true,
+              })
             end
-          end)(),
-          select = true,
-        }),
+          else
+            fallback()
+          end
+        end),
         ["<C-j>"] = cmp.mapping(function(fallback)
           local is_luasnip_present, luasnip = pcall(require, "luasnip")
           if cmp.visible() then
             cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-          elseif is_luasnip_present and luasnip.expand_or_jumpable() then
-            luasnip.expand_or_jump()
+          elseif is_luasnip_present and luasnip.locally_jumpable(1) then
+            luasnip.jump(1)
           else
             fallback()
           end
@@ -161,7 +172,7 @@ function M.setup(profile, editorconfig)
           local is_luasnip_present, luasnip = pcall(require, "luasnip")
           if cmp.visible() then
             cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
-          elseif is_luasnip_present and luasnip.jumpable(-1) then
+          elseif is_luasnip_present and luasnip.locally_jumpable(-1) then
             luasnip.jump(-1)
           else
             fallback()
