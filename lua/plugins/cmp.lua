@@ -187,28 +187,26 @@ function M.setup(profile, editorconfig)
       },
       sources = (function()
         local cmp_sources = {}
-        if editorconfig.editor.quickSuggestions.other ~= "off" then
-          table.insert(
-            cmp_sources,
-            {
-              name = "nvim_lsp",
-              keyword_length = 3,
-              group_index = 1,
-              entry_filter = function(entry, _)
-                local kind = cmp.lsp.CompletionItemKind[entry:get_kind()]
-                if kind == 'Text' then
-                  kind = 'Word'
-                end
-                local visible = editorconfig.editor.suggest['show' .. kind .. 's']
-                if visible ~= nil and visible == false then
-                  return false
-                end
-                return true
+        table.insert(
+          cmp_sources,
+          {
+            name = "nvim_lsp",
+            keyword_length = 3,
+            group_index = 1,
+            entry_filter = function(entry, _)
+              local kind = cmp.lsp.CompletionItemKind[entry:get_kind()]
+              if kind == 'Text' then
+                kind = 'Word'
               end
-            }
-          )
-          table.insert(cmp_sources, { name = "nvim_lua", group_index = 2 })
-        end
+              local visible = editorconfig.editor.suggest['show' .. kind .. 's']
+              if visible ~= nil and visible == false then
+                return false
+              end
+              return true
+            end
+          }
+        )
+        table.insert(cmp_sources, { name = "nvim_lua", group_index = 2 })
         table.insert(cmp_sources, { name = "luasnip", group_index = 2 })
         local text_suggestions = editorconfig.editor.wordBasedSuggestions
         if text_suggestions and text_suggestions ~= 'off' then
