@@ -24,6 +24,7 @@ local plugins = require('plugins').load(profile, editorconfig)
 
 editor.init(profile, editorconfig)
 
+vim.g.profile = profile
 vim.g.config = vim.deepcopy(editorconfig)
 vim.g.default_config = vim.deepcopy(vim.g.config)
 
