@@ -345,7 +345,7 @@ function M.init(profile, editorconfig, buf_id)
   vim.opt.background = background
 
   -- Setup editor global commands
-  M.setup_global_commands()
+  M._setup_global_commands()
 end
 
 local function convert(v, typ)
@@ -371,7 +371,7 @@ local function convert(v, typ)
   end
 end
 
-function M.setup_global_commands()
+function M._setup_global_commands()
   -- Update config command
   -- This command will accept the first argument as the filetype for which the config should be updated.
   -- Pass an empty string to update the global config.
