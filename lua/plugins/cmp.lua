@@ -133,8 +133,6 @@ function M.setup(profile, editorconfig)
         ["<C-u>"] = cmp.mapping.scroll_docs(-4),
         ["<C-Space>"] = cmp.mapping.complete(),
         ["<C-e>"] = cmp.mapping.close(),
-        ["<C-p>"] = function() end,
-        ["<C-n>"] = function() end,
         ["<CR>"] = cmp.mapping(function(fallback)
           local is_luasnip_present, luasnip = pcall(require, "luasnip")
           if cmp.visible() then
@@ -156,7 +154,7 @@ function M.setup(profile, editorconfig)
             fallback()
           end
         end),
-        ["<C-j>"] = cmp.mapping(function(fallback)
+        ["<C-n>"] = cmp.mapping(function(fallback)
           local is_luasnip_present, luasnip = pcall(require, "luasnip")
           if cmp.visible() then
             cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
@@ -169,7 +167,7 @@ function M.setup(profile, editorconfig)
           "i",
           "s",
         }),
-        ["<C-k>"] = cmp.mapping(function(fallback)
+        ["<C-p>"] = cmp.mapping(function(fallback)
           local is_luasnip_present, luasnip = pcall(require, "luasnip")
           if cmp.visible() then
             cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
