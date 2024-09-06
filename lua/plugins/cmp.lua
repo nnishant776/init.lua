@@ -133,7 +133,7 @@ function M.setup(profile, editorconfig)
         ["<C-u>"] = cmp.mapping.scroll_docs(-4),
         ["<C-Space>"] = cmp.mapping.complete(),
         ["<C-e>"] = cmp.mapping.close(),
-        ["<CR>"] = cmp.mapping(function(fallback)
+        ["<C-y>"] = cmp.mapping(function(fallback)
           local is_luasnip_present, luasnip = pcall(require, "luasnip")
           if cmp.visible() then
             if is_luasnip_present and luasnip.expandable() then
@@ -154,11 +154,9 @@ function M.setup(profile, editorconfig)
             fallback()
           end
         end),
-        ["<C-n>"] = cmp.mapping(function(fallback)
+        ["<Tab>"] = cmp.mapping(function(fallback)
           local is_luasnip_present, luasnip = pcall(require, "luasnip")
-          if cmp.visible() then
-            cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-          elseif is_luasnip_present and luasnip.locally_jumpable(1) then
+          if is_luasnip_present and luasnip.locally_jumpable(1) then
             luasnip.jump(1)
           else
             fallback()
@@ -167,14 +165,32 @@ function M.setup(profile, editorconfig)
           "i",
           "s",
         }),
-        ["<C-p>"] = cmp.mapping(function(fallback)
+        ["<S-Tab>"] = cmp.mapping(function(fallback)
           local is_luasnip_present, luasnip = pcall(require, "luasnip")
-          if cmp.visible() then
-            cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
-          elseif is_luasnip_present and luasnip.locally_jumpable(-1) then
+          if is_luasnip_present and luasnip.locally_jumpable(-1) then
             luasnip.jump(-1)
           else
             fallback()
+          end
+        end, {
+          "i",
+          "s",
+        }),
+        ["<C-n>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+          -- else
+          --   fallback()
+          end
+        end, {
+          "i",
+          "s",
+        }),
+        ["<C-p>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
+          -- else
+          --   fallback()
           end
         end, {
           "i",
