@@ -52,6 +52,7 @@ local all_plugin_list = {
 
   -- UI
   'nnishant776/lualine.nvim',
+  'echasnovski/mini.icons',
 
   -- Command, Control and Navigation
   'nvim-telescope/telescope.nvim',
@@ -96,6 +97,7 @@ local primary_plugin_list = {
 
   -- UI
   'nnishant776/lualine.nvim',
+  'echasnovski/mini.icons',
 
   -- Command, Control and Navigation
   'nvim-telescope/telescope.nvim',
@@ -133,6 +135,7 @@ local name_mapper = {
   ['j-hui/fidget.nvim'] = 'fidget',
   ['NeogitOrg/neogit'] = 'neogit',
   ['MeanderingProgrammer/render-markdown.nvim'] = 'render-markdown',
+  ['echasnovski/mini.icons'] = 'mini-icons',
 }
 
 function M.list_all()
