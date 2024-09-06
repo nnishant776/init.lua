@@ -1,3 +1,9 @@
+local profile = require('profiles').init()
+
+if not profile then
+  return
+end
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
@@ -17,7 +23,6 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.config = {}
 vim.g.ft_config = {}
 
-local profile = require('profiles').init()
 local editor = require('editor')
 local editorconfig = editor.config(profile)
 local plugins = require('plugins').load(profile, editorconfig)

@@ -29,8 +29,10 @@ function M.parse_feature()
         feature_list.default = true
       end
     end
+    return feature_list
+  else
+    return nil
   end
-  return feature_list
 end
 
 return M
