@@ -9,7 +9,7 @@ local spec = {
 local M = {}
 
 function M.is_enabled(profile, _)
-  if profile.minimal then
+  if profile.level <= 1 then
     return false
   else
     return true

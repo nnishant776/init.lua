@@ -89,24 +89,41 @@ end
 function M.config(profile)
   local parsed_config = vim.g.config
   if not parsed_config or vim.tbl_isempty(parsed_config) then
-    parsed_config = require('editor.config').parse_config(default_cfg) or default_cfg
-    vim.filetype.add {
-      extension = {
-        ['code-workspace'] = 'json',
-      },
-      filename = {
-        ['go.mod'] = 'gomod',
-      },
-    }
-    if profile.minimal then
-      parsed_config.editor.lineNumbers = 'off'
-      parsed_config.editor.showPosition = false
-      parsed_config.editor.renderWhitespace = 'none'
-      parsed_config.editor.insertSpaces = true
-      parsed_config.editor.renderLineHighlight = 'none'
-      parsed_config.editor.showSignColumn = false
+    if profile and profile.level > 0 then
+      parsed_config = require('editor.config').parse_config(default_cfg) or default_cfg
+      vim.filetype.add {
+        extension = {
+          ['code-workspace'] = 'json',
+        },
+        filename = {
+          ['go.mod'] = 'gomod',
+        },
+      }
+    else
+      parsed_config = default_cfg
     end
   end
+  parsed_config = M.amend_config(profile, parsed_config)
+  return parsed_config
+end
+
+function M.amend_config(profile, parsed_config)
+  if profile.level == 1 then
+    parsed_config.files.trimFinalNewLines = false
+    parsed_config.files.trimTrailingWhitespace = false
+    parsed_config.editor.lineNumbers = 'off'
+    parsed_config.editor.showPosition = false
+    parsed_config.editor.renderWhitespace = 'none'
+    parsed_config.editor.insertSpaces = true
+    parsed_config.editor.renderLineHighlight = 'none'
+    parsed_config.editor.showSignColumn = false
+    parsed_config.editor.quickSuggestions = {
+      other = "off",
+      comments = "off",
+      strings = "off",
+    }
+  end
+
   return parsed_config
 end
 
@@ -118,7 +135,7 @@ function M.reload(profile)
 
   local buf_opts = {}
 
-  if profile and not profile.minimal then
+  if profile and profile.level > 0 then
     M._setup_event_listeners(editorconfig)
   end
 
@@ -288,7 +305,7 @@ function M.init(profile, editorconfig, buf_id)
     vim.g["loaded_" .. plugin] = 1
   end
 
-  if (profile and profile.minimal) or not editorconfig.editor.guides.bracketPairs then
+  if (profile and profile.level == 1) or not editorconfig.editor.guides.bracketPairs then
     vim.g["loaded_matchparen"] = 1
   end
 
@@ -316,7 +333,7 @@ function M.init(profile, editorconfig, buf_id)
     end
   end
 
-  if profile and not profile.minimal then
+  if profile and profile.level > 0 then
     M._setup_event_listeners(editorconfig)
     -- Setup file type specific configuration
     for key in pairs(editorconfig) do
@@ -407,7 +424,7 @@ function M._setup_global_commands()
       else
         vim.g.config = vim.tbl_deep_extend("force", vim.g.config, cfg_patch)
       end
-      local profile = require('profiles').init()
+      local profile = vim.g.profile
       local editorcfg = vim.g.config
       if ft ~= "" then
         editorcfg = M.ftconfig(ft, true)

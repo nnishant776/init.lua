@@ -1,9 +1,11 @@
 local M = {}
 
-local feature_list = {
-  minimal = false,
-  default = false,
-  ide = false,
+-- Level 0 -> No custom features
+-- Level 1 -> Minimal features
+-- Level 2 -> Default features
+-- Level 3 -> IDE features
+local feature_level = {
+  level = 0
 }
 
 function M.init()
@@ -16,20 +18,14 @@ function M.parse_feature()
     local features = vim.split(env_features, ',')
     for _, feat in ipairs(features) do
       if feat == 'minimal' then
-        feature_list.minimal = true
-        feature_list.default = false
-        feature_list.ide = false
+        feature_level.level = 1
       elseif feat == 'ide' then
-        feature_list.ide = true
-        feature_list.default = false
-        feature_list.minimal = false
+        feature_level.level = 3
       elseif feat == 'default' then
-        feature_list.ide = false
-        feature_list.minimal = false
-        feature_list.default = true
+        feature_level.level = 2
       end
     end
-    return feature_list
+    return feature_level
   else
     return nil
   end
