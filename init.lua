@@ -22,6 +22,7 @@ vim.opt.rtp:prepend(lazypath)
 
 vim.g.config = {}
 vim.g.ft_config = {}
+vim.g.profile = profile
 
 local editor = require('editor')
 local editorconfig = editor.config(profile)
@@ -29,10 +30,9 @@ local plugins = require('plugins').load(profile, editorconfig)
 
 editor.init(profile, editorconfig)
 
-vim.g.profile = profile
 vim.g.config = vim.deepcopy(editorconfig)
 vim.g.default_config = vim.deepcopy(vim.g.config)
 
-if not profile.minimal then
+if profile.level > 1 then
   require('lazy').setup(plugins)
 end
