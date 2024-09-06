@@ -153,30 +153,30 @@ function M.setup(opts)
     },
 
     -- Window navigation
-    {
-      mode = { 'n' },
-      input_keys = "<C-h>",
-      action = "<C-w>h",
-      opts = { desc = "Jump to window left" },
-    },
-    {
-      mode = { 'n' },
-      input_keys = "<C-j>",
-      action = "<C-w>j",
-      opts = { desc = "Jump to window down" },
-    },
-    {
-      mode = { 'n' },
-      input_keys = "<C-k>",
-      action = "<C-w>k",
-      opts = { desc = "Jump to window up" },
-    },
-    {
-      mode = { 'n' },
-      input_keys = "<C-l>",
-      action = "<C-w>l",
-      opts = { desc = "Jump to window right" },
-    },
+    -- {
+    --   mode = { 'n' },
+    --   input_keys = "<C-h>",
+    --   action = "<C-w>h",
+    --   opts = { desc = "Jump to window left" },
+    -- },
+    -- {
+    --   mode = { 'n' },
+    --   input_keys = "<C-j>",
+    --   action = "<C-w>j",
+    --   opts = { desc = "Jump to window down" },
+    -- },
+    -- {
+    --   mode = { 'n' },
+    --   input_keys = "<C-k>",
+    --   action = "<C-w>k",
+    --   opts = { desc = "Jump to window up" },
+    -- },
+    -- {
+    --   mode = { 'n' },
+    --   input_keys = "<C-l>",
+    --   action = "<C-w>l",
+    --   opts = { desc = "Jump to window right" },
+    -- },
 
     -- Miscellaneous
     {
