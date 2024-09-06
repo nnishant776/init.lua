@@ -1,7 +1,7 @@
 local M = {}
 
 local feature_list = {
-  minimal = true,
+  minimal = false,
   default = false,
   ide = false,
 }
