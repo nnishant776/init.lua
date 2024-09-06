@@ -26,6 +26,7 @@ local all_plugin_list = {
   'nvim-treesitter/nvim-treesitter',
   'nvim-treesitter/nvim-treesitter-textobjects',
   'nvim-treesitter/nvim-treesitter-context',
+  'MeanderingProgrammer/render-markdown.nvim',
 
   -- LSP and Suggestions
   'neovim/nvim-lspconfig',
@@ -83,6 +84,7 @@ local primary_plugin_list = {
   'lukas-reineke/indent-blankline.nvim',
   'nvim-treesitter/nvim-treesitter',
   'nvim-treesitter/nvim-treesitter-context',
+  'MeanderingProgrammer/render-markdown.nvim',
 
   -- LSP and Suggestions
   'neovim/nvim-lspconfig',
@@ -130,6 +132,7 @@ local name_mapper = {
   ['windwp/nvim-autopairs'] = 'nvim-autopairs',
   ['j-hui/fidget.nvim'] = 'fidget',
   ['NeogitOrg/neogit'] = 'neogit',
+  ['MeanderingProgrammer/render-markdown.nvim'] = 'render-markdown',
 }
 
 function M.list_all()
