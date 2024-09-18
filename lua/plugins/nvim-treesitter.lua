@@ -43,6 +43,9 @@ function M.setup(profile, editorconfig)
       'toml',
       'rust',
       'zig',
+      'go',
+      'gomod',
+      'gowork',
     },
     highlight = {
       enable = true,
