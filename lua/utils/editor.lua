@@ -46,4 +46,57 @@ function M.split(inputstr, sep)
   return t
 end
 
+function M.get_grep_args()
+  if vim.g.grep_args then
+    return vim.deepcopy(vim.g.grep_args)
+  end
+
+  local cmd = 'grep'
+  local common_args = {
+      "--color=never",
+      "-H",
+      "--line-number",
+  }
+
+  local cmd_args = {}
+  if vim.fn.executable('rg') == 0 then
+    cmd_args = {
+      "--recursive",
+      "--byte-offset",
+      "-I",
+    }
+    if vim.fn.executable('git') == 1 then
+      cmd = 'git'
+      cmd_args = {
+        "grep",
+        "--recursive",
+        "--column",
+        "--no-index",
+        "--exclude-standard",
+        "-I",
+      }
+    end
+  else
+    cmd = 'rg'
+    cmd_args = {
+      "--no-follow",
+      "--no-heading",
+      "--column",
+      "--smart-case",
+    }
+  end
+
+  local grep_args = { cmd }
+  for i=1,#cmd_args do
+    grep_args[#grep_args+1] = cmd_args[i]
+  end
+  for i=1,#common_args do
+    grep_args[#grep_args+1] = common_args[i]
+  end
+
+  vim.g.grep_args = vim.deepcopy(grep_args)
+
+  return grep_args
+end
+
 return M
