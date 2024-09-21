@@ -20,4 +20,14 @@ function M.get_bufs_in_tab(tabpage)
   return active_buffers
 end
 
+function M.set_theme(variant)
+  vim.opt.background = variant
+  local global_cfg = vim.g.raw_global_config
+  global_cfg['window.background'] = vim.o.background
+  vim.g.raw_global_config = global_cfg
+  local encoded_json = vim.json.encode(vim.g.raw_global_config)
+  local vsc_cfg_path = vim.fn.expand('~/.config/nvim/settings.json')
+  require('utils.fs').write_file(vsc_cfg_path, encoded_json)
+end
+
 return M
