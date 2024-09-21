@@ -96,40 +96,7 @@ function M.load(cfg, opts)
     -- foldsep = ' ',
     -- diff = '╱',
     -- eob = ' ',
-    local grep_args = {}
-    if vim.fn.executable('rg') == 0 then
-      grep_args = {
-        "grep",
-        "--recursive",
-        "--color=never",
-        "--with-filename",
-        "--line-number",
-        "--byte-offset",
-        "-I",
-      }
-      if vim.loop.fs_stat(vim.fn.getcwd() .. "/.git") then
-        grep_args = {
-          "git",
-          "grep",
-          "--recursive",
-          "--color=never",
-          "--line-number",
-          "--column",
-          "-I",
-        }
-      end
-    else
-      grep_args = {
-        "rg",
-        "--no-follow",
-        "--color=never",
-        "--no-heading",
-        "--with-filename",
-        "--line-number",
-        "--column",
-        "--smart-case",
-      }
-    end
+    local grep_args = require('utils.editor').get_grep_args()
     vim.api.nvim_set_option_value(
       'grepprg', table.concat(grep_args, ' '), {}
     )
