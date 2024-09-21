@@ -209,16 +209,11 @@ function M.setup(opts)
       action = function()
         local background = vim.o.background
         if background == 'light' then
-          vim.opt.background = 'dark'
+          background = 'dark'
         else
-          vim.opt.background = 'light'
+          background = 'light'
         end
-        local global_cfg = vim.g.raw_global_config
-        global_cfg['window.background'] = vim.o.background
-        vim.g.raw_global_config = global_cfg
-        local encoded_json = vim.json.encode(vim.g.raw_global_config)
-        local vsc_cfg_path = vim.fn.expand('~/.config/nvim/settings.json')
-        require('utils.fs').write_file(vsc_cfg_path, encoded_json)
+        require('utils.ui').set_theme(background)
       end,
       opts = {
         desc = 'Toggle dark mode',
