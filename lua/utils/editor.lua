@@ -60,11 +60,6 @@ function M.get_grep_args()
 
   local cmd_args = {}
   if vim.fn.executable('rg') == 0 then
-    cmd_args = {
-      "--recursive",
-      "--byte-offset",
-      "-I",
-    }
     if vim.fn.executable('git') == 1 then
       cmd = 'git'
       cmd_args = {
@@ -74,6 +69,14 @@ function M.get_grep_args()
         "--no-index",
         "--exclude-standard",
         "-I",
+      }
+    else
+      cmd_args = {
+        "--recursive",
+        "--byte-offset",
+        "-I",
+        "--exclude-from=.{gitignore,git/info/exclude}",
+        "--exclude-dir=.{git,gitdir,repo}"
       }
     end
   else
