@@ -182,6 +182,7 @@ function M._setup_event_listeners(editorconfig)
   vim.api.nvim_create_augroup('GenericPreWriteTasks', { clear = true })
   vim.api.nvim_create_augroup('DynamicEditorOptions', { clear = true })
   vim.api.nvim_create_augroup('DynamicEditorHighlights', { clear = true })
+  vim.api.nvim_create_augroup('DynamicUIUpdates', { clear = true })
 
   -- Add triggers for dynamic configuration based on the buffer
   vim.api.nvim_create_autocmd({ 'BufEnter' }, {
@@ -262,6 +263,26 @@ function M._setup_event_listeners(editorconfig)
         end
         vim.b[args.buf].sel_match_id = vim.fn.matchadd('Search', vim.fn.expand('<cword>'))
       end
+    })
+  end
+
+  -- Setup for cmdheight
+  if editorconfig.window.cmdHeight == 0 then
+    vim.api.nvim_create_autocmd({ 'RecordingEnter' }, {
+      group = 'DynamicUIUpdates',
+      callback = function()
+        if editorconfig.window.cmdHeight == 0 then
+          vim.api.nvim_set_option_value('cmdheight', 1, { scope = 'global' })
+        end
+      end,
+    })
+    vim.api.nvim_create_autocmd({ 'RecordingLeave' }, {
+      group = 'DynamicUIUpdates',
+      callback = function()
+        if editorconfig.window.cmdHeight == 0 then
+          vim.api.nvim_set_option_value('cmdheight', 0, { scope = 'global' })
+        end
+      end,
     })
   end
 end
