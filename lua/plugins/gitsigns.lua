@@ -21,20 +21,36 @@ function M.setup(profile, editorconfig)
     return
   end
   spec.opts = {
+    -- signs                        = {
+    --   add          = { text = '|' },
+    --   change       = { text = '┃' },
+    --   delete       = { text = '_' },
+    --   topdelete    = { text = '‾' },
+    --   changedelete = { text = '~' },
+    --   untracked    = { text = '┆' },
+    -- },
+    -- signs_staged                 = {
+    --   add          = { text = '|' },
+    --   change       = { text = '┃' },
+    --   delete       = { text = '_' },
+    --   topdelete    = { text = '‾' },
+    --   changedelete = { text = '~' },
+    --   untracked    = { text = '┆' },
+    -- },
     signs                        = {
-      add          = { text = '|' },
+      add          = { text = '┃' },
       change       = { text = '┃' },
-      delete       = { text = '_' },
-      topdelete    = { text = '‾' },
-      changedelete = { text = '~' },
+      delete       = { text = '┃' },
+      topdelete    = { text = '┃' },
+      changedelete = { text = '┃' },
       untracked    = { text = '┆' },
     },
     signs_staged                 = {
-      add          = { text = '|' },
+      add          = { text = '┃' },
       change       = { text = '┃' },
-      delete       = { text = '_' },
-      topdelete    = { text = '‾' },
-      changedelete = { text = '~' },
+      delete       = { text = '┃' },
+      topdelete    = { text = '┃' },
+      changedelete = { text = '┃' },
       untracked    = { text = '┆' },
     },
     signs_staged_enable          = true,  -- Don't show signs for staged hunks
