@@ -2,19 +2,30 @@ local spec = {
   enabled = true,
   cond = true,
   version = false,
-  opts = {},
+  opts = {
+    { "nvim-tree/nvim-web-devicons", enabled = false, optional = true },
+  },
   dependencies = {},
+  init = function()
+    package.preload["nvim-web-devicons"] = function()
+      local is_mini_icons_present, mini_icons = pcall(require, 'mini.icons')
+      if not is_mini_icons_present then
+        return
+      end
+      mini_icons.mock_nvim_web_devicons()
+      return package.loaded["nvim-web-devicons"]
+    end
+  end
 }
 
 local M = {}
 
 function M.is_enabled(profile, _)
-  -- if profile.level <= 2 then
-  --   return false
-  -- else
-  --   return true
-  -- end
-  return false
+  if profile.level <= 2 then
+    return false
+  else
+    return true
+  end
 end
 
 function M.setup(profile, editorconfig)
@@ -50,7 +61,6 @@ function M.setup(profile, editorconfig)
     if is_cmp_present then
       mini_icons.tweak_lsp_kind()
     end
-    mini_icons.mock_nvim_web_devicons()
   end
 end
 

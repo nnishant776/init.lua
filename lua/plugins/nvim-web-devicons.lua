@@ -8,11 +8,12 @@ local spec = {
 local M = {}
 
 function M.is_enabled(profile, _)
-  if profile.level <= 2 then
-    return false
-  else
-    return true
-  end
+  -- if profile.level <= 2 then
+  --   return false
+  -- else
+  --   return true
+  -- end
+  return false
 end
 
 function M.setup(profile, editorconfig)
