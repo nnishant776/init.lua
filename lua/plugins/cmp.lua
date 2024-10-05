@@ -35,6 +35,7 @@ function M.setup(profile, editorconfig)
     end
 
     local lsputil = require('ui.lsp')
+    local is_mini_icons_present, mini_icons = pcall(require, 'mini.icons')
 
     local cmp_window = require("cmp.utils.window")
     cmp_window.info_ = cmp_window.info
@@ -122,7 +123,13 @@ function M.setup(profile, editorconfig)
           local icons = lsputil.icons()
           local kind = item.kind
           local abbr = item.abbr
-          item.kind = string.format("%3s", icons[kind] or '')
+          local icon_glyph = ""
+          if is_mini_icons_present then
+            icon_glyph, _, _ = mini_icons.get('lsp', string.lower(kind))
+          else
+            icon_glyph = icons[kind]
+          end
+          item.kind = string.format("%3s", icon_glyph or '')
           item.menu = abbr
           item.abbr = string.format(" %-10s", kind)
           return item
@@ -179,8 +186,6 @@ function M.setup(profile, editorconfig)
         ["<C-n>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-          -- else
-          --   fallback()
           end
         end, {
           "i",
@@ -189,8 +194,6 @@ function M.setup(profile, editorconfig)
         ["<C-p>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
-          -- else
-          --   fallback()
           end
         end, {
           "i",
