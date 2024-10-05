@@ -44,7 +44,9 @@ function M.setup(profile, editorconfig)
     extension          = {},
     file               = {},
     filetype           = {},
-    lsp                = {},
+    lsp                = {
+      ["function"] = { glyph = 'ƒ ' }
+    },
     os                 = {},
 
     -- Control which extensions will be considered during "file" resolution
