@@ -1,6 +1,5 @@
 local spec = {
   enabled = true,
-  lazy = true,
   cond = true,
   opts = {},
   ft = { 'markdown' },
@@ -124,7 +123,7 @@ function M.setup(profile, editorconfig)
       -- Used below code blocks for thin border
       below = '▀',
       -- Highlight for code blocks
-      highlight = 'RenderMarkdownCode',
+      highlight = 'NONE',
       -- Highlight for inline code
       highlight_inline = 'RenderMarkdownCodeInline',
     },
