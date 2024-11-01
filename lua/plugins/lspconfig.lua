@@ -16,7 +16,7 @@ local fsutils = require("utils.fs")
 local filetype_lsp_map = {
   ['c'] = { 'clangd' },
   ['cpp'] = { 'clangd' },
-  ['python'] = { 'pyright' },
+  ['python'] = { 'pyright', 'python-lsp-server' },
   ['go'] = { 'gopls' },
   ['zig'] = { 'zls' },
   ['rust'] = { 'rust_analyzer' },
@@ -35,6 +35,7 @@ local lsp_executable_map = {
   ['pylint'] = { 'pylint' },
   ['yamlls'] = { 'yaml-language-server' },
   ['vala_ls'] = { 'vala-language-server' },
+  ['python-lsp-server'] = { 'pylsp' },
 }
 
 vim.api.nvim_create_augroup('LspAutoFormat', { clear = true })
@@ -437,6 +438,14 @@ local lang_server_map = {
   ),
   ['vala_ls'] = LSP.new(
     'vala_ls',
+    {},
+    {},
+    {
+      detached = false,
+    }
+  ),
+  ['python-lsp-server'] = LSP.new(
+    'pylsp',
     {},
     {},
     {
