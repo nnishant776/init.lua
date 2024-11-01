@@ -492,7 +492,7 @@ function M.setup(profile, editorconfig)
         focus = false,
       }
     )
-    vim.lsp.set_log_level(vim.lsp.log_levels.OFF)
+    vim.lsp.set_log_level(vim.lsp.log_levels.INFO)
     for ft in pairs(filetype_lsp_map) do
       M.setup_lsp(ft, editor.ftconfig(ft, false))
     end
