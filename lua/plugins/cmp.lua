@@ -78,13 +78,13 @@ function M.setup(profile, editorconfig)
       },
       window = {
         completion = {
-          winhighlight =
-          "Normal:CmpPmenu,NormalFloat:CmpNormalFloat,FloatBorder:CmpFloatBorder,BorderBG:CmpBorderBG,CursorLine:PmenuSel,Search:None",
+          -- winhighlight =
+          -- "Normal:CmpPmenu,NormalFloat:CmpNormalFloat,FloatBorder:CmpFloatBorder,BorderBG:CmpBorderBG,CursorLine:PmenuSel,Search:None",
         },
         documentation = {
-          winhighlight =
-          "Normal:CmpPmenu,NormalFloat:CmpNormalFloat,FloatBorder:CmpFloatBorder,BorderBG:CmpBorderBG,CursorLine:PmenuSel,Search:None",
-          side_padding = 2,
+          -- winhighlight =
+          -- "Normal:CmpPmenu,NormalFloat:CmpNormalFloat,FloatBorder:CmpFloatBorder,BorderBG:CmpBorderBG,CursorLine:PmenuSel,Search:None",
+          -- side_padding = 2,
         },
       },
       preselect = cmp.PreselectMode.None,
