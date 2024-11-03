@@ -3,7 +3,6 @@ local spec = {
   cond = true,
   opts = {},
   dependencies = {
-    'windwp/nvim-autopairs',
     'nvim-treesitter/nvim-treesitter-textobjects',
   },
 }
