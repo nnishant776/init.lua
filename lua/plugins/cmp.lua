@@ -8,6 +8,7 @@ local spec = {
     'hrsh7th/cmp-nvim-lsp',
     'hrsh7th/cmp-buffer',
     'hrsh7th/cmp-path',
+    'petertriho/cmp-git',
     'windwp/nvim-autopairs',
   },
 }

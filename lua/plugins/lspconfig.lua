@@ -6,7 +6,6 @@ local spec = {
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
     'j-hui/fidget.nvim',
-    'petertriho/cmp-git',
   },
 }
 

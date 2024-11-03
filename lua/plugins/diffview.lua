@@ -4,9 +4,6 @@ local spec = {
   opts = {},
   dependencies = {
     "nvim-lua/plenary.nvim",
-    'lewis6991/gitsigns.nvim',
-    "sindrets/diffview.nvim", -- optional - Diff integration
-    "nvim-telescope/telescope.nvim",
   },
 }
 
