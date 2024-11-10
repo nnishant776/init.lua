@@ -190,7 +190,10 @@ function M._setup_event_listeners(editorconfig)
     callback = function(args)
       local bufnr = args.buf
       local ft = vim.api.nvim_get_option_value('filetype', { buf = bufnr })
-      if not require('editor.utils').is_buf_valid(bufnr) then
+      local editorutil = require('editor.utils')
+      local editorops = require('editor.operations')
+      local editoropt = require('editor.options')
+      if not editorutil.is_buf_valid(bufnr) then
         if editorconfig.window.hideInvalidBuffers then
           vim.api.nvim_set_option_value('buflisted', false, { buf = bufnr })
         end
@@ -198,7 +201,7 @@ function M._setup_event_listeners(editorconfig)
       end
       vim.b[bufnr].tabpage = vim.api.nvim_get_current_tabpage()
       local cfg = M.ftconfig(ft, true)
-      require("editor.options").load(cfg, { buf_id = bufnr })
+      editoropt.load(cfg, { buf_id = bufnr })
       vim.schedule(function()
         require('plugins.lspconfig').setup_lsp(ft, cfg)
       end)
@@ -211,10 +214,10 @@ function M._setup_event_listeners(editorconfig)
           vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
             group = 'GenericPreWriteTasks',
             callback = function()
-              if not require('editor.utils').is_buf_valid(bufnr) then
+              if not editorutil.is_buf_valid(bufnr) then
                 return
               end
-              require('editor.operations').trim_final_newlines(bufnr)
+              editorops.trim_final_newlines(bufnr)
             end,
             buffer = bufnr,
             desc = 'Remove trailing new lines at the end of the document',
@@ -224,10 +227,10 @@ function M._setup_event_listeners(editorconfig)
           vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
             group = 'GenericPreWriteTasks',
             callback = function()
-              if not require('editor.utils').is_buf_valid(bufnr) then
+              if not editorutil.is_buf_valid(bufnr) then
                 return
               end
-              require('editor.operations').trim_trailing_whitespace(bufnr)
+              editorops.trim_trailing_whitespace(bufnr)
             end,
             buffer = bufnr,
             desc = 'Remove trailing whitespaces',
