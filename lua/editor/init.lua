@@ -398,6 +398,8 @@ local function convert(v, typ)
     else
       return false
     end
+  elseif typ == 'list' or typ == 'object' then
+    return vim.json.decode(v)
   else
     if v == 'empty' then
       if typ == 'string' then
@@ -447,6 +449,18 @@ function M._setup_global_commands()
         M.ftconfig(ft, true)
       else
         vim.g.config = vim.tbl_deep_extend("force", vim.g.config, cfg_patch)
+        for ft, cfg in pairs(vim.g.ft_config) do
+          local lang_key = '[' .. ft .. ']'
+          local lang_cfg = vim.g.config[lang_key]
+          lang_cfg = vim.tbl_deep_extend("force", lang_cfg or {}, cfg_patch)
+          local global_cfg = vim.g.config
+          global_cfg[lang_key] = lang_cfg
+          vim.g.config = global_cfg
+          local ft_config = vim.g.ft_config
+          ft_config[ft] = {}
+          vim.g.ft_config = ft_config
+          M.ftconfig(ft, true)
+        end
       end
       local profile = vim.g.profile
       local editorcfg = vim.g.config
