@@ -503,9 +503,7 @@ function M.setup_lsp(ft, cfg)
   if lang_servers and cfg and cfg.editor.quickSuggestions.other ~= "off" then
     for _, lang_server in ipairs(lang_servers) do
       local ls = lang_server_map[lang_server]
-      if not ls then
-        vim.print("Setup incomplete for " .. lang_server .. ".")
-      else
+      if ls then
         if not ls:is_setup_done() then
           ls:setup({})
         end
