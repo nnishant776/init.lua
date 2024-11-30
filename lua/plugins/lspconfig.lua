@@ -500,18 +500,18 @@ function M.setup(profile, editorconfig)
     )
     vim.lsp.set_log_level(vim.lsp.log_levels.INFO)
     for ft in pairs(filetype_lsp_map) do
-      M.setup_lsp(ft, editor.ftconfig(ft, false))
+      M.setup_lsp(ft, editor.ftconfig(ft, false), true)
     end
   end
 end
 
-function M.setup_lsp(ft, cfg)
+function M.setup_lsp(ft, cfg, force)
   local lang_servers = filetype_lsp_map[ft]
   if lang_servers and cfg and cfg.editor.quickSuggestions.other ~= "off" then
     for _, lang_server in ipairs(lang_servers) do
       local ls = lang_server_map[lang_server]
       if ls then
-        if not ls:is_setup_done() then
+        if not ls:is_setup_done() or force then
           ls:setup({})
         end
       end
