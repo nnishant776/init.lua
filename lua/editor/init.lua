@@ -353,6 +353,7 @@ function M.init(profile, editorconfig, buf_id)
     end
   end
 
+  -- Load editor options
   editoropt.load(editorconfig, buf_opts)
 
   -- Load global keymaps
@@ -372,6 +373,9 @@ function M.init(profile, editorconfig, buf_id)
 
   -- Setup editor global commands
   M._setup_global_commands()
+
+  -- Reload plugins
+  require('plugins').load(profile, editorconfig)
 end
 
 local function convert(v, typ)
