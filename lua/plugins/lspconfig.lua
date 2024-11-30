@@ -52,6 +52,8 @@ function LSP.new(server_name, settings, capabilities, launch_cfg)
         local mason_path = vim.fn.stdpath('data') .. '/mason/bin'
         local executable_path = mason_path .. '/' .. executable_name
         if vim.fn.exepath(executable_path) == '' then
+          vim.print("LSP server executable not found for " ..
+            server_name .. " (" .. executable_name .. "). Aborting setup.")
           return nil
         end
       end
