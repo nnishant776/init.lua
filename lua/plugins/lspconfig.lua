@@ -502,6 +502,20 @@ function M.setup(profile, editorconfig)
     for ft in pairs(filetype_lsp_map) do
       M.setup_lsp(ft, editor.ftconfig(ft, false), true)
     end
+
+    -- Create user command to start the LSP manually
+    vim.api.nvim_create_user_command(
+      "LspInit",
+      function(args)
+        if not args.fargs then
+          return
+        end
+        for _, ft in ipairs(args.fargs) do
+          M.setup_lsp(ft, editor.ftconfig(ft, false), true)
+        end
+      end,
+      { nargs = '*' }
+    )
   end
 end
 
