@@ -121,6 +121,9 @@ function LSP:setup(opts)
   local setup_opts = {
     on_init = function(client, config)
       self:on_init(client, config)
+      if self.launch_cfg.post_init then
+        self.launch_cfg.post_init(client, config)
+      end
     end,
     on_attach = function(_, buf_id)
       self:on_attach(buf_id)
@@ -405,6 +408,8 @@ local lang_server_map = {
     {},
     {
       detached = false,
+      post_init = function(client, _)
+      end,
     }
   ),
   ['zls'] = LSP.new(
