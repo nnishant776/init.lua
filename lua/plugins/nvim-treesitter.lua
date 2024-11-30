@@ -67,6 +67,22 @@ function M.setup(profile, editorconfig)
     indent = {
       enable = editorconfig.editor.autoIndent ~= 'none',
     },
+    textobjects = {
+      select = {
+        enable = true,
+        lookahead = true,
+        keymaps = {
+          ["af"] = "@function.outer",
+          ["if"] = "@function.inner"
+        }
+      }
+    },
+    incremental_selection = {
+      enable = true,
+      init_selection = "gnn",
+      node_incremental = "grn",
+      node_decremental = "grm",
+    }
   }
   spec.config = function(_, opts)
     require('nvim-treesitter.configs').setup(opts)
