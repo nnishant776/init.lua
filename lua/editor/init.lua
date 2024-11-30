@@ -127,21 +127,6 @@ function M.amend_config(profile, parsed_config)
   return parsed_config
 end
 
-function M.reload(profile)
-  vim.g.config = {}
-  vim.g.buf_config = {}
-  local editorconfig = M.config(profile)
-  local editoropt = require("editor.options")
-
-  local buf_opts = {}
-
-  if profile and profile.level > 0 then
-    M._setup_event_listeners(editorconfig)
-  end
-
-  editoropt.load(editorconfig, buf_opts)
-end
-
 function M.ftconfig(ft, use_default)
   local config = vim.g.ft_config[ft]
   if not config or vim.tbl_isempty(config) then
