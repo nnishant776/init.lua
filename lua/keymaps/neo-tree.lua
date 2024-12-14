@@ -24,7 +24,7 @@ function M.setup(opts)
         end
         vim.cmd("Neotree toggle filesystem left")
       end,
-      opts = { desc = "Toggle Neotree explorer" },
+      opts = { desc = "Toggle Neotree file explorer" },
     },
     {
       mode = { 'n' },
@@ -34,9 +34,9 @@ function M.setup(opts)
         if not is_neotree_present then
           return
         end
-        vim.cmd("Neotree toggle document_symbols right")
+        vim.cmd("Neotree toggle document_symbols left")
       end,
-      opts = { desc = "Toggle Neotree explorer" },
+      opts = { desc = "Toggle Neotree symbol explorer" },
     },
   }
 
