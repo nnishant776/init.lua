@@ -6,8 +6,11 @@ function M.trim_final_newlines(buf_id)
   for line = total_lines - 1, -1, -1 do
     local lines = vim.api.nvim_buf_get_lines(buf_id, line, line + 1, false)
     local line_content = lines[1]
-    if line_content ~= '' then
-      vim.api.nvim_buf_set_lines(buf_id, line + 1, total_lines, false, {})
+    if line_content and line_content ~= '' then
+      if line + 1 >= total_lines then
+        break
+      end
+      vim.api.nvim_buf_set_lines(buf_id, line + 1, total_lines, true, {})
       break
     end
   end
@@ -17,7 +20,7 @@ end
 -- assume the current buffer. This is due to a lack of a performant algorithm.
 -- Will fix later.
 function M.trim_trailing_whitespace(buf_id)
-  vim.cmd [[ silent! %s/\s\+$//g ]]
+  vim.cmd [[ silent! %s/[\ \t]\+$//g ]]
   -- buf_id = buf_id or 0
   -- local total_lines = vim.api.nvim_buf_line_count(buf_id)
   -- for line = total_lines - 1, -1, -1 do
