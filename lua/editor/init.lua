@@ -94,9 +94,11 @@ function M.config(profile)
       vim.filetype.add {
         extension = {
           ['code-workspace'] = 'json',
+          ['tpl'] = 'gotmpl',
         },
         filename = {
           ['go.mod'] = 'gomod',
+          ['Vagrantfile'] = 'ruby',
         },
       }
     else
