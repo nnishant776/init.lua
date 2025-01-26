@@ -20,7 +20,7 @@ end
 function M.setup(profile, editorconfig)
   spec.cond = M.is_enabled(profile, editorconfig)
   if not spec.cond then
-    vim.cmd.colorscheme('retrobox')
+    -- vim.cmd.colorscheme('retrobox')
     return
   end
   spec.opts = {
