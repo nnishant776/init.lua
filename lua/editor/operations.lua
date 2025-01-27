@@ -20,7 +20,7 @@ end
 -- assume the current buffer. This is due to a lack of a performant algorithm.
 -- Will fix later.
 function M.trim_trailing_whitespace(buf_id)
-  vim.cmd [[ silent! %s/[\ \t]\+$//g ]]
+  vim.cmd [[ silent! %s/\s\+$//g ]]
   -- buf_id = buf_id or 0
   -- local total_lines = vim.api.nvim_buf_line_count(buf_id)
   -- for line = total_lines - 1, -1, -1 do
