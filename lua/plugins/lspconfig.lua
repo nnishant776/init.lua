@@ -340,7 +340,6 @@ local lang_server_map = {
         usePlaceholders = true,
         analyses = {
           shadow = true,
-          fieldalignment = true,
           unsed = true,
           nilness = true,
           unusedparams = true,
