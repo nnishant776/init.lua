@@ -36,6 +36,7 @@ function M.setup(profile, editorconfig)
       'java',
       'make',
       'markdown',
+      'markdown_inline',
       'meson',
       'proto',
       'python',
