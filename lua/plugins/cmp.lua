@@ -139,7 +139,7 @@ function M.setup(profile, editorconfig)
       mapping = {
         ["<C-d>"] = cmp.mapping.scroll_docs(4),
         ["<C-u>"] = cmp.mapping.scroll_docs(-4),
-        ["<C-Space>"] = cmp.mapping.complete(),
+        ["<C-Space>"] = cmp.mapping(cmp.mapping.complete({ reason = cmp.ContextReason.Auto })),
         ["<C-e>"] = cmp.mapping.close(),
         ["<C-y>"] = cmp.mapping(function(fallback)
           local is_luasnip_present, luasnip = pcall(require, "luasnip")
