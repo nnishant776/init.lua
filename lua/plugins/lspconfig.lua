@@ -21,7 +21,7 @@ local filetype_lsp_map = {
   ['rust'] = { 'rust_analyzer' },
   ['lua'] = { 'lua_ls' },
   ['yaml'] = { 'yamlls' },
-  ['vala'] = { 'vala_ls' }
+  ['vala'] = { 'vala_ls' },
 }
 
 local lsp_executable_map = {
