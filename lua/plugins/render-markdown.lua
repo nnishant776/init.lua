@@ -27,43 +27,65 @@ function M.setup(profile, editorconfig)
   end
   spec.opts = {
     heading = {
-      -- Turn on / off heading icon & background rendering
+      -- Useful context to have when evaluating values.
+      -- | level    | the number of '#' in the heading marker         |
+      -- | sections | for each level how deeply nested the heading is |
+
+      -- Turn on / off heading icon & background rendering.
       enabled = true,
-      -- Turn on / off any sign column related rendering
+      -- Additional modes to render headings.
+      render_modes = false,
+      -- Turn on / off atx heading rendering.
+      atx = true,
+      -- Turn on / off setext heading rendering.
+      setext = true,
+      -- Turn on / off any sign column related rendering.
       sign = true,
-      -- Determines how icons fill the available space:
-      --  inline:  underlying '#'s are concealed resulting in a left aligned icon
-      --  overlay: result is left padded with spaces to hide any additional '#'
-      position = 'overlay',
-      -- Replaces '#+' of 'atx_h._marker'
-      -- The number of '#' in the heading determines the 'level'
-      -- The 'level' is used to index into the array using a cycle
+      -- Replaces '#+' of 'atx_h._marker'.
+      -- Output is evaluated depending on the type.
+      -- | function | `value(context)`              |
+      -- | string[] | `cycle(value, context.level)` |
       icons = { '󰲡 ', '󰲣 ', '󰲥 ', '󰲧 ', '󰲩 ', '󰲫 ' },
-      -- Added to the sign column if enabled
-      -- The 'level' is used to index into the array using a cycle
+      -- Determines how icons fill the available space.
+      -- | right   | '#'s are concealed and icon is appended to right side                          |
+      -- | inline  | '#'s are concealed and icon is inlined on left side                            |
+      -- | overlay | icon is left padded with spaces and inserted on left hiding any additional '#' |
+      position = 'overlay',
+      -- Added to the sign column if enabled.
+      -- Output is evaluated by `cycle(value, context.level)`.
       signs = { '󰫎 ' },
-      -- Width of the heading background:
-      --  block: width of the heading text
-      --  full:  full width of the window
-      -- Can also be an array of the above values in which case the 'level' is used
-      -- to index into the array using a clamp
+      -- Width of the heading background.
+      -- | block | width of the heading text |
+      -- | full  | full width of the window  |
+      -- Can also be a list of the above values evaluated by `clamp(value, context.level)`.
       width = 'full',
-      -- Amount of padding to add to the left of headings
+      -- Amount of margin to add to the left of headings.
+      -- Margin available space is computed after accounting for padding.
+      -- If a float < 1 is provided it is treated as a percentage of available window space.
+      -- Can also be a list of numbers evaluated by `clamp(value, context.level)`.
+      left_margin = 0,
+      -- Amount of padding to add to the left of headings.
+      -- Output is evaluated using the same logic as 'left_margin'.
       left_pad = 0,
-      -- Amount of padding to add to the right of headings when width is 'block'
+      -- Amount of padding to add to the right of headings when width is 'block'.
+      -- Output is evaluated using the same logic as 'left_margin'.
       right_pad = 0,
-      -- Minimum width to use for headings when width is 'block'
+      -- Minimum width to use for headings when width is 'block'.
+      -- Can also be a list of integers evaluated by `clamp(value, context.level)`.
       min_width = 0,
-      -- Determins if a border is added above and below headings
+      -- Determines if a border is added above and below headings.
+      -- Can also be a list of booleans evaluated by `clamp(value, context.level)`.
       border = false,
-      -- Highlight the start of the border using the foreground highlight
+      -- Always use virtual lines for heading borders instead of attempting to use empty lines.
+      border_virtual = false,
+      -- Highlight the start of the border using the foreground highlight.
       border_prefix = false,
-      -- Used above heading for border
+      -- Used above heading for border.
       above = '▄',
-      -- Used below heading for border
+      -- Used below heading for border.
       below = '▀',
-      -- The 'level' is used to index into the array using a clamp
-      -- Highlight for the heading icon and extends through the entire line
+      -- Highlight for the heading icon and extends through the entire line.
+      -- Output is evaluated by `clamp(value, context.level)`.
       backgrounds = {
         'RenderMarkdownH1Bg',
         'RenderMarkdownH2Bg',
@@ -72,8 +94,8 @@ function M.setup(profile, editorconfig)
         'RenderMarkdownH5Bg',
         'RenderMarkdownH6Bg',
       },
-      -- The 'level' is used to index into the array using a clamp
-      -- Highlight for the heading and sign icons
+      -- Highlight for the heading and sign icons.
+      -- Output is evaluated using the same logic as 'backgrounds'.
       foregrounds = {
         'RenderMarkdownH1',
         'RenderMarkdownH2',
@@ -82,48 +104,85 @@ function M.setup(profile, editorconfig)
         'RenderMarkdownH5',
         'RenderMarkdownH6',
       },
+      -- Define custom heading patterns which allow you to override various properties based on
+      -- the contents of a heading.
+      -- The key is for healthcheck and to allow users to change its values, value type below.
+      -- | pattern    | matched against the heading text @see :h lua-patterns |
+      -- | icon       | optional override for the icon                        |
+      -- | background | optional override for the background                  |
+      -- | foreground | optional override for the foreground                  |
+      custom = {},
     },
     code = {
-      -- Turn on / off code block & inline code rendering
+      -- Turn on / off code block & inline code rendering.
       enabled = true,
-      -- Turn on / off any sign column related rendering
+      -- Additional modes to render code blocks.
+      render_modes = false,
+      -- Turn on / off any sign column related rendering.
       sign = true,
-      -- Determines how code blocks & inline code are rendered:
-      --  none:     disables all rendering
-      --  normal:   adds highlight group to code blocks & inline code, adds padding to code blocks
-      --  language: adds language icon to sign column if enabled and icon + name above code blocks
-      --  full:     normal + language
+      -- Determines how code blocks & inline code are rendered.
+      -- | none     | disables all rendering                                                    |
+      -- | normal   | highlight group to code blocks & inline code, adds padding to code blocks |
+      -- | language | language icon to sign column if enabled and icon + name above code blocks |
+      -- | full     | normal + language                                                         |
       style = 'normal',
-      -- Determines where language icon is rendered:
-      --  right: right side of code block
-      --  left:  left side of code block
+      -- Determines where language icon is rendered.
+      -- | right | right side of code block |
+      -- | left  | left side of code block  |
       position = 'left',
-      -- Amount of padding to add around the language
+      -- Amount of padding to add around the language.
+      -- If a float < 1 is provided it is treated as a percentage of available window space.
       language_pad = 0,
-      -- An array of language names for which background highlighting will be disabled
-      -- Likely because that language has background highlights itself
+      -- Whether to include the language icon above code blocks.
+      language_icon = false,
+      -- Whether to include the language name above code blocks.
+      language_name = false,
+      -- A list of language names for which background highlighting will be disabled.
+      -- Likely because that language has background highlights itself.
+      -- Use a boolean to make behavior apply to all languages.
+      -- Borders above & below blocks will continue to be rendered.
       disable_background = { 'diff' },
-      -- Width of the code block background:
-      --  block: width of the code block
-      --  full:  full width of the window
+      -- Width of the code block background.
+      -- | block | width of the code block  |
+      -- | full  | full width of the window |
       width = 'full',
-      -- Amount of padding to add to the left of code blocks
-      left_pad = 0,
-      -- Amount of padding to add to the right of code blocks when width is 'block'
-      right_pad = 0,
-      -- Minimum width to use for code blocks when width is 'block'
+      -- Amount of margin to add to the left of code blocks.
+      -- If a float < 1 is provided it is treated as a percentage of available window space.
+      -- Margin available space is computed after accounting for padding.
+      left_margin = 0,
+      -- Amount of padding to add to the left of code blocks.
+      -- If a float < 1 is provided it is treated as a percentage of available window space.
+      left_pad = 1,
+      -- Amount of padding to add to the right of code blocks when width is 'block'.
+      -- If a float < 1 is provided it is treated as a percentage of available window space.
+      right_pad = 1,
+      -- Minimum width to use for code blocks when width is 'block'.
       min_width = 0,
-      -- Determins how the top / bottom of code block are rendered:
-      --  thick: use the same highlight as the code body
-      --  thin:  when lines are empty overlay the above & below icons
-      border = 'thick',
-      -- Used above code blocks for thin border
+      -- Determines how the top / bottom of code block are rendered.
+      -- | none  | do not render a border                               |
+      -- | thick | use the same highlight as the code body              |
+      -- | thin  | when lines are empty overlay the above & below icons |
+      -- | hide  | conceal lines unless language name or icon is added  |
+      border = 'thin',
+      -- Used above code blocks for thin border.
       above = '▄',
-      -- Used below code blocks for thin border
+      -- Used below code blocks for thin border.
       below = '▀',
-      -- Highlight for code blocks
-      highlight = 'NONE',
-      -- Highlight for inline code
+      -- Icon to add to the left of inline code.
+      inline_left = '',
+      -- Icon to add to the right of inline code.
+      inline_right = '',
+      -- Padding to add to the left & right of inline code.
+      inline_pad = 1,
+      -- Highlight for code blocks.
+      highlight = 'RenderMarkdownCode',
+      -- Highlight for language, overrides icon provider value.
+      highlight_language = nil,
+      -- Highlight for border, use false to add no highlight.
+      highlight_border = 'RenderMarkdownCodeBorder',
+      -- Highlight for language, used if icon provider does not have a value.
+      highlight_fallback = 'RenderMarkdownCodeFallback',
+      -- Highlight for inline code.
       highlight_inline = 'RenderMarkdownCodeInline',
     },
     dash = {
@@ -201,28 +260,33 @@ function M.setup(profile, editorconfig)
       highlight = 'RenderMarkdownQuote',
     },
     pipe_table = {
-      -- Turn on / off pipe table rendering
+      -- Turn on / off pipe table rendering.
       enabled = true,
-      -- Pre configured settings largely for setting table border easier
-      --  heavy:  use thicker border characters
-      --  double: use double line border characters
-      --  round:  use round border corners
-      --  none:   does nothing
+      -- Additional modes to render pipe tables.
+      render_modes = false,
+      -- Pre configured settings largely for setting table border easier.
+      -- | heavy  | use thicker border characters     |
+      -- | double | use double line border characters |
+      -- | round  | use round border corners          |
+      -- | none   | does nothing                      |
       preset = 'none',
-      -- Determines how the table as a whole is rendered:
-      --  none:   disables all rendering
-      --  normal: applies the 'cell' style rendering to each row of the table
-      --  full:   normal + a top & bottom line that fill out the table when lengths match
+      -- Determines how the table as a whole is rendered.
+      -- | none   | disables all rendering                                                  |
+      -- | normal | applies the 'cell' style rendering to each row of the table             |
+      -- | full   | normal + a top & bottom line that fill out the table when lengths match |
       style = 'full',
-      -- Determines how individual cells of a table are rendered:
-      --  overlay: writes completely over the table, removing conceal behavior and highlights
-      --  raw:     replaces only the '|' characters in each row, leaving the cells unmodified
-      --  padded:  raw + cells are padded with inline extmarks to make up for any concealed text
+      -- Determines how individual cells of a table are rendered.
+      -- | overlay | writes completely over the table, removing conceal behavior and highlights |
+      -- | raw     | replaces only the '|' characters in each row, leaving the cells unmodified |
+      -- | padded  | raw + cells are padded to maximum visual width for each column             |
+      -- | trimmed | padded except empty space is subtracted from visual width calculation      |
       cell = 'padded',
-      -- Gets placed in delimiter row for each column, position is based on alignmnet
-      alignment_indicator = '━',
-      -- Characters used to replace table border
-      -- Correspond to top(3), delimiter(3), bottom(3), vertical, & horizontal
+      -- Amount of space to put between cell contents and border.
+      padding = 1,
+      -- Minimum column width to use for padded or trimmed cell.
+      min_width = 0,
+      -- Characters used to replace table border.
+      -- Correspond to top(3), delimiter(3), bottom(3), vertical, & horizontal.
       -- stylua: ignore
       border = {
         '┌', '┬', '┐',
@@ -230,53 +294,67 @@ function M.setup(profile, editorconfig)
         '└', '┴', '┘',
         '│', '─',
       },
-      -- Highlight for table heading, delimiter, and the line above
+      -- Always use virtual lines for table borders instead of attempting to use empty lines.
+      -- Will be automatically enabled if indentation module is enabled.
+      border_virtual = true,
+      -- Gets placed in delimiter row for each column, position is based on alignment.
+      alignment_indicator = '━',
+      -- Highlight for table heading, delimiter, and the line above.
       head = 'RenderMarkdownTableHead',
-      -- Highlight for everything else, main table rows and the line below
+      -- Highlight for everything else, main table rows and the line below.
       row = 'RenderMarkdownTableRow',
-      -- Highlight for inline padding used to add back concealed space
+      -- Highlight for inline padding used to add back concealed space.
       filler = 'RenderMarkdownTableFill',
     },
-    -- Callouts are a special instance of a 'block_quote' that start with a 'shortcut_link'
-    -- Can specify as many additional values as you like following the pattern from any below, such as 'note'
-    --   The key in this case 'note' is for healthcheck and to allow users to change its values
-    --   'raw':       Matched against the raw text of a 'shortcut_link', case insensitive
-    --   'rendered':  Replaces the 'raw' value when rendering
-    --   'highlight': Highlight for the 'rendered' text and quote markers
     callout = {
-      note = { raw = '[!NOTE]', rendered = '󰋽 Note', highlight = 'RenderMarkdownInfo' },
-      tip = { raw = '[!TIP]', rendered = '󰌶 Tip', highlight = 'RenderMarkdownSuccess' },
-      important = { raw = '[!IMPORTANT]', rendered = '󰅾 Important', highlight = 'RenderMarkdownHint' },
-      warning = { raw = '[!WARNING]', rendered = '󰀪 Warning', highlight = 'RenderMarkdownWarn' },
-      caution = { raw = '[!CAUTION]', rendered = '󰳦 Caution', highlight = 'RenderMarkdownError' },
+      -- Callouts are a special instance of a 'block_quote' that start with a 'shortcut_link'.
+      -- The key is for healthcheck and to allow users to change its values, value type below.
+      -- | raw        | matched against the raw text of a 'shortcut_link', case insensitive |
+      -- | rendered   | replaces the 'raw' value when rendering                             |
+      -- | highlight  | highlight for the 'rendered' text and quote markers                 |
+      -- | quote_icon | optional override for quote.icon value for individual callout       |
+      -- | category   | optional metadata useful for filtering                              |
+
+      note      = { raw = '[!NOTE]', rendered = '󰋽 Note', highlight = 'RenderMarkdownInfo', category = 'github' },
+      tip       = { raw = '[!TIP]', rendered = '󰌶 Tip', highlight = 'RenderMarkdownSuccess', category = 'github' },
+      important = { raw = '[!IMPORTANT]', rendered = '󰅾 Important', highlight = 'RenderMarkdownHint', category = 'github' },
+      warning   = { raw = '[!WARNING]', rendered = '󰀪 Warning', highlight = 'RenderMarkdownWarn', category = 'github' },
+      caution   = { raw = '[!CAUTION]', rendered = '󰳦 Caution', highlight = 'RenderMarkdownError', category = 'github' },
       -- Obsidian: https://help.obsidian.md/Editing+and+formatting/Callouts
-      abstract = { raw = '[!ABSTRACT]', rendered = '󰨸 Abstract', highlight = 'RenderMarkdownInfo' },
-      summary = { raw = '[!SUMMARY]', rendered = '󰨸 Summary', highlight = 'RenderMarkdownInfo' },
-      tldr = { raw = '[!TLDR]', rendered = '󰨸 Tldr', highlight = 'RenderMarkdownInfo' },
-      info = { raw = '[!INFO]', rendered = '󰋽 Info', highlight = 'RenderMarkdownInfo' },
-      todo = { raw = '[!TODO]', rendered = '󰗡 Todo', highlight = 'RenderMarkdownInfo' },
-      hint = { raw = '[!HINT]', rendered = '󰌶 Hint', highlight = 'RenderMarkdownSuccess' },
-      success = { raw = '[!SUCCESS]', rendered = '󰄬 Success', highlight = 'RenderMarkdownSuccess' },
-      check = { raw = '[!CHECK]', rendered = '󰄬 Check', highlight = 'RenderMarkdownSuccess' },
-      done = { raw = '[!DONE]', rendered = '󰄬 Done', highlight = 'RenderMarkdownSuccess' },
-      question = { raw = '[!QUESTION]', rendered = '󰘥 Question', highlight = 'RenderMarkdownWarn' },
-      help = { raw = '[!HELP]', rendered = '󰘥 Help', highlight = 'RenderMarkdownWarn' },
-      faq = { raw = '[!FAQ]', rendered = '󰘥 Faq', highlight = 'RenderMarkdownWarn' },
-      attention = { raw = '[!ATTENTION]', rendered = '󰀪 Attention', highlight = 'RenderMarkdownWarn' },
-      failure = { raw = '[!FAILURE]', rendered = '󰅖 Failure', highlight = 'RenderMarkdownError' },
-      fail = { raw = '[!FAIL]', rendered = '󰅖 Fail', highlight = 'RenderMarkdownError' },
-      missing = { raw = '[!MISSING]', rendered = '󰅖 Missing', highlight = 'RenderMarkdownError' },
-      danger = { raw = '[!DANGER]', rendered = '󱐌 Danger', highlight = 'RenderMarkdownError' },
-      error = { raw = '[!ERROR]', rendered = '󱐌 Error', highlight = 'RenderMarkdownError' },
-      bug = { raw = '[!BUG]', rendered = '󰨰 Bug', highlight = 'RenderMarkdownError' },
-      example = { raw = '[!EXAMPLE]', rendered = '󰉹 Example', highlight = 'RenderMarkdownHint' },
-      quote = { raw = '[!QUOTE]', rendered = '󱆨 Quote', highlight = 'RenderMarkdownQuote' },
-      cite = { raw = '[!CITE]', rendered = '󱆨 Cite', highlight = 'RenderMarkdownQuote' },
+      abstract  = { raw = '[!ABSTRACT]', rendered = '󰨸 Abstract', highlight = 'RenderMarkdownInfo', category = 'obsidian' },
+      summary   = { raw = '[!SUMMARY]', rendered = '󰨸 Summary', highlight = 'RenderMarkdownInfo', category = 'obsidian' },
+      tldr      = { raw = '[!TLDR]', rendered = '󰨸 Tldr', highlight = 'RenderMarkdownInfo', category = 'obsidian' },
+      info      = { raw = '[!INFO]', rendered = '󰋽 Info', highlight = 'RenderMarkdownInfo', category = 'obsidian' },
+      todo      = { raw = '[!TODO]', rendered = '󰗡 Todo', highlight = 'RenderMarkdownInfo', category = 'obsidian' },
+      hint      = { raw = '[!HINT]', rendered = '󰌶 Hint', highlight = 'RenderMarkdownSuccess', category = 'obsidian' },
+      success   = { raw = '[!SUCCESS]', rendered = '󰄬 Success', highlight = 'RenderMarkdownSuccess', category = 'obsidian' },
+      check     = { raw = '[!CHECK]', rendered = '󰄬 Check', highlight = 'RenderMarkdownSuccess', category = 'obsidian' },
+      done      = { raw = '[!DONE]', rendered = '󰄬 Done', highlight = 'RenderMarkdownSuccess', category = 'obsidian' },
+      question  = { raw = '[!QUESTION]', rendered = '󰘥 Question', highlight = 'RenderMarkdownWarn', category = 'obsidian' },
+      help      = { raw = '[!HELP]', rendered = '󰘥 Help', highlight = 'RenderMarkdownWarn', category = 'obsidian' },
+      faq       = { raw = '[!FAQ]', rendered = '󰘥 Faq', highlight = 'RenderMarkdownWarn', category = 'obsidian' },
+      attention = { raw = '[!ATTENTION]', rendered = '󰀪 Attention', highlight = 'RenderMarkdownWarn', category = 'obsidian' },
+      failure   = { raw = '[!FAILURE]', rendered = '󰅖 Failure', highlight = 'RenderMarkdownError', category = 'obsidian' },
+      fail      = { raw = '[!FAIL]', rendered = '󰅖 Fail', highlight = 'RenderMarkdownError', category = 'obsidian' },
+      missing   = { raw = '[!MISSING]', rendered = '󰅖 Missing', highlight = 'RenderMarkdownError', category = 'obsidian' },
+      danger    = { raw = '[!DANGER]', rendered = '󱐌 Danger', highlight = 'RenderMarkdownError', category = 'obsidian' },
+      error     = { raw = '[!ERROR]', rendered = '󱐌 Error', highlight = 'RenderMarkdownError', category = 'obsidian' },
+      bug       = { raw = '[!BUG]', rendered = '󰨰 Bug', highlight = 'RenderMarkdownError', category = 'obsidian' },
+      example   = { raw = '[!EXAMPLE]', rendered = '󰉹 Example', highlight = 'RenderMarkdownHint', category = 'obsidian' },
+      quote     = { raw = '[!QUOTE]', rendered = '󱆨 Quote', highlight = 'RenderMarkdownQuote', category = 'obsidian' },
+      cite      = { raw = '[!CITE]', rendered = '󱆨 Cite', highlight = 'RenderMarkdownQuote', category = 'obsidian' },
     },
+
     link = {
       -- Turn on / off inline link icon rendering
       enabled = true,
-      -- Inlined with 'image' elements
+      render_modes = false,
+      footnote = {
+        enabled = true,
+        superscript = true,
+        prefix = '',
+        suffix = '',
+      },
       image = '󰥶 ',
       -- Inlined with 'email_autolink' elements
       email = '󰀓 ',
@@ -284,6 +362,13 @@ function M.setup(profile, editorconfig)
       hyperlink = '󰌹 ',
       -- Applies to the fallback inlined icon
       highlight = 'RenderMarkdownLink',
+      wiki = {
+        icon = '󱗖 ',
+        body = function()
+          return nil
+        end,
+        highlight = 'RenderMarkdownWikiLink',
+      },
       -- Define custom destination patterns so icons can quickly inform you of what a link
       -- contains. Applies to 'inline_link' and wikilink nodes.
       -- Can specify as many additional values as you like following the 'web' pattern below
@@ -292,7 +377,16 @@ function M.setup(profile, editorconfig)
       --   'icon':      Gets inlined before the link text
       --   'highlight': Highlight for the 'icon'
       custom = {
-        web = { pattern = '^http[s]?://', icon = '󰖟 ', highlight = 'RenderMarkdownLink' },
+        web = { pattern = '^http', icon = '󰖟 ' },
+        discord = { pattern = 'discord%.com', icon = '󰙯 ' },
+        github = { pattern = 'github%.com', icon = '󰊤 ' },
+        gitlab = { pattern = 'gitlab%.com', icon = '󰮠 ' },
+        google = { pattern = 'google%.com', icon = '󰊭 ' },
+        neovim = { pattern = 'neovim%.io', icon = ' ' },
+        reddit = { pattern = 'reddit%.com', icon = '󰑍 ' },
+        stackoverflow = { pattern = 'stackoverflow%.com', icon = '󰓌 ' },
+        wikipedia = { pattern = 'wikipedia%.org', icon = '󰖬 ' },
+        youtube = { pattern = 'youtube%.com', icon = '󰗃 ' },
       },
     },
     sign = {
@@ -301,13 +395,25 @@ function M.setup(profile, editorconfig)
       -- Applies to background of sign text
       highlight = 'RenderMarkdownSign',
     },
-    -- Mimic org-indent-mode behavior by indenting everything under a heading based on the
-    -- level of the heading. Indenting starts from level 2 headings onward.
     indent = {
-      -- Turn on / off org-indent-mode
+      -- Mimic org-indent-mode behavior by indenting everything under a heading based on the
+      -- level of the heading. Indenting starts from level 2 headings onward by default.
+
+      -- Turn on / off org-indent-mode.
       enabled = false,
-      -- Amount of additional padding added for each heading level
+      -- Additional modes to render indents.
+      render_modes = false,
+      -- Amount of additional padding added for each heading level.
       per_level = 2,
+      -- Heading levels <= this value will not be indented.
+      -- Use 0 to begin indenting from the very first level.
+      skip_level = 1,
+      -- Do not indent heading titles, only the body.
+      skip_heading = false,
+      -- Prefix added when indenting, one per level.
+      icon = '▎',
+      -- Applied to icon.
+      highlight = 'RenderMarkdownIndent',
     },
   }
   spec.config = function(_, opts)
