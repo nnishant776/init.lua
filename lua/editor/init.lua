@@ -95,6 +95,8 @@ function M.config(profile)
         extension = {
           ['code-workspace'] = 'json',
           ['tpl'] = 'gotmpl',
+          ['gotmpl'] = 'gotmpl',
+          ['yaml.gotmpl'] = 'yaml',
         },
         filename = {
           ['go.mod'] = 'gomod',
