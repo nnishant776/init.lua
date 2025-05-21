@@ -152,10 +152,10 @@ function M.setup(profile, editorconfig)
       left_margin = 0,
       -- Amount of padding to add to the left of code blocks.
       -- If a float < 1 is provided it is treated as a percentage of available window space.
-      left_pad = 1,
+      left_pad = 0,
       -- Amount of padding to add to the right of code blocks when width is 'block'.
       -- If a float < 1 is provided it is treated as a percentage of available window space.
-      right_pad = 1,
+      right_pad = 0,
       -- Minimum width to use for code blocks when width is 'block'.
       min_width = 0,
       -- Determines how the top / bottom of code block are rendered.
