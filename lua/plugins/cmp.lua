@@ -214,6 +214,10 @@ function M.setup(profile, editorconfig)
             group_index = 1,
             entry_filter = function(entry, _)
               local kind = cmp.lsp.CompletionItemKind[entry:get_kind()]
+              if not kind then
+                -- vim.print("unexpected entry kind: ", entry:get_kind(), cmp.lsp.CompletionItemKind)
+                return false
+              end
               if kind == 'Text' then
                 kind = 'Word'
               end
