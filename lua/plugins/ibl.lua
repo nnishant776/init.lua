@@ -77,7 +77,10 @@ function M.setup_buffer(buf_id, editorconfig)
     return
   end
   local opts = ibl_config(editorconfig)
-  require('ibl').setup_buffer(buf_id, opts)
+  local is_ibl_present, ibl = pcall(require, "ibl")
+  if is_ibl_present then
+    ibl.setup_buffer(buf_id, opts)
+  end
 end
 
 function M.spec()
