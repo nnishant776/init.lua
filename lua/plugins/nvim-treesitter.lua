@@ -1,6 +1,7 @@
 local spec = {
   enabled = true,
   cond = true,
+  branch = 'master',
   opts = {},
   dependencies = {
     'nvim-treesitter/nvim-treesitter-textobjects',
