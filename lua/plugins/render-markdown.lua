@@ -173,15 +173,15 @@ function M.setup(profile, editorconfig)
       -- Icon to add to the right of inline code.
       inline_right = '',
       -- Padding to add to the left & right of inline code.
-      inline_pad = 1,
+      inline_pad = 0,
       -- Highlight for code blocks.
-      highlight = 'RenderMarkdownCode',
+      highlight = 'PmenuSel',
       -- Highlight for language, overrides icon provider value.
       highlight_language = nil,
       -- Highlight for border, use false to add no highlight.
-      highlight_border = 'RenderMarkdownCodeBorder',
+      highlight_border = 'PmenuSel',
       -- Highlight for language, used if icon provider does not have a value.
-      highlight_fallback = 'RenderMarkdownCodeFallback',
+      highlight_fallback = 'NONE',
       -- Highlight for inline code.
       highlight_inline = 'RenderMarkdownCodeInline',
     },
