@@ -163,7 +163,7 @@ function M.setup(profile, editorconfig)
       -- | thick | use the same highlight as the code body              |
       -- | thin  | when lines are empty overlay the above & below icons |
       -- | hide  | conceal lines unless language name or icon is added  |
-      border = 'thin',
+      border = 'thick',
       -- Used above code blocks for thin border.
       above = '▄',
       -- Used below code blocks for thin border.
@@ -175,13 +175,13 @@ function M.setup(profile, editorconfig)
       -- Padding to add to the left & right of inline code.
       inline_pad = 0,
       -- Highlight for code blocks.
-      highlight = 'PmenuSel',
+      highlight = 'RenderMarkdownCode',
       -- Highlight for language, overrides icon provider value.
       highlight_language = nil,
       -- Highlight for border, use false to add no highlight.
-      highlight_border = 'PmenuSel',
+      highlight_border = 'RenderMarkdownCodeBorder',
       -- Highlight for language, used if icon provider does not have a value.
-      highlight_fallback = 'NONE',
+      highlight_fallback = 'RenderMarkdownCodeFallback',
       -- Highlight for inline code.
       highlight_inline = 'RenderMarkdownCodeInline',
     },
