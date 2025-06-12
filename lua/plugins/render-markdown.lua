@@ -415,6 +415,25 @@ function M.setup(profile, editorconfig)
       -- Applied to icon.
       highlight = 'RenderMarkdownIndent',
     },
+    -- Overrides
+    overrides = {
+      buftype = {
+        nofile = {
+          code = {
+            -- Highlight for code blocks.
+            highlight = 'RenderMarkdownCode',
+            -- Highlight for language, overrides icon provider value.
+            highlight_language = nil,
+            -- Highlight for border, use false to add no highlight.
+            highlight_border = 'RenderMarkdownCodeBorder',
+            -- Highlight for language, used if icon provider does not have a value.
+            highlight_fallback = 'RenderMarkdownCodeFallback',
+            -- Highlight for inline code.
+            highlight_inline = 'RenderMarkdownCodeInline',
+          }
+        }
+      }
+    }
   }
   spec.config = function(_, opts)
     local is_render_markdown_present, render_markdown = pcall(require, 'render-markdown')
