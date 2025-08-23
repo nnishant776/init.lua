@@ -6,11 +6,11 @@ function M.setup(opts)
       mode = { 'n' },
       input_keys = "<C-n>",
       action = function()
-        local is_neotree_present, _ = pcall(require, 'neo-tree')
-        if not is_neotree_present then
-          return
-        end
-        vim.cmd("Neotree toggle")
+        -- local is_neotree_present, _ = pcall(require, 'neo-tree')
+        -- if not is_neotree_present then
+        --   return
+        -- end
+        -- vim.cmd("Neotree toggle")
       end,
       opts = { desc = "Toggle Neotree explorer" },
     },
@@ -28,6 +28,18 @@ function M.setup(opts)
     },
     {
       mode = { 'n' },
+      input_keys = "<leader>nff",
+      action = function()
+        local is_neotree_present, _ = pcall(require, 'neo-tree')
+        if not is_neotree_present then
+          return
+        end
+        vim.cmd("Neotree float filesystem")
+      end,
+      opts = { desc = "Toggle Neotree file explorer" },
+    },
+    {
+      mode = { 'n' },
       input_keys = "<leader>nds",
       action = function()
         local is_neotree_present, _ = pcall(require, 'neo-tree')
@@ -35,6 +47,18 @@ function M.setup(opts)
           return
         end
         vim.cmd("Neotree toggle document_symbols left")
+      end,
+      opts = { desc = "Toggle Neotree symbol explorer" },
+    },
+    {
+      mode = { 'n' },
+      input_keys = "<leader>ndf",
+      action = function()
+        local is_neotree_present, _ = pcall(require, 'neo-tree')
+        if not is_neotree_present then
+          return
+        end
+        vim.cmd("Neotree float document_symbols")
       end,
       opts = { desc = "Toggle Neotree symbol explorer" },
     },
