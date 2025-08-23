@@ -4,18 +4,6 @@ function M.setup(opts)
   local keymap = {
     {
       mode = { 'n' },
-      input_keys = "<C-n>",
-      action = function()
-        -- local is_neotree_present, _ = pcall(require, 'neo-tree')
-        -- if not is_neotree_present then
-        --   return
-        -- end
-        -- vim.cmd("Neotree toggle")
-      end,
-      opts = { desc = "Toggle Neotree explorer" },
-    },
-    {
-      mode = { 'n' },
       input_keys = "<leader>nfs",
       action = function()
         local is_neotree_present, _ = pcall(require, 'neo-tree')
