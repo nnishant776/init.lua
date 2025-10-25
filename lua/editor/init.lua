@@ -279,12 +279,6 @@ function M.init(profile, editorconfig, buf_id)
   -- Load global keymaps
   require('keymaps.global').setup({ buffer = false })
 
-  -- Load global highlights
-  local highlights = require('highlight').global({})
-  for hl_name, hl_cfg in pairs(highlights) do
-    vim.api.nvim_set_hl(0, hl_name, hl_cfg)
-  end
-
   local background = "dark"
   if editorconfig.window.background == "light" then
     background = "light"
