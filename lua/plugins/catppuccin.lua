@@ -80,16 +80,6 @@ function M.setup(profile, editorconfig)
   spec.config = function(_, opts)
     opts = opts or {}
 
-    opts.color_overrides = {
-      latte = require('color').overrides('catppuccin', 'latte', opts),
-      mocha = require('color').overrides('catppuccin', 'mocha', opts),
-    }
-
-    opts.highlight_overrides = {
-      latte = require('highlight').overrides('catppuccin', 'latte', opts),
-      mocha = require('highlight').overrides('catppuccin', 'mocha', opts),
-    }
-
     require('catppuccin').setup(opts)
 
     if vim.o.background == "light" then
