@@ -91,8 +91,16 @@ function M.setup(profile, editorconfig)
               command = "file",
               args = { "--mime-type", "-b", filepath },
               on_exit = function(j)
-                local mime_type = vim.split(j:result()[1], "/")[1]
-                if mime_type == "text" then
+                local mime_type = j:result()[1]
+                local is_valid_mime_type = false
+                local patterns = { "executable", "sharedlib", "binary" }
+                for _, typ in ipairs(patterns) do
+                  if not string.find(mime_type, typ) then
+                    is_valid_mime_type = true
+                    break
+                  end
+                end
+                if is_valid_mime_type then
                   previewers.buffer_previewer_maker(filepath, buf_id, preview_opts)
                 else
                   -- maybe we want to write something to the buffer here
