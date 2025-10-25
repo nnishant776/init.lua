@@ -1,96 +1,12 @@
 ---@class Editor
 local M = {}
 
-local default_cfg = {
-  files = {
-    eol = '\n',
-    encoding = 'utf8',
-    exclude = {
-      ['**/.cache/**'] = true,
-    },
-    insertFinalNewline = true,
-    trimFinalNewlines = false,
-    trimTrailingWhitespace = false,
-  },
-  editor = {
-    autoIndent = 'none',
-    cursorSmoothCaretAnimation = "on",
-    detectIndentation = false,
-    formatOnPaste = false,
-    formatOnSave = false,
-    insertSpaces = true,
-    lineNumbers = 'relative',
-    occurrencesHighlight = 'off',
-    quickSuggestions = {
-      other = 'off',
-      comments = 'off',
-      strings = 'off',
-    },
-    quickSuggestionsDelay = 500,
-    renderLineHighlight = 'none',
-    renderWhitespace = 'none',
-    rulers = {
-      9999,
-    },
-    selectionHighlight = false,
-    showPosition = false,
-    showSignColumn = true,
-    suggestOnTriggerCharacters = false,
-    tabSize = 4,
-    wordBasedSuggestions = 'off',
-    wordWrap = '',
-    wordWrapColumn = 0,
-    guides = {
-      bracketPairs = false,
-      bracketPairsHorizontal = false,
-      context = false,
-      highlightActiveBracketPair = false,
-      highlightActiveIndentation = false,
-      indentation = false,
-    },
-    inlayHints = {
-      enabled = 'off',
-    },
-    hover = {
-      enabled = false,
-      delay = 500
-    },
-    semanticHighlighting = {
-      enabled = false
-    },
-    suggest = {
-      enabled = false,
-      filterGraceful = false,
-      insertMode = 'replace',
-      localityBonus = false,
-      preview = true,
-      showWords = false,
-      signatureHelp = false,
-    },
-  },
-  window = {
-    filename = 'base', -- possible values: base, rootrel, absolute
-    cmdHeight = 1,
-    hideInvalidBuffers = true,
-  },
-}
-
-local function startswith(s, prefix)
-  local substr = string.sub(s, 1, #prefix)
-  return substr == prefix
-end
-
-local function extract_lang(key)
-  local start_idx = string.find(key, '%[')
-  local end_idx = string.find(key, '%]')
-  return string.sub(key, start_idx + 1, end_idx - 1)
-end
-
 function M.config(profile)
   local parsed_config = vim.g.config
+  local editorcfg = require('editor.config')
   if not parsed_config or vim.tbl_isempty(parsed_config) then
     if profile and profile.level > 0 then
-      parsed_config = require('editor.config').parse_config(default_cfg) or default_cfg
+      parsed_config = editorcfg.parse_config()
       vim.filetype.add {
         extension = {
           ['code-workspace'] = 'json',
@@ -104,14 +20,14 @@ function M.config(profile)
         },
       }
     else
-      parsed_config = default_cfg
+      parsed_config = editorcfg.base_config()
     end
   end
-  parsed_config = M.amend_config(profile, parsed_config)
+  parsed_config = M._amend_config(profile, parsed_config)
   return parsed_config
 end
 
-function M.amend_config(profile, parsed_config)
+function M._amend_config(profile, parsed_config)
   if profile.level == 1 then
     parsed_config.files.trimFinalNewLines = false
     parsed_config.files.trimTrailingWhitespace = false
@@ -350,8 +266,8 @@ function M.init(profile, editorconfig, buf_id)
     M._setup_event_listeners(editorconfig)
     -- Setup file type specific configuration
     for key in pairs(editorconfig) do
-      if startswith(key, '[') then
-        local lang_key = extract_lang(key)
+      if M._startswith(key, '[') then
+        local lang_key = M._extract_lang(key)
         M.ftconfig(lang_key, true)
       end
     end
@@ -426,7 +342,7 @@ function M._setup_global_commands()
       end
       local key = args.fargs[1]
       local val = convert(args.fargs[2], args.fargs[3])
-      local cfg_patch = require('editor.config').parse_key_val(key, val, { '%*%*' })
+      local cfg_patch = require('editor.config').parse_config_item(key, val, { '%*%*' })
       if ft ~= "" then
         local lang_key = '[' .. ft .. ']'
         local lang_cfg = vim.g.config[lang_key]
@@ -510,6 +426,17 @@ function M._setup_global_commands()
     end,
     { nargs = '*' }
   )
+end
+
+function M._startswith(s, prefix)
+  local substr = string.sub(s, 1, #prefix)
+  return substr == prefix
+end
+
+function M._extract_lang(key)
+  local start_idx = string.find(key, '%[')
+  local end_idx = string.find(key, '%]')
+  return string.sub(key, start_idx + 1, end_idx - 1)
 end
 
 return M

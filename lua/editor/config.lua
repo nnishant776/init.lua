@@ -1,11 +1,14 @@
-local M = {}
+local M = {
+  _project_config_path = '*.code-workspace',
+  _global_config_path = '~/.config/nvim/settings.json',
+}
 
 local fsutils = require('utils.fs')
 
-local function read_project_config()
+function M.project_config()
   local config = {}
   local settings = {}
-  local workspace_cfg_list = vim.fn.glob('*.code-workspace')
+  local workspace_cfg_list = vim.fn.glob(M._project_config_path)
   if workspace_cfg_list ~= '' then
     local workspace_cfgs = vim.split(workspace_cfg_list, '\n', { plain = true })
     local workspace_cfg
@@ -31,9 +34,9 @@ local function read_project_config()
   return settings
 end
 
-local function read_global_config()
+function M.global_config()
   local settings = {}
-  local vsc_cfg_path = vim.fn.expand('~/.config/nvim/settings.json')
+  local vsc_cfg_path = vim.fn.expand(M._global_config_path)
   local json_str = fsutils.read_file(vsc_cfg_path)
   if json_str ~= '' then
     settings = vim.json.decode(json_str)
@@ -51,7 +54,7 @@ end
 -- This function takes in a key in the JSON config and the associated
 -- value and then converts it into a object hierarchy with the value
 -- attached to the leaf node
-function M.parse_key_val(key, val, ignore_pattern_list)
+function M.parse_config_item(key, val, ignore_pattern_list)
   local config = {}
 
   for _, pat in ipairs(ignore_pattern_list) do
@@ -72,7 +75,7 @@ function M.parse_key_val(key, val, ignore_pattern_list)
   return config
 end
 
-local function parse_external_config(input_config)
+function M._parse_config_dict(input_config)
   local parsed_config = {}
 
   for key, val in pairs(input_config) do
@@ -81,12 +84,12 @@ local function parse_external_config(input_config)
       return nil
     end
     if type(val) == 'table' then
-      local new_val = parse_external_config(val)
+      local new_val = M._parse_config_dict(val)
       if new_val then
         val = new_val
       end
     end
-    local config = M.parse_key_val(key, val, { '%*%*' })
+    local config = M.parse_config_item(key, val, { '%*%*' })
     if config then
       parsed_config = vim.tbl_deep_extend('force', parsed_config or {}, config)
     end
@@ -95,19 +98,100 @@ local function parse_external_config(input_config)
   return parsed_config
 end
 
+function M.base_config()
+  local default_cfg = {
+    files = {
+      eol = '\n',
+      encoding = 'utf8',
+      exclude = {
+        ['**/.cache/**'] = true,
+      },
+      insertFinalNewline = true,
+      trimFinalNewlines = false,
+      trimTrailingWhitespace = false,
+    },
+    editor = {
+      autoIndent = 'none',
+      autoClosingBrackets = "always", -- always, beforeWhitespace, languageDefined, never
+      autoClosingQuotes = "always",   -- always, beforeWhitespace, languageDefined, never
+      cursorSmoothCaretAnimation = "on",
+      detectIndentation = false,
+      formatOnPaste = false,
+      formatOnSave = false,
+      insertSpaces = true,
+      lineNumbers = 'relative',
+      occurrencesHighlight = 'off',
+      quickSuggestions = {
+        other = 'off',
+        comments = 'off',
+        strings = 'off',
+      },
+      quickSuggestionsDelay = 500,
+      renderLineHighlight = 'none',
+      renderWhitespace = 'none',
+      rulers = {
+        9999,
+      },
+      selectionHighlight = false,
+      showPosition = false,
+      showSignColumn = true,
+      suggestOnTriggerCharacters = false,
+      tabSize = 4,
+      wordBasedSuggestions = 'off',
+      wordWrap = '',
+      wordWrapColumn = 0,
+      guides = {
+        bracketPairs = false,
+        bracketPairsHorizontal = false,
+        context = false,
+        highlightActiveBracketPair = false,
+        highlightActiveIndentation = false,
+        indentation = false,
+      },
+      inlayHints = {
+        enabled = 'off',
+      },
+      hover = {
+        enabled = false,
+        delay = 500
+      },
+      semanticHighlighting = {
+        enabled = false
+      },
+      suggest = {
+        enabled = false,
+        filterGraceful = false,
+        insertMode = 'replace',
+        localityBonus = false,
+        preview = true,
+        showWords = false,
+        signatureHelp = false,
+      },
+    },
+    window = {
+      filename = 'base', -- possible values: base, rootrel, absolute
+      cmdHeight = 1,
+      hideInvalidBuffers = true,
+    },
+  }
+
+  return default_cfg
+end
+
 --- @param default_cfg? any
-function M.parse_config(default_cfg)
+function M.parse_config()
+  local default_cfg = M.base_config() or {}
   if not default_cfg then
     default_cfg = {}
   end
 
-  local local_config = read_project_config()
-  local global_config = read_global_config()
+  local local_config = M.project_config()
+  local global_config = M.global_config()
   local nvim_config = vim.deepcopy(default_cfg)
 
   if global_config then
     vim.g.raw_global_config = global_config
-    local parsed_global_config = parse_external_config(global_config)
+    local parsed_global_config = M._parse_config_dict(global_config)
     if parsed_global_config then
       nvim_config = vim.tbl_deep_extend('force', nvim_config, parsed_global_config)
     end
@@ -115,7 +199,7 @@ function M.parse_config(default_cfg)
 
   if local_config then
     vim.g.raw_project_config = local_config
-    local parsed_local_config = parse_external_config(local_config)
+    local parsed_local_config = M._parse_config_dict(local_config)
     if parsed_local_config then
       nvim_config = vim.tbl_deep_extend('force', nvim_config, parsed_local_config)
     end
