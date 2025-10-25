@@ -101,7 +101,12 @@ function LSP:default_lsp_capabilities()
 end
 
 function LSP:setup(opts)
-  local is_lsp_present, lsp = pcall(require, 'lspconfig')
+  local is_lsp_present, lsp = false, nil
+  if vim.fn.has('nvim-0.11') then
+    is_lsp_present, lsp = true, vim.lsp.config
+  else
+    is_lsp_present, lsp = pcall(require, 'lspconfig')
+  end
   local is_cmp_present, _ = pcall(require, 'cmp')
   if not is_lsp_present or not is_cmp_present then
     return
@@ -136,7 +141,9 @@ function LSP:setup(opts)
     setup_opts = vim.tbl_deep_extend("keep", setup_opts, self.launch_cfg)
   end
 
-  lsp[self.name].setup(setup_opts)
+  lsp[self.name] = setup_opts
+
+  vim.lsp.enable(self.name, true)
 end
 
 function LSP:on_init(client, _)
